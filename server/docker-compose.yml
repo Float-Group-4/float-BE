@@ -1,0 +1,20 @@
+# docker-compose.yml
+
+version: '3.8'
+services:
+  # Docker connection string: awp_edu_db://postgres:postgres@localhost:5432/
+
+  group4-db-postgres:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - group4-data-postgres:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+
+volumes:
+  group4-data-postgres:
