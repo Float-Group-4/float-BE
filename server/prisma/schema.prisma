@@ -13,13 +13,174 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id         String      @id @default(uuid())
+  name       String
+  email      String      @unique
+  password   String
+  timeFormat String
+  avatar     String?
+  TeamMember TeamMember?
+}
+
+model Team {
+  id          String        @id @default(uuid())
+  name        String
+  teamOwner   TeamMember    @relation("ownedBy", fields: [teamOwnerId], references: [id])
+  teamOwnerId String
+  TeamMember  TeamMember[]
+  Setting     Setting?
+  TimeOffType TimeOffType[]
+}
+
+model Setting {
+  id            String  @id @default(uuid())
+  Team          Team    @relation(fields: [teamId], references: [id])
+  teamId        String  @unique
+  currency      String
+  timeZone      String
+  startWeek     String
+  timeFormat    String
+  isShowWeekend Boolean
+  workDay       String
+}
+
+model TimeOff {
+  id           String      @id @default(uuid())
+  // Team      Team     @relation(fields: [teamId], references: [id])
+  // teamId    String
+  // User      User     @relation(fields: [userId], references: [id])
+  // userId    String
+  TeamMember   TeamMember  @relation(fields: [teamMemberId], references: [id])
+  teamMemberId String
+  Type         TimeOffType @relation(fields: [typeId], references: [id])
+  typeId       String
+  startDate    DateTime
+  endDate      DateTime
+}
+
+model TimeOffType {
+  id            String    @id @default(uuid())
+  team          Team      @relation(fields: [teamId], references: [id])
+  teamId        String
+  name          String
+  color         String
+  balance       String
+  days          Float
+  EffectiveDate DateTime
+  TimeOff       TimeOff[]
+}
+
+model TeamMember {
+  id     String @id @default(uuid())
+  Team   Team   @relation(fields: [teamId], references: [id])
+  teamId String
+  User   User   @relation(fields: [userId], references: [id])
+  userId String @unique
+  name   String
+
+  type          String
+  hourlyRate    Float // ask again
+  access        String
+  email         String
+  Activity      Activity[]
+  TimeOff       TimeOff[]
+  Role          Role[]
+  Department    Department[]
+  ProjectMember ProjectMember[]
+  Allocation    Allocation[]
+  TagCreated    Tag[]           @relation("createdBy")
+  Tag           Tag[]
+  OwnedTeam     Team[]          @relation("ownedBy")
+  OwnedProject  Project[]
+
+  @@unique([teamId, userId])
+}
+
+model Activity {
+  id String @id @default(uuid())
+  //team
+
+  // User   TeamMember? @relation(fields: [userId], references: [userId])
+  // userId String?
+  // Team   TeamMember? @relation(fields: [teamId], references: [teamId])
+  // teamId String?
+
+  TeamMember   TeamMember? @relation(fields: [teamMemberId], references: [id])
+  teamMemberId String?
+  activity     String
+  date         DateTime
+}
+
+model Role {
+  id   String @id @default(uuid())
+  name String @unique
+
+  TeamMember   TeamMember? @relation(fields: [teamMemberId], references: [id])
+  teamMemberId String?
+}
+
+model Department {
+  id           String      @id @default(uuid())
+  name         String      @unique
+  isSubDepart  Boolean
+  TeamMember   TeamMember? @relation(fields: [teamMemberId], references: [id])
+  teamMemberId String?
+}
+
+model ProjectMember {
+  id           String     @id @default(uuid())
+  Project      Project    @relation(fields: [projectId], references: [id])
+  projectId    String
+  TeamMember   TeamMember @relation(fields: [teamMemberId], references: [id])
+  teamMemberId String
+  name         String
+  email        String     @unique
+}
+
+model Project {
+  id             String          @id @default(uuid())
+  name           String
+  projectOwner   TeamMember      @relation(fields: [projectOwnerId], references: [id])
+  projectOwnerId String
+  client         String
+  bugdet         String
+  Tag            Tag[]
+  ProjectMember  ProjectMember[]
+  Task           Task[]
+}
+
 model Task {
-  id             Int      @id @default(autoincrement())
-  title          String   @unique
-  estimatedHours Float
-  assigneeId     Int
-  assigneeName   String
-  status         String   @default("To Do")
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  id          String      @id @default(uuid())
+  Project     Project     @relation(fields: [projectId], references: [id])
+  projectId   String
+  //mb also link up with team/teamemember
+  name        String
+  description String
+  status      Int //mb enum
+  Allocation  Allocation?
+}
+
+model Allocation {
+  id           String      @id @default(uuid())
+  TeamMember   TeamMember? @relation(fields: [teamMemberId], references: [id])
+  teamMemberId String?
+  Task         Task?       @relation(fields: [taskId], references: [id])
+  taskId       String?     @unique
+  startDate    DateTime
+  endDate      DateTime
+  workHours    Float
+}
+
+model Tag {
+  id           String      @id @default(uuid())
+  name         String      @unique
+  color        String
+  CreatedBy    TeamMember? @relation("createdBy", fields: [createdById], references: [id])
+  createdById  String?
+  type         Int //mb enum
+  Project      Project?    @relation(fields: [projectId], references: [id])
+  projectId    String?
+  TeamMember   TeamMember? @relation(fields: [teamMemberId], references: [id])
+  teamMemberId String?
 }
