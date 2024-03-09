@@ -7,6 +7,8 @@ export class AcitvityEntity implements Activity {
   @ApiProperty()
   teamMemberId: string;
   @ApiProperty()
+  teamId: string;
+  @ApiProperty()
   activity: string;
   @ApiProperty()
   timeStamp: Date;

@@ -28,15 +28,16 @@ model User {
 
 model Team {
   id          String        @id @default(uuid())
-  name        String
-  teamOwner   TeamMember    @relation("ownedBy", fields: [teamOwnerId], references: [id])
-  teamOwnerId String
+  name        String        @unique
+  teamOwner   TeamMember?   @relation("ownedBy", fields: [teamOwnerId], references: [id])
+  teamOwnerId String? //do this for seeding
   TeamMember  TeamMember[]
   Setting     Setting?
   TimeOffType TimeOffType[]
   Department  Department[]
   Role        Role[]
   Tags        Tag[]
+  Activity    Activity[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -74,7 +75,7 @@ model TimeOffType {
   id            String    @id @default(uuid())
   team          Team      @relation(fields: [teamId], references: [id])
   teamId        String
-  name          String
+  name          String //@unique
   color         String
   balance       String
   days          Float
@@ -93,21 +94,22 @@ model TeamMember {
   userId String
   name   String
 
-  type           String
-  hourlyRate     Float // ask again
-  access         String
-  email          String
-  Activity       Activity[]
-  TimeOff        TimeOff[]
-  Role           Role?            @relation(fields: [roleId], references: [id])
-  Department     Department?      @relation(fields: [departmentId], references: [id])
-  ProjectMember  ProjectMember[]
-  Allocation     Allocation[]
-  TagsCreated    Tag[]            @relation("createdBy")
-  OwnedTeam      Team[]           @relation("ownedBy")
-  OwnedProject   Project[]
-  roleId         String?
-  departmentId   String?
+  type          String
+  hourlyRate    Float // ask again
+  access        String
+  email         String
+  Activity      Activity[]
+  TimeOff       TimeOff[]
+  Role          Role?           @relation(fields: [roleId], references: [id])
+  Department    Department?     @relation(fields: [departmentId], references: [id])
+  roleId        String?
+  departmentId  String?
+  ProjectMember ProjectMember[]
+  Allocation    Allocation[]
+  TagsCreated   Tag[]           @relation("createdBy")
+  OwnedTeam     Team[]          @relation("ownedBy")
+  OwnedProject  Project[]
+
   TeamMemberTags TeamMemberTags[]
 
   createdAt DateTime @default(now())
@@ -120,6 +122,8 @@ model Activity {
   id           String     @id @default(uuid())
   TeamMember   TeamMember @relation(fields: [teamMemberId], references: [id])
   teamMemberId String
+  Team         Team       @relation(fields: [teamId], references: [id])
+  teamId       String
   activity     String
   timeStamp    DateTime
 
@@ -179,12 +183,11 @@ model Project {
 }
 
 model Task {
-  id          String       @id @default(uuid())
-  Project     Project      @relation(fields: [projectId], references: [id])
-  projectId   String
-  name        String
-  description String
-  Allocation  Allocation[]
+  id         String       @id @default(uuid())
+  Project    Project      @relation(fields: [projectId], references: [id])
+  projectId  String
+  name       String
+  Allocation Allocation[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -196,6 +199,7 @@ model Allocation {
   teamMemberId String
   Task         Task       @relation(fields: [taskId], references: [id])
   taskId       String
+  description  String
   startDate    DateTime
   endDate      DateTime
   workHours    Float
@@ -206,13 +210,14 @@ model Allocation {
 }
 
 model Tag {
-  id             String           @id @default(uuid())
-  name           String           @unique
-  color          String
-  CreatedBy      TeamMember       @relation("createdBy", fields: [createdById], references: [id])
-  createdById    String
-  Team           Team             @relation(fields: [teamId], references: [id])
-  teamId         String
+  id          String     @id @default(uuid())
+  Team        Team       @relation(fields: [teamId], references: [id])
+  teamId      String
+  name        String     @unique
+  color       String
+  CreatedBy   TeamMember @relation("createdBy", fields: [createdById], references: [id])
+  createdById String
+
   TeamMemberTags TeamMemberTags[]
   ProjectTags    ProjectTags[]
 
