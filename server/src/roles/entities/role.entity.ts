@@ -5,7 +5,11 @@ export class RoleEntity implements Role {
   @ApiProperty()
   id: string;
   @ApiProperty()
+  teamId: string;
+  @ApiProperty()
   name: string;
   @ApiProperty()
-  teamMemberId: string;
+  createdAt: Date;
+  @ApiProperty()
+  updatedAt: Date;
 }

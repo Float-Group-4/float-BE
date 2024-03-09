@@ -6,7 +6,13 @@ import { PrismaService } from 'src/prisma/prisma.service';
 @Injectable()
 export class RolesService {
   constructor(private readonly prisma: PrismaService) {}
-  create(createRoleDto: CreateRoleDto) {}
+  create(createRoleDto: CreateRoleDto) {
+    return this.prisma.role.create({
+      data: {
+        ...createRoleDto,
+      },
+    });
+  }
 
   findAll() {
     return this.prisma.role.findMany();

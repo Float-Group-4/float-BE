@@ -16,4 +16,8 @@ export class TimeOffTypeEntity implements TimeOffType {
   days: number;
   @ApiProperty()
   EffectiveDate: Date;
+  @ApiProperty()
+  createdAt: Date;
+  @ApiProperty()
+  updatedAt: Date;
 }

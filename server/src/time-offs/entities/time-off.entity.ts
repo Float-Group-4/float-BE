@@ -12,4 +12,8 @@ export class TimeOffEntity implements TimeOff {
   startDate: Date;
   @ApiProperty()
   endDate: Date;
+  @ApiProperty()
+  createdAt: Date;
+  @ApiProperty()
+  updatedAt: Date;
 }

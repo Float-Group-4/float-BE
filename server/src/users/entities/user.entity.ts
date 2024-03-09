@@ -14,4 +14,8 @@ export class UserEntity implements User {
   timeFormat: string;
   @ApiProperty()
   avatar: string;
+  @ApiProperty()
+  createdAt: Date;
+  @ApiProperty()
+  updatedAt: Date;
 }

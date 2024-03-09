@@ -9,5 +9,9 @@ export class DepartmentEntity implements Department {
   @ApiProperty()
   isSubDepart: boolean;
   @ApiProperty()
-  teamMemberId: string;
+  teamId: string;
+  @ApiProperty()
+  createdAt: Date;
+  @ApiProperty()
+  updatedAt: Date;
 }

@@ -6,5 +6,5 @@ export class CreateActivityDto {
   @ApiProperty()
   activity: string;
   @ApiProperty()
-  date: Date;
+  timeStamp: Date;
 }

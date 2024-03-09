@@ -9,5 +9,9 @@ export class AcitvityEntity implements Activity {
   @ApiProperty()
   activity: string;
   @ApiProperty()
-  date: Date;
+  timeStamp: Date;
+  @ApiProperty()
+  createdAt: Date;
+  @ApiProperty()
+  updatedAt: Date;
 }

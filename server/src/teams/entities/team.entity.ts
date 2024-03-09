@@ -8,4 +8,8 @@ export class TeamEntity implements Team {
   name: string;
   @ApiProperty()
   teamOwnerId: string;
+  @ApiProperty()
+  createdAt: Date;
+  @ApiProperty()
+  updatedAt: Date;
 }

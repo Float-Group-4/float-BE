@@ -21,6 +21,9 @@ model User {
   timeFormat String
   avatar     String?
   TeamMember TeamMember[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Team {
@@ -31,6 +34,12 @@ model Team {
   TeamMember  TeamMember[]
   Setting     Setting?
   TimeOffType TimeOffType[]
+  Department  Department[]
+  Role        Role[]
+  Tags        Tag[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Setting {
@@ -43,20 +52,22 @@ model Setting {
   timeFormat    String
   isShowWeekend Boolean
   workDay       String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model TimeOff {
   id           String      @id @default(uuid())
-  // Team      Team     @relation(fields: [teamId], references: [id])
-  // teamId    String
-  // User      User     @relation(fields: [userId], references: [id])
-  // userId    String
   TeamMember   TeamMember  @relation(fields: [teamMemberId], references: [id])
   teamMemberId String
   Type         TimeOffType @relation(fields: [typeId], references: [id])
   typeId       String
   startDate    DateTime
   endDate      DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model TimeOffType {
@@ -69,6 +80,9 @@ model TimeOffType {
   days          Float
   EffectiveDate DateTime
   TimeOff       TimeOff[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model TeamMember {
@@ -79,53 +93,63 @@ model TeamMember {
   userId String
   name   String
 
-  type          String
-  hourlyRate    Float // ask again
-  access        String
-  email         String
-  Activity      Activity[]
-  TimeOff       TimeOff[]
-  Role          Role[]
-  Department    Department[]
-  ProjectMember ProjectMember[]
-  Allocation    Allocation[]
-  TagCreated    Tag[]           @relation("createdBy")
-  Tag           Tag[]
-  OwnedTeam     Team[]          @relation("ownedBy")
-  OwnedProject  Project[]
+  type           String
+  hourlyRate     Float // ask again
+  access         String
+  email          String
+  Activity       Activity[]
+  TimeOff        TimeOff[]
+  Role           Role?            @relation(fields: [roleId], references: [id])
+  Department     Department?      @relation(fields: [departmentId], references: [id])
+  ProjectMember  ProjectMember[]
+  Allocation     Allocation[]
+  TagsCreated    Tag[]            @relation("createdBy")
+  OwnedTeam      Team[]           @relation("ownedBy")
+  OwnedProject   Project[]
+  roleId         String?
+  departmentId   String?
+  TeamMemberTags TeamMemberTags[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([teamId, userId])
 }
 
 model Activity {
-  id String @id @default(uuid())
-  //team
-
-  // User   TeamMember? @relation(fields: [userId], references: [userId])
-  // userId String?
-  // Team   TeamMember? @relation(fields: [teamId], references: [teamId])
-  // teamId String?
-
-  TeamMember   TeamMember? @relation(fields: [teamMemberId], references: [id])
-  teamMemberId String?
+  id           String     @id @default(uuid())
+  TeamMember   TeamMember @relation(fields: [teamMemberId], references: [id])
+  teamMemberId String
   activity     String
-  date         DateTime
+  timeStamp    DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Role {
   id   String @id @default(uuid())
   name String @unique
 
-  TeamMember   TeamMember? @relation(fields: [teamMemberId], references: [id])
-  teamMemberId String?
+  Team       Team         @relation(fields: [teamId], references: [id])
+  teamId     String
+  TeamMember TeamMember[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Department {
-  id           String      @id @default(uuid())
-  name         String      @unique
-  isSubDepart  Boolean
-  TeamMember   TeamMember? @relation(fields: [teamMemberId], references: [id])
-  teamMemberId String?
+  id          String  @id @default(uuid())
+  name        String  @unique
+  isSubDepart Boolean
+
+  Team       Team         @relation(fields: [teamId], references: [id])
+  teamId     String
+  TeamMember TeamMember[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model ProjectMember {
@@ -134,8 +158,9 @@ model ProjectMember {
   projectId    String
   TeamMember   TeamMember @relation(fields: [teamMemberId], references: [id])
   teamMemberId String
-  name         String
-  email        String     @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Project {
@@ -145,42 +170,70 @@ model Project {
   projectOwnerId String
   client         String
   bugdet         String
-  Tag            Tag[]
   ProjectMember  ProjectMember[]
   Task           Task[]
+  ProjectTags    ProjectTags[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Task {
-  id          String      @id @default(uuid())
-  Project     Project     @relation(fields: [projectId], references: [id])
+  id          String       @id @default(uuid())
+  Project     Project      @relation(fields: [projectId], references: [id])
   projectId   String
-  //mb also link up with team/teamemember
   name        String
   description String
-  status      Int //mb enum
-  Allocation  Allocation?
+  Allocation  Allocation[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Allocation {
-  id           String      @id @default(uuid())
-  TeamMember   TeamMember? @relation(fields: [teamMemberId], references: [id])
-  teamMemberId String?
-  Task         Task?       @relation(fields: [taskId], references: [id])
-  taskId       String?     @unique
+  id           String     @id @default(uuid())
+  TeamMember   TeamMember @relation(fields: [teamMemberId], references: [id])
+  teamMemberId String
+  Task         Task       @relation(fields: [taskId], references: [id])
+  taskId       String
   startDate    DateTime
   endDate      DateTime
   workHours    Float
+  status       Int //enum
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Tag {
-  id           String      @id @default(uuid())
-  name         String      @unique
-  color        String
-  CreatedBy    TeamMember? @relation("createdBy", fields: [createdById], references: [id])
-  createdById  String?
-  type         Int //mb enum
-  Project      Project?    @relation(fields: [projectId], references: [id])
-  projectId    String?
-  TeamMember   TeamMember? @relation(fields: [teamMemberId], references: [id])
-  teamMemberId String?
+  id             String           @id @default(uuid())
+  name           String           @unique
+  color          String
+  CreatedBy      TeamMember       @relation("createdBy", fields: [createdById], references: [id])
+  createdById    String
+  Team           Team             @relation(fields: [teamId], references: [id])
+  teamId         String
+  TeamMemberTags TeamMemberTags[]
+  ProjectTags    ProjectTags[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model TeamMemberTags {
+  TeamMember   TeamMember @relation(fields: [teamMemberId], references: [id])
+  teamMemberId String
+  Tag          Tag        @relation(fields: [tagId], references: [id])
+  tagId        String
+
+  @@id([teamMemberId, tagId])
+}
+
+model ProjectTags {
+  Project   Project @relation(fields: [projectId], references: [id])
+  projectId String
+  Tag       Tag     @relation(fields: [tagId], references: [id])
+  tagId     String
+
+  @@id([projectId, tagId])
 }

@@ -18,4 +18,8 @@ export class SettingEntity implements Setting {
   isShowWeekend: boolean;
   @ApiProperty()
   workDay: string;
+  @ApiProperty()
+  createdAt: Date;
+  @ApiProperty()
+  updatedAt: Date;
 }
