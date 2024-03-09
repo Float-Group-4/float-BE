@@ -14,13 +14,13 @@ datasource db {
 }
 
 model User {
-  id         String      @id @default(uuid())
+  id         String       @id @default(uuid())
   name       String
-  email      String      @unique
+  email      String       @unique
   password   String
   timeFormat String
   avatar     String?
-  TeamMember TeamMember?
+  TeamMember TeamMember[]
 }
 
 model Team {
@@ -76,7 +76,7 @@ model TeamMember {
   Team   Team   @relation(fields: [teamId], references: [id])
   teamId String
   User   User   @relation(fields: [userId], references: [id])
-  userId String @unique
+  userId String
   name   String
 
   type          String
