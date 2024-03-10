@@ -10,6 +10,7 @@ import { TimeOffTypesModule } from './time-off-types/time-off-types.module';
 import { ActivitiesModule } from './acitvities/activities.module';
 import { RolesModule } from './roles/roles.module';
 import { DepartmentsModule } from './departments/departments.module';
+import { TeamMembersModule } from './team-members/team-members.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { DepartmentsModule } from './departments/departments.module';
     ActivitiesModule,
     RolesModule,
     DepartmentsModule,
+    TeamMembersModule,
   ],
   controllers: [AppController],
   providers: [AppService],

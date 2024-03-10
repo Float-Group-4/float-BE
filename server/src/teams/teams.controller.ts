@@ -8,7 +8,7 @@ import {
   Delete,
 } from '@nestjs/common';
 import { TeamsService } from './teams.service';
-import { CreateTeamDto } from './dto/create-team.dto';
+import { CreateTeamDto, initTeamDto } from './dto/create-team.dto';
 import { UpdateTeamDto } from './dto/update-team.dto';
 import { ApiTags } from '@nestjs/swagger';
 
@@ -20,6 +20,12 @@ export class TeamsController {
   @Post()
   create(@Body() createTeamDto: CreateTeamDto) {
     return this.teamsService.create(createTeamDto);
+  }
+
+  @Post('init')
+  init(@Body() createTeamDto: initTeamDto) {
+    const { user, name } = createTeamDto;
+    return this.teamsService.initTeam(user, name);
   }
 
   @Get()
