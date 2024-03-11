@@ -1,46 +1,16 @@
 version: 2.1
-executors:
-  node:
-    docker:
-      - image: 'circleci/node:16'
-    shell: /bin/bash
-    resource_class: small
-jobs: 
-  test:
+orbs:
+  node: circleci/node@5.1.0
+jobs:
+  build-and-test:
     executor:
-      name: node
-    working_directory: ~/
+      name: node/default
     steps:
-      - checkout:
-          path: ~/  
-      - attach_workspace:
-          at: ~/
-      - run: npm run test
-      - run: npm run build
-  install:
-    executor:
-      name: node
-    working_directory: ~/server
-    steps:
-      - checkout:
-          path: ~/
-      - run: npm install
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - .
+      - checkout
+      - node/install-packages
+      - run:
+          command: npm run test
 workflows:
   build-and-test:
     jobs:
-      - install:
-          filters:
-            branches:
-              ignore:
-                - main 
-      - test:
-          requires:
-            - install
-          filters:
-            branches:
-              ignore:
-                - main 
+      - build-and-test
