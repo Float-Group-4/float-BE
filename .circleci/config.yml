@@ -4,10 +4,10 @@ orbs:
 jobs:
   build-and-test:
     executor:
-      name: node/default
+      name: node
     steps:
       - checkout: 
-          path: ~/server
+          path: /server
       - node/install-packages
       - run:
           command: npm run test
