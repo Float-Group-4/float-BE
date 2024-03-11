@@ -1,0 +1,26 @@
+version: 2.1
+orbs:
+  node: circleci/node@5.1.0
+jobs:
+  build-and-test:
+    executor:
+      name: node/default
+    environment:
+      DATABASE_URL: "postgres://float_db_mox0_user:plMxbilxqtaScIIDP53uK6XuIbXhhVmi@dpg-cnnin5ol5elc73829h7g-a/float_db_mox0"
+    steps:
+      - checkout
+      - node/install-packages:
+          cache-path: ~/project/node_modules
+          override-ci-command: npm install
+      - run:
+          name: Run Prisma migrations
+          command: npx prisma migrate deploy --preview-feature
+      - run:
+          name: Generate Prisma client
+          command: npx prisma generate
+      - run:
+          command: npm run test
+workflows:
+  build-and-test:
+    jobs:
+      - build-and-test
