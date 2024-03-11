@@ -6,7 +6,7 @@ jobs:
     executor:
       name: node/default
     environment:
-      DATABASE_URL: "postgres://float_db_mox0_user:plMxbilxqtaScIIDP53uK6XuIbXhhVmi@dpg-cnnin5ol5elc73829h7g-a/float_db_mox0"
+      DATABASE_URL: "postgres://float_db_mox0_user:plMxbilxqtaScIIDP53uK6XuIbXhhVmi@dpg-cnnin5ol5elc73829h7g-a.singapore-postgres.render.com/float_db_mox0"
     steps:
       - checkout
       - node/install-packages:
