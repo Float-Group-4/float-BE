@@ -3,7 +3,7 @@
 version: '3.8'
 services:
   # Docker connection string: awp_edu_db://postgres:postgres@localhost:5432/
-
+  #user service DB
   group4-db-postgres:
     image: postgres:latest
     restart: always
@@ -15,6 +15,75 @@ services:
       - group4-data-postgres:/var/lib/postgresql/data
     ports:
       - '5432:5432'
+  #Keycloak service
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    command: start-dev
+    restart: always
+    environment:
+      KC_DB: postgres
+      KC_DB_URL_HOST: postgres_keycloak
+      KC_DB_URL_DATABASE: ${DB_NAME}
+      KC_DB_PASSWORD: ${DB_PASSWORD}
+      KC_DB_USERNAME: ${DB_USERNAME}
+      KC_HOSTNAME: localhost
+      KC_DB_SCHEMA: public
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      PROXY_ADDRESS_FORWARDING: "true"
+    ports:
+      - "8890:8080"
+    depends_on:
+      postgres-keycloak:
+        condition: service_healthy
+    networks:
+      - keycloak_dev_network
+  #Keycloak DB 
+  postgres-keycloak:
+    image: postgres:latest
+    command: postgres -c "max_connections=200"
+    restart: always
+    volumes:
+      - pgdata_keycloak:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    healthcheck:
+      test: "exit 0"
+    ports:
+      - "5433:5432"
+    networks:
+      - keycloak_dev_network
+  # postgres:
+  #   image: postgres:latest
+  #   restart: unless-stopped
+  #   environment:
+  #     POSTGRES_DB: ${DB_NAME}
+  #     POSTGRES_USER: ${DB_USERNAME}
+  #     POSTGRES_PASSWORD: ${DB_PASSWORD}
+  #   networks:
+  #     - local-keycloak
+
+  # keycloak:
+  #   depends_on:
+  #     - postgres
+  #   container_name: local_keycloak
+  #   environment:
+  #     DB_VENDOR: postgres
+  #     DB_ADDR: postgres
+  #     DB_DATABASE: ${DB_NAME}
+  #     DB_USER: ${DB_USERNAME}
+  #     DB_PASSWORD: ${DB_PASSWORD}
+  #   image: jboss/keycloak:latest
+  #   ports:
+  #     - "28080:8080"
+  #   restart: unless-stopped
+  #   networks:
+  #     - local-keycloak
 
 volumes:
   group4-data-postgres:
+  pgdata_keycloak:
+networks:
+  keycloak_dev_network:
