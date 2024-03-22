@@ -1,35 +1,47 @@
-import { Controller } from '@nestjs/common';
-import { MessagePattern } from '@nestjs/microservices';
+import {
+  Controller,
+  Post,
+  Body,
+  Param,
+  Patch,
+  Delete,
+  Get,
+} from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { ActivitiesService } from './activities.service';
 import { CreateActivityDto } from './dto/create-activity.dto';
 import { UpdateActivityDto } from './dto/update-activity.dto';
 
-@Controller()
+@Controller('activities')
+@ApiTags('Activities')
 export class ActivitiesController {
   constructor(private readonly activitiesService: ActivitiesService) {}
 
-  @MessagePattern({ cmd: 'create_activity' })
-  create(createAcitvityDto: CreateActivityDto) {
+  @Post()
+  create(@Body() createAcitvityDto: CreateActivityDto) {
     return this.activitiesService.create(createAcitvityDto);
   }
 
-  @MessagePattern({ cmd: 'find_all_activities' })
+  @Get()
   findAll() {
     return this.activitiesService.findAll();
   }
 
-  @MessagePattern({ cmd: 'find_activity_by_id' })
-  findOne(id: string) {
+  @Get(':id')
+  findOne(@Param('id') id: string) {
     return this.activitiesService.findOne(id);
   }
 
-  @MessagePattern({ cmd: 'update_activity' })
-  update(id: string, updateAcitvityDto: UpdateActivityDto) {
+  @Patch(':id')
+  update(
+    @Param('id') id: string,
+    @Body() updateAcitvityDto: UpdateActivityDto,
+  ) {
     return this.activitiesService.update(id, updateAcitvityDto);
   }
 
-  @MessagePattern({ cmd: 'remove_activity' })
-  remove(id: string) {
+  @Delete(':id')
+  remove(@Param('id') id: string) {
     return this.activitiesService.remove(id);
   }
 }
