@@ -8,9 +8,7 @@ services:
     image: postgres:latest
     restart: always
     environment:
-      POSTGRES_USER: ${DB_USERNAME}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME}
+      DATABASE_URL="""
     volumes:
       - group4-data-postgres:/var/lib/postgresql/data
     ports:
