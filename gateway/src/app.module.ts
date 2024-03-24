@@ -8,7 +8,25 @@ import { ProjectMemberController } from './project-member/project-member.control
 import { ProjectMemberService } from './project-member/project-member.service';
 import { TaskController } from './task/task.controller';
 import { TaskService } from './task/task.service';
-
+import { UsersController } from './users/users.controller';
+import { TimeOffsController } from './time-offs/time-offs.controller';
+// import { TeamsService } from './teams/teams.service';
+import { TimeOffsService } from './time-offs/time-offs.service';
+import { UsersService } from './users/users.service';
+import { AllocationController } from './allocation/allocation.controller';
+import { AllocationService } from './allocation/allocation.service';
+import { DepartmentsService } from './departments/departments.service';
+import { DepartmentsController } from './departments/departments.controller';
+import { TimeOffTypesController } from './time-off-types/time-off-types.controller';
+import { TimeOffTypesService } from './time-off-types/time-off-types.service';
+import { TeamMembersController } from './team-members/team-members.controller';
+import { TeamMembersService } from './team-members/team-members.service';
+import { SettingsController } from './settings/settings.controller';
+import { SettingsService } from './settings/settings.service';
+import { ProjectController } from './project/project.controller';
+import { ProjectService } from './project/project.service';
+import { RolesService } from './roles/roles.service';
+import { RolesController } from './roles/roles.controller';
 @Module({
   imports: [
     ClientsModule.register([
@@ -43,7 +61,38 @@ import { TaskService } from './task/task.service';
     ActivitiesController,
     ProjectMemberController,
     TaskController,
+    UsersController,
+    AllocationController,
+    TimeOffsController,
+    ActivitiesController,
+    TaskController,
+    ProjectMemberController,
+    DepartmentsController,
+    TimeOffTypesController,
+    TeamMembersController,
+    SettingsController,
+    ProjectController,
+    RolesController,
+    // TeamsController,
   ],
-  providers: [AppService, ActivitiesService, ProjectMemberService, TaskService],
+  providers: [
+    AppService,
+    ActivitiesService,
+    ProjectMemberService,
+    TaskService,
+    UsersService,
+    DepartmentsService,
+    TimeOffsService,
+    ActivitiesService,
+    TaskService,
+    ProjectMemberService,
+    AllocationService,
+    TimeOffTypesService,
+    TeamMembersService,
+    SettingsService,
+    ProjectService,
+    RolesService,
+    // TeamsService,
+  ],
 })
 export class AppModule {}

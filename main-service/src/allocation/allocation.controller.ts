@@ -8,27 +8,27 @@ import { UpdateAllocationDto } from './dto/update-allocation.dto';
 export class AllocationController {
   constructor(private readonly allocationService: AllocationService) {}
 
-  @MessagePattern('create_allocation')
+  @MessagePattern({ cmd: 'create_allocation' })
   create(createAllocationDto: CreateAllocationDto) {
     return this.allocationService.create(createAllocationDto);
   }
 
-  @MessagePattern('find_all_allocations')
+  @MessagePattern({ cmd: 'find_all_allocations' })
   findAll() {
     return this.allocationService.findAll();
   }
 
-  @MessagePattern('find_allocation_by_id')
+  @MessagePattern({ cmd: 'find_allocation_by_id' })
   findOne(id: string) {
     return this.allocationService.findOne(id);
   }
 
-  @MessagePattern('update_allocation')
+  @MessagePattern({ cmd: 'update_allocation' })
   update(id: string, updateAllocationDto: UpdateAllocationDto) {
     return this.allocationService.update(id, updateAllocationDto);
   }
 
-  @MessagePattern('remove_allocation')
+  @MessagePattern({ cmd: 'remove_allocation' })
   remove(id: string) {
     return this.allocationService.remove(id);
   }

@@ -5,7 +5,7 @@ import { firstValueFrom } from 'rxjs';
 import { ApiTags } from '@nestjs/swagger';
 
 @Injectable()
-@ApiTags('task')
+@ApiTags('tasks')
 export class TaskService {
   constructor(
     @Inject('MAIN_SERVICE') private readonly mainServiceClient: ClientProxy,

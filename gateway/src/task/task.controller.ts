@@ -3,8 +3,8 @@ import { CreateTaskDto } from './dto/create-task.dto';
 import { TaskService } from './task.service';
 import { ApiTags } from '@nestjs/swagger';
 
-@Controller('task')
-@ApiTags('Task')
+@Controller('tasks')
+@ApiTags('Tasks')
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}
 

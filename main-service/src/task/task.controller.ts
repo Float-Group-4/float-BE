@@ -2,7 +2,7 @@ import { MessagePattern } from '@nestjs/microservices';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { TaskService } from './task.service';
 import { Controller } from '@nestjs/common';
-@Controller()
+@Controller('tasks')
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}
 

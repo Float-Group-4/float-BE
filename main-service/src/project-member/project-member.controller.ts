@@ -3,7 +3,7 @@ import { CreateProjectMemberDto } from './dto/create-project-member.dto';
 import { DeleteProjectMemberDto } from './dto/delete-project-member.dto';
 import { ProjectMemberService } from './project-member.service';
 import { Controller } from '@nestjs/common';
-@Controller()
+@Controller('project-member')
 export class ProjectMemberController {
   constructor(private readonly projectService: ProjectMemberService) {}
   //  Add member to project

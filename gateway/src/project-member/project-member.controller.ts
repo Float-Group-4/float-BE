@@ -4,8 +4,8 @@ import { ProjectMemberService } from './project-member.service';
 import { Controller, Post, Delete, Get, Body, Param } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
-@Controller('project-member')
-@ApiTags('Project Member')
+@Controller('project-members')
+@ApiTags('Project Members')
 export class ProjectMemberController {
   constructor(private readonly projectService: ProjectMemberService) {}
 
@@ -24,7 +24,7 @@ export class ProjectMemberController {
     return this.projectService.getMembersByProjectId(id);
   }
 
-  @Get('members')
+  @Get('')
   getAllMembers() {
     return this.projectService.getAllMembers();
   }
