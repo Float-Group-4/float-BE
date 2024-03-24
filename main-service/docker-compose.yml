@@ -36,6 +36,16 @@ services:
       - SERVER_PORT=3002
     networks:
       - demo-network
+  app3:
+    image: server_app
+    container_name: app_3
+    build: .
+    ports:
+      - "3003:3003"
+    environment:
+      - SERVER_PORT=3003
+    networks:
+      - demo-network
 
 
 networks:
