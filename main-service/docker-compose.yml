@@ -54,5 +54,39 @@ services:
       - POSTGRESQL_MASTER_PORT_NUMBER=5432
       - ALLOW_EMPTY_PASSWORD=yes
 
+  app1:
+    image: server_app
+    container_name: app_1
+    build: .
+    ports:
+      - '3001:3001'
+    environment:
+      - SERVER_PORT=3001
+    networks:
+      - demo-network
+  app2:
+    image: server_app
+    container_name: app_2
+    build: .
+    ports:
+      - '3002:3002'
+    environment:
+      - SERVER_PORT=3002
+    networks:
+      - demo-network
+  app3:
+    image: server_app
+    container_name: app_3
+    build: .
+    ports:
+      - '3003:3003'
+    environment:
+      - SERVER_PORT=3003
+    networks:
+      - demo-network
+
+networks:
+  demo-network:
+    external: true
 volumes:
   group4-data-postgres:

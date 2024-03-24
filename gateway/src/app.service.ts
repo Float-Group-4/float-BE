@@ -1,20 +1,16 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CreateUserRequest } from './create-user-request.dto';
 import { ClientProxy } from '@nestjs/microservices';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable()
 export class AppService {
   constructor(
     @Inject('MAIN_SERVICE') private readonly mainServiceClient: ClientProxy,
-    @Inject('VIEW_SERVICE') private readonly viewServiceClient: ClientProxy,
   ) {}
-  private readonly users = [];
 
   async getHello() {
-    return `Hello`;
-  }
-
-  createUser(user: CreateUserRequest) {
-    this.mainServiceClient.emit('createUser', user);
+    return await firstValueFrom(
+      this.mainServiceClient.send({ cmd: 'hello' }, {}),
+    );
   }
 }
