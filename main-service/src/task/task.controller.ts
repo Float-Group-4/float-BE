@@ -1,26 +1,27 @@
 import { MessagePattern } from '@nestjs/microservices';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { TaskService } from './task.service';
-
+import { Controller } from '@nestjs/common';
+@Controller()
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}
 
-  @MessagePattern('create_task')
+  @MessagePattern({ cmd: 'create_task' })
   create(createTaskDto: CreateTaskDto) {
     return this.taskService.create(createTaskDto);
   }
 
-  @MessagePattern('get_all_tasks')
-  getAllTasksByProjectId(projectId: string) {
-    return this.taskService.getAllTasksByProjectId(projectId);
+  @MessagePattern({ cmd: 'get_all_tasks' })
+  getAllTasksByProjectId(id: string) {
+    return this.taskService.getAllTasksByProjectId(id);
   }
 
-  @MessagePattern('get_task_by_id')
+  @MessagePattern({ cmd: 'get_task_by_id' })
   getTaskById(id: string) {
     return this.taskService.getTaskById(id);
   }
 
-  @MessagePattern('update_task')
+  @MessagePattern({ cmd: 'delete_task_by_id' })
   deleteTaskById(id: string) {
     return this.taskService.deleteTaskById(id);
   }

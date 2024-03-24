@@ -4,6 +4,10 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ActivitiesController } from './acitvities/activities.controller';
 import { ActivitiesService } from './acitvities/activities.service';
+import { ProjectMemberController } from './project-member/project-member.controller';
+import { ProjectMemberService } from './project-member/project-member.service';
+import { TaskController } from './task/task.controller';
+import { TaskService } from './task/task.service';
 
 @Module({
   imports: [
@@ -34,7 +38,12 @@ import { ActivitiesService } from './acitvities/activities.service';
       },
     ]),
   ],
-  controllers: [AppController, ActivitiesController],
-  providers: [AppService, ActivitiesService],
+  controllers: [
+    AppController,
+    ActivitiesController,
+    ProjectMemberController,
+    TaskController,
+  ],
+  providers: [AppService, ActivitiesService, ProjectMemberService, TaskService],
 })
 export class AppModule {}

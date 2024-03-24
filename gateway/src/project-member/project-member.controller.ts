@@ -1,31 +1,30 @@
-import { MessagePattern } from '@nestjs/microservices';
 import { CreateProjectMemberDto } from './dto/create-project-member.dto';
 import { DeleteProjectMemberDto } from './dto/delete-project-member.dto';
 import { ProjectMemberService } from './project-member.service';
-import { Controller } from '@nestjs/common';
-@Controller()
+import { Controller, Post, Delete, Get, Body, Param } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
+
+@Controller('project-member')
+@ApiTags('Project Member')
 export class ProjectMemberController {
   constructor(private readonly projectService: ProjectMemberService) {}
-  //  Add member to project
-  @MessagePattern({ cmd: 'add_member' })
-  addMember(createProjectMemberDto: CreateProjectMemberDto) {
+
+  @Post()
+  addMember(@Body() createProjectMemberDto: CreateProjectMemberDto) {
     return this.projectService.addMember(createProjectMemberDto);
   }
 
-  //   Delete member from project
-  @MessagePattern({ cmd: 'delete_member' })
-  deleteMember(deleteProjectMemberDto: DeleteProjectMemberDto) {
+  @Delete(':teamMemberId')
+  deleteMember(@Body() deleteProjectMemberDto: DeleteProjectMemberDto) {
     return this.projectService.deleteMember(deleteProjectMemberDto);
   }
 
-  //   Get all members of a project
-  @MessagePattern({ cmd: 'get_members_by_project_id' })
-  getMembersByProjectId(id: string) {
+  @Get(':id/members')
+  getMembersByProjectId(@Param('id') id: string) {
     return this.projectService.getMembersByProjectId(id);
   }
 
-  //   Get all members
-  @MessagePattern({ cmd: 'get_all_members' })
+  @Get('members')
   getAllMembers() {
     return this.projectService.getAllMembers();
   }
