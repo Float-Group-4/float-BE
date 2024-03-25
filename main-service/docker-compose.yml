@@ -16,5 +16,44 @@ services:
     ports:
       - '5432:5432'
 
+  app1:
+    image: server_app
+    container_name: app_1
+    build: .
+    # ports:
+    #   - '3001:3000'
+    env_file:
+      - .env
+
+  app2:
+    image: server_app
+    container_name: app_2
+    build: .
+    # ports:
+    #   - '3002:3000'
+    env_file:
+      - .env
+
+  app3:
+    image: server_app
+    container_name: app_3
+    build: .
+    # ports:
+    #   - '3003:3000'
+    env_file:
+      - .env
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx_load_balancer
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+    ports:
+      - '3000:80'
+    depends_on:
+      - app1
+      - app2
+      - app3
+
 volumes:
   group4-data-postgres:

@@ -1,19 +1,13 @@
-import { HttpAdapterHost, NestFactory } from '@nestjs/core';
-import { TcpOptions, Transport } from '@nestjs/microservices';
-import { AllExceptionsFilter } from './all-exception.filter';
-import { AppModule } from './app.module';
+// simple express app send hello world
 
-async function bootstrap() {
-  const app = await NestFactory.createMicroservice(AppModule, {
-    transport: Transport.TCP,
-    options: {
-      host: 'localhost',
-      port: 4001,
-    },
-  } as TcpOptions);
-  const { httpAdapter } = app.get(HttpAdapterHost);
-  app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
+const express = require("express");
 
-  await app.listen();
-}
-bootstrap();
+const app = express();
+
+app.get('/', (req, res) => {
+  res.send('Hello World');
+});
+
+app.listen(3000,  '0.0.0.0', () => {
+  console.log('Server is running on http://localhost:3000');
+});
