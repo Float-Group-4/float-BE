@@ -4,31 +4,31 @@ import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { ProjectService } from './project.service';
 
-@Controller()
+@Controller('projects')
 export class ProjectController {
   constructor(private readonly projectService: ProjectService) {}
 
-  @MessagePattern('create_project')
+  @MessagePattern({ cmd: 'create_project' })
   create(createProjectDto: CreateProjectDto) {
     return this.projectService.create(createProjectDto);
   }
 
-  @MessagePattern('find_all_projects')
+  @MessagePattern({ cmd: 'find_all_projects' })
   findAll() {
     return this.projectService.findAll();
   }
 
-  @MessagePattern('find_project_by_id')
+  @MessagePattern({ cmd: 'find_project_by_id' })
   findOne(id: string) {
     return this.projectService.findOne(id);
   }
 
-  @MessagePattern('update_project')
+  @MessagePattern({ cmd: 'update_project' })
   update(id: string, updateProjectDto: UpdateProjectDto) {
     return this.projectService.update(id, updateProjectDto);
   }
 
-  @MessagePattern('remove_project')
+  @MessagePattern({ cmd: 'remove_project' })
   remove(id: string) {
     return this.projectService.remove(id);
   }

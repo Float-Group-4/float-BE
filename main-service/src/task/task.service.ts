@@ -52,9 +52,9 @@ export class TaskService {
     });
   }
 
-  getAllTasksByProjectId(projectId: string) {
+  getAllTasksByProjectId(id: string) {
     return this.prisma.task.findMany({
-      where: { projectId },
+      where: { id: id },
     });
   }
 }
