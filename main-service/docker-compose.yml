@@ -8,7 +8,7 @@ services:
     image: postgres:latest
     restart: always
     environment:
-      DATABASE_URL="""
+      - DATABASE_URL= "postgresql://postgres:handsomekhang@localhost:5432/postgres"
     volumes:
       - group4-data-postgres:/var/lib/postgresql/data
     ports:
@@ -21,7 +21,7 @@ services:
     ports:
       - "3001:3001"
     environment:
-      - SERVER_PORT=3001
+      - SERVER_PORT= "3001"
     networks:
       - demo-network
   app2:
@@ -31,7 +31,7 @@ services:
     ports:
       - "3002:3002"
     environment:
-      - SERVER_PORT=3002
+      - SERVER_PORT= "3002"
     networks:
       - demo-network
   app3:
@@ -41,7 +41,7 @@ services:
     ports:
       - "3003:3003"
     environment:
-      - SERVER_PORT=3003
+      - SERVER_PORT= "3003"
     networks:
       - demo-network
 
