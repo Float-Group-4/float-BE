@@ -17,7 +17,11 @@ export class ActivitiesService {
   }
 
   findAll() {
-    return this.prisma.activity.findMany();
+    console.log('findAll');
+    // console.log(this.prisma);
+    // console.log(this.prisma.$primary());
+    // console.log(this.prisma.$replica());
+    return this.prisma.$primary().activity.findMany();
   }
 
   findOne(id: string) {

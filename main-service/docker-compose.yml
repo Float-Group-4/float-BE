@@ -5,23 +5,59 @@ services:
   # Docker connection string: awp_edu_db://postgres:postgres@localhost:5432/
 
   group4-db-postgres:
-    image: postgres:latest
+    image: bitnami/postgresql
     restart: always
-    environment:
-      POSTGRES_USER: ${DB_USERNAME}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME}
-    volumes:
-      - group4-data-postgres:/var/lib/postgresql/data
     ports:
       - '5432:5432'
+    volumes:
+      - group4-data-postgres:/var/lib/postgresql/data
+    environment:
+      - POSTGRESQL_REPLICATION_MODE=master
+      - POSTGRESQL_REPLICATION_USER=repl_user
+      - POSTGRESQL_REPLICATION_PASSWORD=repl_password
+      - POSTGRESQL_USERNAME=${DB_USERNAME}
+      - POSTGRESQL_PASSWORD=${DB_PASSWORD}
+      - POSTGRESQL_DATABASE=${DB_NAME}
+      - ALLOW_EMPTY_PASSWORD=yes
+
+  group4-db-postgres-slave-1:
+    image: bitnami/postgresql
+    restart: always
+    ports:
+      - '5433:5432' # Use a different port for the slave instance
+    depends_on:
+      - group4-db-postgres
+    environment:
+      - POSTGRESQL_PASSWORD=${DB_PASSWORD}
+      - POSTGRESQL_MASTER_HOST=group4-db-postgres
+      - POSTGRESQL_REPLICATION_MODE=slave
+      - POSTGRESQL_REPLICATION_USER=repl_user
+      - POSTGRESQL_REPLICATION_PASSWORD=repl_password
+      - POSTGRESQL_MASTER_PORT_NUMBER=5432
+      - ALLOW_EMPTY_PASSWORD=yes
+
+  group4-db-postgres-slave-2:
+    image: bitnami/postgresql
+    restart: always
+    ports:
+      - '5434:5432' # Use a different port for the slave instance
+    depends_on:
+      - group4-db-postgres
+    environment:
+      - POSTGRESQL_PASSWORD=${DB_PASSWORD}
+      - POSTGRESQL_MASTER_HOST=group4-db-postgres
+      - POSTGRESQL_REPLICATION_MODE=slave
+      - POSTGRESQL_REPLICATION_USER=repl_user
+      - POSTGRESQL_REPLICATION_PASSWORD=repl_password
+      - POSTGRESQL_MASTER_PORT_NUMBER=5432
+      - ALLOW_EMPTY_PASSWORD=yes
 
   app1:
     image: server_app
     container_name: app_1
     build: .
-    # ports:
-    #   - '3001:3000'
+    ports:
+      - '3001:3000'
     env_file:
       - .env
 
@@ -29,8 +65,8 @@ services:
     image: server_app
     container_name: app_2
     build: .
-    # ports:
-    #   - '3002:3000'
+    ports:
+      - '3002:3000'
     env_file:
       - .env
 
@@ -38,8 +74,8 @@ services:
     image: server_app
     container_name: app_3
     build: .
-    # ports:
-    #   - '3003:3000'
+    ports:
+      - '3003:3000'
     env_file:
       - .env
 
@@ -57,3 +93,4 @@ services:
 
 volumes:
   group4-data-postgres:
+    driver: local
