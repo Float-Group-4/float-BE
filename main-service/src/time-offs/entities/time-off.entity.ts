@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { TimeOff } from '@prisma/client';
+import type { TimeOff } from '@prisma/client';
 
 export class TimeOffEntity implements TimeOff {
   @ApiProperty()
