@@ -10,7 +10,7 @@ import { TaskController } from './task/task.controller';
 import { TaskService } from './task/task.service';
 import { UsersController } from './users/users.controller';
 import { TimeOffsController } from './time-offs/time-offs.controller';
-// import { TeamsService } from './teams/teams.service';
+import { TeamsService } from './teams/teams.service';
 import { TimeOffsService } from './time-offs/time-offs.service';
 import { UsersService } from './users/users.service';
 import { AllocationController } from './allocation/allocation.controller';
@@ -27,6 +27,7 @@ import { ProjectController } from './project/project.controller';
 import { ProjectService } from './project/project.service';
 import { RolesService } from './roles/roles.service';
 import { RolesController } from './roles/roles.controller';
+import { TeamsController } from './teams/teams.controller';
 @Module({
   imports: [
     ClientsModule.register([
@@ -73,7 +74,7 @@ import { RolesController } from './roles/roles.controller';
     SettingsController,
     ProjectController,
     RolesController,
-    // TeamsController,
+    TeamsController,
   ],
   providers: [
     AppService,
@@ -92,7 +93,7 @@ import { RolesController } from './roles/roles.controller';
     SettingsService,
     ProjectService,
     RolesService,
-    // TeamsService,
+    TeamsService,
   ],
 })
 export class AppModule {}
