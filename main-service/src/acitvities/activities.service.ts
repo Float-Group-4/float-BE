@@ -3,6 +3,8 @@ import { CreateActivityDto } from './dto/create-activity.dto';
 import { UpdateActivityDto } from './dto/update-activity.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaClient } from '@prisma/client';
+import { readReplicas } from '@prisma/extension-read-replicas';
 
 @Injectable()
 @ApiTags('Activities')
@@ -21,11 +23,20 @@ export class ActivitiesService {
     // console.log(this.prisma);
     // console.log(this.prisma.$primary());
     // console.log(this.prisma.$replica());
-    return this.prisma.$primary().activity.findMany();
+    return this.prisma.activity.findMany();
+    // return this.prisma.$replica().activity.findMany();
+    // return this.prisma.activity.findMany();
   }
 
   findOne(id: string) {
-    return this.prisma.activity.findUnique({
+    const prisma = new PrismaClient().$extends(
+      readReplicas({
+        url: [process.env.DATABASE_READ_URL_1],
+      }),
+    );
+
+    return prisma.$primary().activity.findUnique({
+      // return this.prisma.activity.findUnique({
       where: {
         id,
       },
