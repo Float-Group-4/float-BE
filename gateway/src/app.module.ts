@@ -4,9 +4,37 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ActivitiesController } from './acitvities/activities.controller';
 import { ActivitiesService } from './acitvities/activities.service';
-
+import { ProjectMemberController } from './project-member/project-member.controller';
+import { ProjectMemberService } from './project-member/project-member.service';
+import { TaskController } from './task/task.controller';
+import { TaskService } from './task/task.service';
+import { UsersController } from './users/users.controller';
+import { TimeOffsController } from './time-offs/time-offs.controller';
+import { TeamsService } from './teams/teams.service';
+import { TimeOffsService } from './time-offs/time-offs.service';
+import { UsersService } from './users/users.service';
+import { AllocationController } from './allocation/allocation.controller';
+import { AllocationService } from './allocation/allocation.service';
+import { DepartmentsService } from './departments/departments.service';
+import { DepartmentsController } from './departments/departments.controller';
+import { TimeOffTypesController } from './time-off-types/time-off-types.controller';
+import { TimeOffTypesService } from './time-off-types/time-off-types.service';
+import { TeamMembersController } from './team-members/team-members.controller';
+import { TeamMembersService } from './team-members/team-members.service';
+import { SettingsController } from './settings/settings.controller';
+import { SettingsService } from './settings/settings.service';
+import { ProjectController } from './project/project.controller';
+import { ProjectService } from './project/project.service';
+import { RolesService } from './roles/roles.service';
+import { RolesController } from './roles/roles.controller';
+import { TeamsController } from './teams/teams.controller';
+import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 @Module({
   imports: [
+    CacheModule.register({
+      isGlobal: true,
+    }),
     ClientsModule.register([
       {
         name: 'MAIN_SERVICE',
@@ -34,7 +62,47 @@ import { ActivitiesService } from './acitvities/activities.service';
       },
     ]),
   ],
-  controllers: [AppController, ActivitiesController],
-  providers: [AppService, ActivitiesService],
+  controllers: [
+    AppController,
+    ActivitiesController,
+    ProjectMemberController,
+    TaskController,
+    UsersController,
+    AllocationController,
+    TimeOffsController,
+    ActivitiesController,
+    TaskController,
+    ProjectMemberController,
+    DepartmentsController,
+    TimeOffTypesController,
+    TeamMembersController,
+    SettingsController,
+    ProjectController,
+    RolesController,
+    TeamsController,
+  ],
+  providers: [
+    AppService,
+    ActivitiesService,
+    ProjectMemberService,
+    TaskService,
+    UsersService,
+    DepartmentsService,
+    TimeOffsService,
+    ActivitiesService,
+    TaskService,
+    ProjectMemberService,
+    AllocationService,
+    TimeOffTypesService,
+    TeamMembersService,
+    SettingsService,
+    ProjectService,
+    RolesService,
+    TeamsService,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: CacheInterceptor,
+    },
+  ],
 })
 export class AppModule {}
