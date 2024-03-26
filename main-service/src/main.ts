@@ -8,7 +8,7 @@ async function bootstrap() {
     transport: Transport.TCP,
     options: {
       host: 'localhost',
-      port: 4001,
+      port: 4001, //change to 3000 for nginx/docker
     },
   } as TcpOptions);
   const { httpAdapter } = app.get(HttpAdapterHost);
