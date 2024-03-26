@@ -7,10 +7,12 @@ import {
   Patch,
   Delete,
   Get,
+  UseInterceptors,
 } from '@nestjs/common';
 import { SettingsService } from './settings.service';
 import { CreateSettingDto } from './dto/create-setting.dto';
 import { UpdateSettingDto } from './dto/update-setting.dto';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @Controller('settings')
 @ApiTags('Settings')
@@ -23,11 +25,13 @@ export class SettingsController {
   }
 
   @Get()
+  @UseInterceptors(CacheInterceptor)
   findAll() {
     return this.settingsService.findAll();
   }
 
   @Get(':id')
+  @UseInterceptors(CacheInterceptor)
   findOne(@Param('id') id: string) {
     return this.settingsService.findOne(id);
   }

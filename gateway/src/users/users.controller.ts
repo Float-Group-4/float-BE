@@ -7,10 +7,12 @@ import {
   Patch,
   Delete,
   Get,
+  UseInterceptors,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @Controller('users')
 @ApiTags('Users')
@@ -23,11 +25,13 @@ export class UsersController {
   }
 
   @Get()
+  @UseInterceptors(CacheInterceptor)
   findAll() {
     return this.usersService.findAll();
   }
 
   @Get(':id')
+  @UseInterceptors(CacheInterceptor)
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(id);
   }

@@ -28,8 +28,11 @@ import { ProjectService } from './project/project.service';
 import { RolesService } from './roles/roles.service';
 import { RolesController } from './roles/roles.controller';
 import { TeamsController } from './teams/teams.controller';
+import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 @Module({
   imports: [
+    CacheModule.register({ ttl: 30, max: 100 }),
     ClientsModule.register([
       {
         name: 'MAIN_SERVICE',
@@ -94,6 +97,10 @@ import { TeamsController } from './teams/teams.controller';
     ProjectService,
     RolesService,
     TeamsService,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: CacheInterceptor,
+    },
   ],
 })
 export class AppModule {}

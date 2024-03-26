@@ -7,10 +7,12 @@ import {
   Patch,
   Delete,
   Get,
+  UseInterceptors,
 } from '@nestjs/common';
 import { RolesService } from './roles.service';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @Controller('roles')
 @ApiTags('Roles')
@@ -23,11 +25,13 @@ export class RolesController {
   }
 
   @Get()
+  @UseInterceptors(CacheInterceptor)
   findAll() {
     return this.rolesService.findAll();
   }
 
   @Get(':id')
+  @UseInterceptors(CacheInterceptor)
   findOne(@Param('id') id: string) {
     return this.rolesService.findOne(id);
   }

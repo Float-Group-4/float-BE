@@ -1,7 +1,16 @@
+import { CacheInterceptor } from '@nestjs/cache-manager';
 import { CreateProjectMemberDto } from './dto/create-project-member.dto';
 import { DeleteProjectMemberDto } from './dto/delete-project-member.dto';
 import { ProjectMemberService } from './project-member.service';
-import { Controller, Post, Delete, Get, Body, Param } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Delete,
+  Get,
+  Body,
+  Param,
+  UseInterceptors,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
 @Controller('project-members')
@@ -20,11 +29,13 @@ export class ProjectMemberController {
   }
 
   @Get(':id/members')
+  @UseInterceptors(CacheInterceptor)
   getMembersByProjectId(@Param('id') id: string) {
     return this.projectService.getMembersByProjectId(id);
   }
 
   @Get('')
+  @UseInterceptors(CacheInterceptor)
   getAllMembers() {
     return this.projectService.getAllMembers();
   }
