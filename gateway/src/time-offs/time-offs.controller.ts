@@ -7,10 +7,12 @@ import {
   Patch,
   Delete,
   Get,
+  UseInterceptors,
 } from '@nestjs/common';
 import { TimeOffsService } from './time-offs.service';
 import { CreateTimeOffDto } from './dto/create-time-off.dto';
 import { UpdateTimeOffDto } from './dto/update-time-off.dto';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @Controller('time-offs')
 @ApiTags('Time Offs')
@@ -23,11 +25,13 @@ export class TimeOffsController {
   }
 
   @Get()
+  @UseInterceptors(CacheInterceptor)
   findAll() {
     return this.timeOffsService.findAll();
   }
 
   @Get(':id')
+  @UseInterceptors(CacheInterceptor)
   findOne(@Param('id') id: string) {
     return this.timeOffsService.findOne(id);
   }

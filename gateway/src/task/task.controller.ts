@@ -1,7 +1,16 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  UseInterceptors,
+} from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { TaskService } from './task.service';
 import { ApiTags } from '@nestjs/swagger';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @Controller('tasks')
 @ApiTags('Tasks')
@@ -14,11 +23,13 @@ export class TaskController {
   }
 
   @Get(':projectId/tasks')
+  @UseInterceptors(CacheInterceptor)
   getAllTasksByProjectId(@Param('id') id: string) {
     return this.taskService.getAllTasksByProjectId(id);
   }
 
   @Get(':id')
+  @UseInterceptors(CacheInterceptor)
   getTaskById(@Param('id') id: string) {
     return this.taskService.getTaskById(id);
   }

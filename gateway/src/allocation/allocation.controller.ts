@@ -7,10 +7,12 @@ import {
   Patch,
   Delete,
   Get,
+  UseInterceptors,
 } from '@nestjs/common';
 import { AllocationService } from './allocation.service';
 import { CreateAllocationDto } from './dto/create-allocation.dto';
 import { UpdateAllocationDto } from './dto/update-allocation.dto';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @Controller('allocation')
 @ApiTags('Allocation')
@@ -22,10 +24,12 @@ export class AllocationController {
     return this.allocationService.create(createAllocationDto);
   }
   @Get()
+  @UseInterceptors(CacheInterceptor)
   findAll() {
     return this.allocationService.findAll();
   }
   @Get(':id')
+  @UseInterceptors(CacheInterceptor)
   findOne(@Param() id: string) {
     return this.allocationService.findOne(id);
   }

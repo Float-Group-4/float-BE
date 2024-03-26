@@ -4,6 +4,8 @@ import { UpdateTeamMemberDto } from './dto/update-team-member.dto';
 import { ClientProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 import { ApiTags } from '@nestjs/swagger';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Cache } from 'cache-manager';
 
 type PeopleFilter = {
   ids: string[];
@@ -43,6 +45,7 @@ export type TeamMemberFilter = {
 export class TeamMembersService {
   constructor(
     @Inject('MAIN_SERVICE') private readonly mainServiceClient: ClientProxy,
+    @Inject(CACHE_MANAGER) private cacheService: Cache,
   ) {}
 
   create(createTeamMemberDto: CreateTeamMemberDto) {
@@ -54,25 +57,53 @@ export class TeamMembersService {
     );
   }
 
-  findAll() {
-    return firstValueFrom(
+  async findAll() {
+    const cachedData = await this.cacheService.get('find_all_team_members');
+    if (cachedData) {
+      console.log(`Getting data from cache!`);
+      return cachedData;
+    }
+    const data = firstValueFrom(
       this.mainServiceClient.send({ cmd: 'find_all_team_members' }, {}),
     );
+    await this.cacheService.set('find_all_team_members', data);
+    return data;
   }
 
-  findAllWithFilters(teamId: string, filter: TeamMemberFilter) {
-    return firstValueFrom(
+  async findAllWithFilters(teamId: string, filter: TeamMemberFilter) {
+    const cachedData = await this.cacheService.get(
+      `find_team_members_by_team_id_and_filter_${teamId}_${JSON.stringify(filter)}`,
+    );
+    if (cachedData) {
+      console.log(`Getting data from cache!`);
+      return cachedData;
+    }
+    const data = firstValueFrom(
       this.mainServiceClient.send(
         { cmd: 'find_team_members_by_team_id_and_filter' },
         { teamId, filter },
       ),
     );
+    await this.cacheService.set(
+      `find_team_members_by_team_id_and_filter_${teamId}_${JSON.stringify(filter)}`,
+      data,
+    );
+    return data;
   }
 
-  findOne(id: string) {
-    return firstValueFrom(
+  async findOne(id: string) {
+    const cachedData = await this.cacheService.get(
+      `find_team_member_by_id_${id}`,
+    );
+    if (cachedData) {
+      console.log(`Getting data from cache!`);
+      return cachedData;
+    }
+    const data = firstValueFrom(
       this.mainServiceClient.send({ cmd: 'find_team_member_by_id' }, id),
     );
+    await this.cacheService.set(`find_team_member_by_id_${id}`, data);
+    return data;
   }
 
   update(id: string, updateTeamMemberDto: UpdateTeamMemberDto) {

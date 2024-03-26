@@ -18,6 +18,7 @@ export class UsersService {
     return this.prisma.user.findMany();
   }
   findOne(id: string) {
+    console.log(id);
     return this.prisma.user.findUnique({
       where: {
         id,

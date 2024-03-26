@@ -6,11 +6,13 @@ import {
   Param,
   Patch,
   Post,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CreateTeamDto, initTeamDto } from './dto/create-team.dto';
 import { UpdateTeamDto } from './dto/update-team.dto';
 import { TeamsService } from './teams.service';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @Controller('team')
 @ApiTags('Teams')
@@ -28,11 +30,13 @@ export class TeamsController {
   }
 
   @Get('')
+  @UseInterceptors(CacheInterceptor)
   findAll() {
     return this.teamsService.findAll();
   }
 
   @Get(':id')
+  @UseInterceptors(CacheInterceptor)
   findOne(@Param('id') id: string) {
     return this.teamsService.findOne(id);
   }
