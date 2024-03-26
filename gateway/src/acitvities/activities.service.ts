@@ -43,7 +43,7 @@ export class ActivitiesService {
       return cachedData;
     }
     const data = await firstValueFrom(
-      this.mainServiceClient.send({ cmd: 'find_activity_by_id' }, { id }),
+      this.mainServiceClient.send({ cmd: 'find_activity_by_id' }, id),
     );
     await this.cacheService.set(`find_activity_by_id_${id}`, data);
     return data;
