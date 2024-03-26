@@ -32,7 +32,9 @@ import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 @Module({
   imports: [
-    CacheModule.register(),
+    CacheModule.register({
+      isGlobal: true,
+    }),
     ClientsModule.register([
       {
         name: 'MAIN_SERVICE',
