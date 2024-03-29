@@ -4,14 +4,15 @@ import { UpdateProjectDto } from './dto/update-project.dto';
 import { ClientProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 import { ApiTags } from '@nestjs/swagger';
+import { MailerService } from 'src/mail/mail.service';
 
 @Injectable()
 @ApiTags('Project')
 export class ProjectService {
   constructor(
-    @Inject('MAIN_SERVICE') private readonly mainServiceClient: ClientProxy,
+    @Inject('MAIN_SERVICE') private readonly mainServiceClient: ClientProxy, 
+    private readonly mailerService: MailerService
   ) {}
-
   async create(createProjectDto: CreateProjectDto) {
     return firstValueFrom(
       this.mainServiceClient.send({ cmd: 'create_project' }, createProjectDto),
@@ -19,6 +20,7 @@ export class ProjectService {
   }
 
   async findAll() {
+    this.mailerService.sendUserConfirmation("nkhang1902@gmail.com", "Nhat Khang", "Token")
     return firstValueFrom(
       this.mainServiceClient.send({ cmd: 'find_all_projects' }, {}),
     );
