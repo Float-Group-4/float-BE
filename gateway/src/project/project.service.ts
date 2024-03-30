@@ -20,7 +20,14 @@ export class ProjectService {
   }
 
   async findAll() {
-    this.mailerService.sendUserConfirmation("nkhang1902@gmail.com", "Nhat Khang", "Token")
+    this.mailerService.sendUserConfirmation
+    ({
+      toEmail: 'nkhang1902@gmail.com',
+      sender: '"Support Team"',
+      name: 'Nhat Khang',
+      subject:'Welcome to Float! Confirm your Email',
+      token: 'Token',
+    })
     return firstValueFrom(
       this.mainServiceClient.send({ cmd: 'find_all_projects' }, {}),
     );
