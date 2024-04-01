@@ -119,6 +119,7 @@ async function main() {
       projectOwnerId: teamMember.id,
       client: 'Float',
       bugdet: '10000',
+      teamId: team.id,
     },
   });
   const projectMember = await prisma.projectMember.create({

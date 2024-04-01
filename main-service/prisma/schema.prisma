@@ -41,8 +41,9 @@ model Team {
   deleted     Boolean       @default(false)
   Activity    Activity[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Project   Project[]
 }
 
 model Setting {
@@ -183,6 +184,9 @@ model Project {
   ProjectTags    ProjectTags[]
   archived       Boolean         @default(false)
   deleted        Boolean         @default(false)
+
+  Team   Team   @relation(fields: [teamId], references: [id])
+  teamId String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

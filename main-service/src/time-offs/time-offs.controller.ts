@@ -18,6 +18,11 @@ export class TimeOffsController {
     return this.timeOffsService.findAll();
   }
 
+  @MessagePattern({ cmd: 'find_time_offs_by_team_id' })
+  findAllTimeOffByTeamId(teamId: string) {
+    return this.timeOffsService.findAllTimeOffByTeamId(teamId);
+  }
+
   @MessagePattern({ cmd: 'find_time_off_by_id' })
   findOne(id: string) {
     return this.timeOffsService.findOne(id);

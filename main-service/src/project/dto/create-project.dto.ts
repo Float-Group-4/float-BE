@@ -19,6 +19,10 @@ export class CreateProjectDto {
   budget: string;
 
   @ApiProperty()
+  @IsString()
+  teamId: string;
+
+  @ApiProperty()
   @IsDate()
   createdAt: Date;
 }

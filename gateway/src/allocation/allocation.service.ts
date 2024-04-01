@@ -27,9 +27,18 @@ export class AllocationService {
     );
   }
 
+  findAllByTeamId(teamId: string) {
+    return firstValueFrom(
+      this.mainServiceClient.send(
+        { cmd: 'find_allocations_by_team_id' },
+        teamId,
+      ),
+    );
+  }
+
   findOne(id: string) {
     return firstValueFrom(
-      this.mainServiceClient.send({ cmd: 'find_allocation_by_id' }, { id }),
+      this.mainServiceClient.send({ cmd: 'find_allocation_by_id' }, id),
     );
   }
 
@@ -44,7 +53,7 @@ export class AllocationService {
 
   remove(id: string) {
     return firstValueFrom(
-      this.mainServiceClient.send({ cmd: 'remove_allocation' }, { id }),
+      this.mainServiceClient.send({ cmd: 'remove_allocation' }, id),
     );
   }
 }

@@ -21,7 +21,7 @@ export class ProjectMemberController {
   //   Get all members of a project
   @MessagePattern({ cmd: 'get_members_by_project_id' })
   getMembersByProjectId(id: string) {
-    return this.projectService.getMembersByProjectId(id);
+    return this.projectService.findProjectMembersByProjectId(id);
   }
 
   //   Get all members

@@ -24,6 +24,12 @@ export class ProjectService {
     );
   }
 
+  async findAllByTeamId(teamId: string) {
+    return firstValueFrom(
+      this.mainServiceClient.send({ cmd: 'find_projects_by_team_id' }, teamId),
+    );
+  }
+
   async findOne(id: string) {
     return firstValueFrom(
       this.mainServiceClient.send({ cmd: 'find_project_by_id' }, id),

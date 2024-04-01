@@ -13,6 +13,11 @@ export class AllocationController {
     return this.allocationService.create(createAllocationDto);
   }
 
+  @MessagePattern({ cmd: 'find_allocations_by_team_id' })
+  findAllByTeamId(teamId: string) {
+    return this.allocationService.findAllByTeamId(teamId);
+  }
+
   @MessagePattern({ cmd: 'find_all_allocations' })
   findAll() {
     return this.allocationService.findAll();

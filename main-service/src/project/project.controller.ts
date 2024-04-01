@@ -18,6 +18,11 @@ export class ProjectController {
     return this.projectService.findAll();
   }
 
+  @MessagePattern({ cmd: 'find_projects_by_team_id' })
+  findAllByTeamId(teamId: string) {
+    return this.projectService.findAllByTeamId(teamId);
+  }
+
   @MessagePattern({ cmd: 'find_project_by_id' })
   findOne(id: string) {
     return this.projectService.findOne(id);

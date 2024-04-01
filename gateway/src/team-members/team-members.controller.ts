@@ -1,18 +1,17 @@
-import { ApiTags } from '@nestjs/swagger';
 import {
-  Controller,
-  Post,
   Body,
-  Param,
-  Patch,
+  Controller,
   Delete,
   Get,
-  Query,
+  Param,
+  Patch,
+  Post,
 } from '@nestjs/common';
-import { TeamMembersService } from './team-members.service';
+import { ApiTags } from '@nestjs/swagger';
 import { CreateTeamMemberDto } from './dto/create-team-member.dto';
 import { GetTeamMembersDto } from './dto/get-team-members-dto';
 import { UpdateTeamMemberDto } from './dto/update-team-member.dto';
+import { TeamMembersService } from './team-members.service';
 
 @Controller('team-members')
 @ApiTags('Team Members')
@@ -35,11 +34,16 @@ export class TeamMembersController {
   }
 
   @Get('search')
-  findAllFiltered(@Query() query: GetTeamMembersDto) {
-    const { teamId, filter } = query;
+  findAllFiltered(@Body() body: GetTeamMembersDto) {
+    const { teamId, filter } = body;
     console.log('teamId', teamId);
     console.log('filter', filter.people.ids);
     return this.teamMembersService.findAllWithFilters(teamId, filter);
+  }
+
+  @Get('team/:teamId')
+  findAllByTeamId(@Param('teamId') teamId: string) {
+    return this.teamMembersService.findAllByTeamId(teamId);
   }
 
   @Patch(':id')
