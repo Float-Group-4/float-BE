@@ -6,8 +6,9 @@ import { MessagePattern } from '@nestjs/microservices';
 export class MailController {
     constructor(private readonly mailService: MailService) {}
 
-    @MessagePattern({ cmd: 'send_confirmation' })
+    @MessagePattern({ cmd: 'send_email' })
     async sendConfirmation(data: any) {
         console.log("Email_Sent!")
-        return await this.mailService.sendUserConfirmation(data)}
+        console.log(data)
+        return await this.mailService.sendEmail(data)}
 }

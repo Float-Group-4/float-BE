@@ -1,9 +1,7 @@
 import { IsString } from 'class-validator';
 
-export class SendConfirmationEmailDto
+export class SendEmailDto
 {
-  @IsString()
-  name: string;
 
   @IsString()
   toEmail: string;
@@ -15,5 +13,7 @@ export class SendConfirmationEmailDto
   subject: string;
 
   @IsString()
-  token: string;
+  template: string;
+
+  context: any;
 }

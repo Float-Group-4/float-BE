@@ -6,20 +6,16 @@ import { send } from 'process';
 export class MailService {
     constructor(private mailerService: MailerService) {}
   
-    async sendUserConfirmation(data: any) {
+    async sendEmail(data: any) {
       try {
-        const { toEmail, name, token, subject, sender  } = data; // Destructure the fields from the data object
-        const url = `example.com/auth/confirm?token=${token}`;
+        const { toEmail, subject, sender, template, context  } = data; // Destructure the fields from the data object
   
         await this.mailerService.sendMail({
           to: toEmail,
           from: sender, // override default from
           subject: subject,
-          template: './confirmation',
-          context: {
-            name: name,
-            url: url,
-          },
+          template: template,
+          context: context,
         });
         return 0;
       } catch (error) {
