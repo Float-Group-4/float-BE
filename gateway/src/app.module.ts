@@ -28,6 +28,7 @@ import { ProjectService } from './project/project.service';
 import { RolesService } from './roles/roles.service';
 import { RolesController } from './roles/roles.controller';
 import { TeamsController } from './teams/teams.controller';
+import { MailerService } from './mail/mail.service';
 @Module({
   imports: [
     ClientsModule.register([
@@ -94,6 +95,7 @@ import { TeamsController } from './teams/teams.controller';
     ProjectService,
     RolesService,
     TeamsService,
+    MailerService,
   ],
 })
 export class AppModule {}
