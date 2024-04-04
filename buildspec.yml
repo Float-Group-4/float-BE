@@ -1,0 +1,46 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws --version
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $REPO_DOMAIN
+      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - IMAGE_TAG=${COMMIT_HASH:=latest}
+
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...
+      - cd gateway
+      - docker build -t $REPOSITORY_URI:gateway-latest .
+      - docker tag $REPOSITORY_URI:gateway-latest $REPOSITORY_URI:gateway-$IMAGE_TAG
+      - cd ../main-service
+      - docker build -t $REPOSITORY_URI:main-service-latest .
+      - docker tag $REPOSITORY_URI:main-service-latest $REPOSITORY_URI:main-service-$IMAGE_TAG
+      - cd ../mailer
+      - docker build -t $REPOSITORY_URI:mailer-latest .
+      - docker tag $REPOSITORY_URI:mailer-latest $REPOSITORY_URI:mailer-$IMAGE_TAG
+      - cd ../view
+      - docker build -t $REPOSITORY_URI:view-latest .
+      - docker tag $REPOSITORY_URI:view-latest $REPOSITORY_URI:view-$IMAGE_TAG
+
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker images...
+      - docker push $REPOSITORY_URI:gateway-latest
+      - docker push $REPOSITORY_URI:gateway-$IMAGE_TAG
+      - docker push $REPOSITORY_URI:main-service-latest
+      - docker push $REPOSITORY_URI:main-service-$IMAGE_TAG
+      - docker push $REPOSITORY_URI:mailer-latest
+      - docker push $REPOSITORY_URI:mailer-$IMAGE_TAG
+      - docker push $REPOSITORY_URI:view-latest
+      - docker push $REPOSITORY_URI:view-$IMAGE_TAG
+      - echo Writing image definitions file...
+      - printf '[{"name":"gateway","imageUri":"%s"}, {"name":"main-service","imageUri":"%s"}, {"name":"mailer","imageUri":"%s"}, {"name":"view","imageUri":"%s"}]' $REPOSITORY_URI:gateway-$IMAGE_TAG $REPOSITORY_URI:main-service-$IMAGE_TAG $REPOSITORY_URI:mailer-$IMAGE_TAG $REPOSITORY_URI:view-$IMAGE_TAG > imagedefinitions.json
+
+artifacts:
+  files:
+    - imagedefinitions.json
