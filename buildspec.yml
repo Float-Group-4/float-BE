@@ -22,9 +22,9 @@ phases:
       - cd ../mailer
       - docker build -t $REPOSITORY_URI:mailer-latest .
       - docker tag $REPOSITORY_URI:mailer-latest $REPOSITORY_URI:mailer-$IMAGE_TAG
-      - cd ../view
-      - docker build -t $REPOSITORY_URI:view-latest .
-      - docker tag $REPOSITORY_URI:view-latest $REPOSITORY_URI:view-$IMAGE_TAG
+      - cd ../view-service
+      - docker build -t $REPOSITORY_URI:view-service-latest .
+      - docker tag $REPOSITORY_URI:view-service-latest $REPOSITORY_URI:view-service-$IMAGE_TAG
 
   post_build:
     commands:
@@ -36,10 +36,10 @@ phases:
       - docker push $REPOSITORY_URI:main-service-$IMAGE_TAG
       - docker push $REPOSITORY_URI:mailer-latest
       - docker push $REPOSITORY_URI:mailer-$IMAGE_TAG
-      - docker push $REPOSITORY_URI:view-latest
-      - docker push $REPOSITORY_URI:view-$IMAGE_TAG
+      - docker push $REPOSITORY_URI:view-service-latest
+      - docker push $REPOSITORY_URI:view-service-$IMAGE_TAG
       - echo Writing image definitions file...
-      - printf '[{"name":"gateway","imageUri":"%s"}, {"name":"main-service","imageUri":"%s"}, {"name":"mailer","imageUri":"%s"}, {"name":"view","imageUri":"%s"}]' $REPOSITORY_URI:gateway-$IMAGE_TAG $REPOSITORY_URI:main-service-$IMAGE_TAG $REPOSITORY_URI:mailer-$IMAGE_TAG $REPOSITORY_URI:view-$IMAGE_TAG > imagedefinitions.json
+      - printf '[{"name":"gateway","imageUri":"%s"}, {"name":"main-service","imageUri":"%s"}, {"name":"mailer","imageUri":"%s"}, {"name":"view-service","imageUri":"%s"}]' $REPOSITORY_URI:gateway-$IMAGE_TAG $REPOSITORY_URI:main-service-$IMAGE_TAG $REPOSITORY_URI:mailer-$IMAGE_TAG $REPOSITORY_URI:view-service-$IMAGE_TAG > imagedefinitions.json
 
 artifacts:
   files:
