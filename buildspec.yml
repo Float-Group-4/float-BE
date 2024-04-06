@@ -25,6 +25,7 @@ phases:
       - cd ../view-service
       - docker build -t $REPOSITORY_URI:view-service-latest .
       - docker tag $REPOSITORY_URI:view-service-latest $REPOSITORY_URI:view-service-$IMAGE_TAG
+      - cd ../..
 
   post_build:
     commands:
