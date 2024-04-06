@@ -27,7 +27,8 @@ phases:
       - cd ../view-service
       - docker build -t $REPOSITORY_URI:view-service-latest .
       - docker tag $REPOSITORY_URI:view-service-latest $REPOSITORY_URI:view-service-$IMAGE_TAG
-      - cd ../..
+      - echo "Current path during post_build $PWD before cd"
+      - cd ../../src
       - echo "Current path during build $PWD"
 
   post_build:
@@ -54,5 +55,4 @@ phases:
       # Your existing post_build commands...
 artifacts:
   files:
-    - echo "Path of artifacts step $CODEBUILD_SRC_DIR"
     - imagedefinitions.json
