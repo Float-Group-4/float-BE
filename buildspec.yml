@@ -8,9 +8,11 @@ phases:
       - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $REPO_DOMAIN
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - IMAGE_TAG=${COMMIT_HASH:=latest}
+      - echo "Current path during pre_build $PWD"
 
   build:
     commands:
+      - echo "Current path during build $PWD"
       - echo Build started on `date`
       - echo Building the Docker image...
       - cd gateway
@@ -26,6 +28,7 @@ phases:
       - docker build -t $REPOSITORY_URI:view-service-latest .
       - docker tag $REPOSITORY_URI:view-service-latest $REPOSITORY_URI:view-service-$IMAGE_TAG
       - cd ../..
+      - echo "Current path during build $PWD"
 
   post_build:
     commands:
@@ -41,7 +44,15 @@ phases:
       - docker push $REPOSITORY_URI:view-service-$IMAGE_TAG
       - echo Writing image definitions file...
       - printf '[{"name":"gateway","imageUri":"%s"}, {"name":"main-service","imageUri":"%s"}, {"name":"mailer","imageUri":"%s"}, {"name":"view-service","imageUri":"%s"}]' $REPOSITORY_URI:gateway-$IMAGE_TAG $REPOSITORY_URI:main-service-$IMAGE_TAG $REPOSITORY_URI:mailer-$IMAGE_TAG $REPOSITORY_URI:view-service-$IMAGE_TAG > imagedefinitions.json
-
+        # Log the current path
+      - echo "Current path during post_build $PWD"
+      # Log the content of imagedefinitions.json
+      - echo "Content of imagedefinitions.json:"
+      - cat imagedefinitions.json
+      # Log the path of imagedefinitions.json
+      - echo "Path of imagedefinitions.json $PWD/imagedefinitions.json"
+      # Your existing post_build commands...
 artifacts:
   files:
+    - echo "Path of artifacts step $CODEBUILD_SRC_DIR"
     - imagedefinitions.json
