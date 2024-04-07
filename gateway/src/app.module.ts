@@ -29,6 +29,8 @@ import { RolesService } from './roles/roles.service';
 import { RolesController } from './roles/roles.controller';
 import { TeamsController } from './teams/teams.controller';
 import { MailerService } from './mail/mail.service';
+import { ViewController } from './view/view.controller';
+import { ViewService } from './view/view.service';
 @Module({
   imports: [
     ClientsModule.register([
@@ -76,6 +78,7 @@ import { MailerService } from './mail/mail.service';
     ProjectController,
     RolesController,
     TeamsController,
+    ViewController,
   ],
   providers: [
     AppService,
@@ -96,6 +99,7 @@ import { MailerService } from './mail/mail.service';
     RolesService,
     TeamsService,
     MailerService,
+    ViewService,
   ],
 })
 export class AppModule {}
