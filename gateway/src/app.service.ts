@@ -13,4 +13,10 @@ export class AppService {
       this.mainServiceClient.send({ cmd: 'hello' }, {}),
     );
   }
+
+  async getMainServiceHealth() {
+    return await firstValueFrom(
+      this.mainServiceClient.send({ cmd: 'health' }, {}),
+    );
+  }
 }

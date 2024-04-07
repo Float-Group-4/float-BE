@@ -9,4 +9,9 @@ export class AppController {
   async getHello() {
     return await this.appService.getHello();
   }
+
+  @Get('mainService/health')
+  async getMainServiceHealth() {
+    return await this.appService.getMainServiceHealth();
+  }
 }
