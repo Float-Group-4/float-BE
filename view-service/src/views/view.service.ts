@@ -29,21 +29,16 @@ export class ViewService {
   }
   // Fix bugs here
   updateView(id: any, updateViewDto: UpdateViewDto) {
+    const { id: nID, ...rest } = id;
+    const { updateViewDto: _updateViewDto } = rest;
     const settings = id.updateViewDto.settings as any;
     const filters = id.updateViewDto.filters as any;
-    const { id: nID, rest } = id;
     return this.prisma.view.update({
       where: {
         id: +id.id,
       },
       data: {
-        created: rest?.created,
-        modified: rest?.modified,
-        created_by: rest?.created_by,
-        modified_by: rest?.modified_by,
-        name: rest?.name,
-        personal: rest?.personal,
-        pinned: rest?.pinned,
+        ..._updateViewDto,
         settings: { settings },
         filters: {
           filters,

@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsOptional } from 'class-validator';
 
 export class ScheduleSortDTO {
   @ApiProperty()
@@ -24,29 +25,38 @@ export class FilterDTO {
 
 export class UpdateViewDto {
   @ApiProperty()
+  @IsOptional()
   name: string;
 
   @ApiProperty()
+  @IsOptional()
   personal: boolean;
 
   @ApiProperty()
+  @IsOptional()
   settings: JSON;
 
   @ApiProperty({ type: [FilterDTO] })
+  @IsOptional()
   filters: FilterDTO[];
 
   @ApiProperty()
+  @IsOptional()
   pinned: boolean;
 
   @ApiProperty()
+  @IsOptional()
   created: string;
 
   @ApiProperty()
+  @IsOptional()
   modified: string;
 
   @ApiProperty()
+  @IsOptional()
   created_by: string;
 
   @ApiProperty()
+  @IsOptional()
   modified_by: string;
 }
