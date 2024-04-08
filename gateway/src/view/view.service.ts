@@ -1,11 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { ApiTags } from '@nestjs/swagger';
 import { CreateViewDto } from './dto/create-view.dto';
 import { UpdateViewDto } from './dto/udpate-view.dto';
 
 @Injectable()
-@ApiTags('view')
 export class ViewService {
   constructor(
     @Inject('VIEW_SERVICE') private readonly viewServiceClient: ClientProxy,
@@ -16,13 +14,11 @@ export class ViewService {
   }
 
   updateView(id: number, updateViewDto: UpdateViewDto) {
-    return this.viewServiceClient.send(
-      { cmd: 'update_view' },
-      {
-        id,
-        updateViewDto,
-      },
-    );
+    const data = {
+      id,
+      ...updateViewDto,
+    };
+    return this.viewServiceClient.send({ cmd: 'update_view' }, data);
   }
 
   getView(id: number) {

@@ -15,8 +15,8 @@ export class ViewController {
     return this.viewService.createView(createViewDto);
   }
   @MessagePattern({ cmd: 'update_view' })
-  update(id: number, updateViewDto: UpdateViewDto) {
-    return this.viewService.updateView(id, updateViewDto);
+  update(data: UpdateViewDto) {
+    return this.viewService.updateView(data);
   }
 
   @MessagePattern({ cmd: 'get_view' })

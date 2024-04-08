@@ -25,6 +25,9 @@ export class FilterDTO {
 
 export class UpdateViewDto {
   @ApiProperty()
+  id: number;
+
+  @ApiProperty()
   @IsOptional()
   name: string;
 

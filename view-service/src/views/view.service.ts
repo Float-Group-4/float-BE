@@ -1,12 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { CreateViewDto } from './dto/create-view.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { ApiTags } from '@nestjs/swagger';
 import { UpdateViewDto } from './dto/update-view.dto';
 @Injectable()
-@ApiTags('View')
 export class ViewService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) {}
 
   createView(createViewDto: CreateViewDto) {
     const settings = createViewDto.settings as any;
@@ -28,21 +26,16 @@ export class ViewService {
     });
   }
   // Fix bugs here
-  updateView(id: any, updateViewDto: UpdateViewDto) {
-    const { id: nID, ...rest } = id;
-    const { updateViewDto: _updateViewDto } = rest;
-    const settings = id.updateViewDto.settings as any;
-    const filters = id.updateViewDto.filters as any;
+  updateView(data: UpdateViewDto) {
+    const { id, ...rest } = data;
     return this.prisma.view.update({
       where: {
-        id: +id.id,
+        id: +id,
       },
       data: {
-        ..._updateViewDto,
-        settings: { settings },
-        filters: {
-          filters,
-        },
+        ...rest,
+        settings: rest.settings as any,
+        filters: rest.filters as any,
       },
     });
   }
