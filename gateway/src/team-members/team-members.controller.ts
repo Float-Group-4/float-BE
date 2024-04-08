@@ -37,8 +37,6 @@ export class TeamMembersController {
   @Get('search')
   findAllFiltered(@Query() query: GetTeamMembersDto) {
     const { teamId, filter } = query;
-    console.log('teamId', teamId);
-    console.log('filter', filter.people.ids);
     return this.teamMembersService.findAllWithFilters(teamId, filter);
   }
 

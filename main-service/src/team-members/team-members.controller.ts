@@ -27,8 +27,6 @@ export class TeamMembersController {
   @MessagePattern({ cmd: 'find_team_members_by_team_id_and_filter' })
   findAllFiltered(Body: GetTeamMembersDto) {
     const { teamId, filter } = Body;
-    console.log('teamId', teamId);
-    console.log('filter', filter.people.ids);
     return this.teamMembersService.findAllWithFilters(teamId, filter);
   }
 
