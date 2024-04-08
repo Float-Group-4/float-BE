@@ -62,4 +62,8 @@ export class UpdateViewDto {
   @ApiProperty()
   @IsOptional()
   modified_by: string;
+
+  @ApiProperty()
+  @IsOptional()
+  teamId: string;
 }

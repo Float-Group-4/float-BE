@@ -58,4 +58,12 @@ export class ViewService {
   getAllViews() {
     return this.prisma.view.findMany();
   }
+
+  getViewByTeamId(teamId: string) {
+    return this.prisma.view.findFirst({
+      where: {
+        teamId: teamId,
+      },
+    });
+  }
 }

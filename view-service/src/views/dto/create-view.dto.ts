@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsOptional } from 'class-validator';
 
 export class ScheduleSortDTO {
   @ApiProperty()
@@ -49,4 +50,10 @@ export class CreateViewDto {
 
   @ApiProperty()
   modified_by: string;
+
+  @ApiProperty({
+    nullable: true,
+  })
+  @IsOptional()
+  teamId: string;
 }

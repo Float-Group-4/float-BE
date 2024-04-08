@@ -1,5 +1,5 @@
 import { ApiTags } from '@nestjs/swagger';
-import { Controller } from '@nestjs/common';
+import { Controller, Param } from '@nestjs/common';
 import { ViewService } from './view.service';
 import { CreateViewDto } from './dto/create-view.dto';
 import { MessagePattern } from '@nestjs/microservices';
@@ -31,5 +31,10 @@ export class ViewController {
   @MessagePattern({ cmd: 'get_all_views' })
   getAllViews() {
     return this.viewService.getAllViews();
+  }
+
+  @MessagePattern({ cmd: 'get_view_by_team_id' })
+  getViewByTeamId(teamId: string) {
+    return this.viewService.getViewByTeamId(teamId);
   }
 }

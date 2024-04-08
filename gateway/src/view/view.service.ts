@@ -32,4 +32,8 @@ export class ViewService {
   getAllViews() {
     return this.viewServiceClient.send({ cmd: 'get_all_views' }, {});
   }
+
+  getViewsByTeamId(teamId: string) {
+    return this.viewServiceClient.send({ cmd: 'get_view_by_team_id' }, teamId);
+  }
 }

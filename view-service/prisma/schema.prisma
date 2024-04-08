@@ -25,4 +25,5 @@ model View {
   modified     String
   created_by   String
   modified_by  String
-}
+  teamId       String? @default(uuid())
+  }

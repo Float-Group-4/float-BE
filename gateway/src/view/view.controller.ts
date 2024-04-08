@@ -41,4 +41,9 @@ export class ViewController {
   getAll() {
     return this.viewService.getAllViews();
   }
+
+  @Get('team/:id')
+  getViewsByTeamId(@Param('id') teamId: string) {
+    return this.viewService.getViewsByTeamId(teamId);
+  }
 }
