@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateViewDto } from './dto/create-view.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UpdateViewDto } from './dto/update-view.dto';
+import { GetViewByTeamDto } from './dto/get-view-by-team.dto';
 @Injectable()
 export class ViewService {
   constructor(private prisma: PrismaService) {}
@@ -22,6 +23,7 @@ export class ViewService {
         pinned: createViewDto.pinned,
         created_by: createViewDto.created_by,
         modified_by: createViewDto.modified_by,
+        teamId: createViewDto.teamId,
       },
     });
   }
@@ -59,10 +61,31 @@ export class ViewService {
     return this.prisma.view.findMany();
   }
 
-  getViewByTeamId(teamId: string) {
+  getViewByTeamId(getViewByTeamDto: GetViewByTeamDto) {
+    const { teamId, userId } = getViewByTeamDto;
     return this.prisma.view.findFirst({
       where: {
         teamId: teamId,
+        created_by: userId,
+        personal: false,
+      },
+    });
+  }
+
+  getPersonalViews(userId: string) {
+    return this.prisma.view.findMany({
+      where: {
+        created_by: userId,
+        personal: true,
+      },
+    });
+  }
+
+  getPublicViewsByUserId(userId: string) {
+    return this.prisma.view.findMany({
+      where: {
+        created_by: userId,
+        personal: false,
       },
     });
   }

@@ -43,7 +43,20 @@ export class ViewController {
   }
 
   @Get('team/:id')
-  getViewsByTeamId(@Param('id') teamId: string) {
-    return this.viewService.getViewsByTeamId(teamId);
+  getViewsByTeamId(
+    @Param('id') teamId: string,
+    @Body('userId') userId: string,
+  ) {
+    return this.viewService.getViewsByTeamId(teamId, userId);
+  }
+
+  @Get('personal/:id')
+  getPersonalViews(@Param('id') userId: string) {
+    return this.viewService.getPersonalViews(userId);
+  }
+
+  @Get('public/:userId')
+  getPublicViewsByUserId(@Param('userId') userId: string) {
+    return this.viewService.getPublicViewsByUserId(userId);
   }
 }

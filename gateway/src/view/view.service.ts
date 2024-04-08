@@ -33,7 +33,21 @@ export class ViewService {
     return this.viewServiceClient.send({ cmd: 'get_all_views' }, {});
   }
 
-  getViewsByTeamId(teamId: string) {
-    return this.viewServiceClient.send({ cmd: 'get_view_by_team_id' }, teamId);
+  getViewsByTeamId(teamId: string, userId: string) {
+    return this.viewServiceClient.send(
+      { cmd: 'get_view_by_team_id' },
+      { userId, teamId },
+    );
+  }
+
+  getPersonalViews(userId: string) {
+    return this.viewServiceClient.send({ cmd: 'get_personal_views' }, userId);
+  }
+
+  getPublicViewsByUserId(userId: string) {
+    return this.viewServiceClient.send(
+      { cmd: 'get_public_views_by_user_id' },
+      userId,
+    );
   }
 }

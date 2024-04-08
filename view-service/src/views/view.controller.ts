@@ -1,9 +1,10 @@
 import { ApiTags } from '@nestjs/swagger';
-import { Controller, Param } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 import { ViewService } from './view.service';
 import { CreateViewDto } from './dto/create-view.dto';
 import { MessagePattern } from '@nestjs/microservices';
 import { UpdateViewDto } from './dto/update-view.dto';
+import { GetViewByTeamDto } from './dto/get-view-by-team.dto';
 
 @Controller('view')
 @ApiTags('View')
@@ -34,7 +35,17 @@ export class ViewController {
   }
 
   @MessagePattern({ cmd: 'get_view_by_team_id' })
-  getViewByTeamId(teamId: string) {
-    return this.viewService.getViewByTeamId(teamId);
+  getViewByTeamId(getViewByTeamDto: GetViewByTeamDto) {
+    return this.viewService.getViewByTeamId(getViewByTeamDto);
+  }
+
+  @MessagePattern({ cmd: 'get_personal_views' })
+  getPersonalViews(userId: string) {
+    return this.viewService.getPersonalViews(userId);
+  }
+
+  @MessagePattern({ cmd: 'get_public_views_by_user_id' })
+  getPublicViewsByUserId(userId: string) {
+    return this.viewService.getPublicViewsByUserId(userId);
   }
 }
