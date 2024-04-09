@@ -10,19 +10,19 @@ import { MailController } from './mail.controller';
   imports: [
     MailerModule.forRootAsync({
       // imports: [ConfigModule], // import module if not enabled globally
-      useFactory: async (config: ConfigService) => ({
+      useFactory: async () => ({
         // transport: config.get("MAIL_TRANSPORT"),
         // or
         transport: {
-          host: config.get('MAIL_HOST'),
+          host: 'smtp.gmail.com',
           secure: false,
           auth: {
-            user: config.get('MAIL_USER'),
-            pass: config.get('MAIL_PASSWORD'),
+            user: 'float.group4@gmail.com',
+            pass: 'konaapzglfomcinv',
           },
         },
         defaults: {
-          from: `"No Reply" <${config.get('MAIL_FROM')}>`,
+          from: `Float`,
         },
         template: {
           dir: join(__dirname, 'templates'),
