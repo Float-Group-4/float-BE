@@ -29,7 +29,13 @@ export class ProjectController {
   }
 
   @MessagePattern({ cmd: 'update_project' })
-  update(id: string, updateProjectDto: UpdateProjectDto) {
+  update({
+    id,
+    updateProjectDto,
+  }: {
+    id: string;
+    updateProjectDto: UpdateProjectDto;
+  }) {
     return this.projectService.update(id, updateProjectDto);
   }
 

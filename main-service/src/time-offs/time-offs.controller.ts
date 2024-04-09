@@ -29,7 +29,13 @@ export class TimeOffsController {
   }
 
   @MessagePattern({ cmd: 'update_time_off' })
-  update(id: string, updateTimeOffDto: UpdateTimeOffDto) {
+  update({
+    id,
+    updateTimeOffDto,
+  }: {
+    id: string;
+    updateTimeOffDto: UpdateTimeOffDto;
+  }) {
     return this.timeOffsService.update(id, updateTimeOffDto);
   }
 

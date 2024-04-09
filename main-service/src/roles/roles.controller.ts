@@ -23,7 +23,7 @@ export class RolesController {
   }
 
   @MessagePattern({ cmd: 'update_role' })
-  update(id: string, updateRoleDto: UpdateRoleDto) {
+  update({ id, updateRoleDto }: { id: string; updateRoleDto: UpdateRoleDto }) {
     return this.rolesService.update(id, updateRoleDto);
   }
 

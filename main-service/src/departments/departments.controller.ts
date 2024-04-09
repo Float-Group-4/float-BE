@@ -24,7 +24,13 @@ export class DepartmentsController {
   }
 
   @MessagePattern({ cmd: 'update_department' })
-  update(id: string, updateDepartmentDto: UpdateDepartmentDto) {
+  update({
+    id,
+    updateDepartmentDto,
+  }: {
+    id: string;
+    updateDepartmentDto: UpdateDepartmentDto;
+  }) {
     return this.departmentsService.update(id, updateDepartmentDto);
   }
 

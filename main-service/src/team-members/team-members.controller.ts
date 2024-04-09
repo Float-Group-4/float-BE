@@ -38,7 +38,13 @@ export class TeamMembersController {
   }
 
   @MessagePattern({ cmd: 'update_team_member' })
-  update(id: string, updateTeamMemberDto: UpdateTeamMemberDto) {
+  update({
+    id,
+    updateTeamMemberDto,
+  }: {
+    id: string;
+    updateTeamMemberDto: UpdateTeamMemberDto;
+  }) {
     return this.teamMembersService.update(id, updateTeamMemberDto);
   }
 

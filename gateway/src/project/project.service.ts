@@ -10,8 +10,8 @@ import { MailerService } from 'src/mail/mail.service';
 @ApiTags('Project')
 export class ProjectService {
   constructor(
-    @Inject('MAIN_SERVICE') private readonly mainServiceClient: ClientProxy, 
-    private readonly mailerService: MailerService
+    @Inject('MAIN_SERVICE') private readonly mainServiceClient: ClientProxy,
+    private readonly mailerService: MailerService,
   ) {}
   async create(createProjectDto: CreateProjectDto) {
     return firstValueFrom(

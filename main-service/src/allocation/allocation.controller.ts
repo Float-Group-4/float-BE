@@ -29,7 +29,14 @@ export class AllocationController {
   }
 
   @MessagePattern({ cmd: 'update_allocation' })
-  update(id: string, updateAllocationDto: UpdateAllocationDto) {
+  update({
+    id,
+    updateAllocationDto,
+  }: {
+    id: string;
+    updateAllocationDto: UpdateAllocationDto;
+  }) {
+    console.log('Heheh', id, updateAllocationDto);
     return this.allocationService.update(id, updateAllocationDto);
   }
 
