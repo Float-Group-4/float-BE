@@ -1,10 +1,8 @@
 import { Injectable } from '@nestjs/common';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { UserEntity } from 'src/users/entities/user.entity';
 import { CreateTeamDto } from './dto/create-team.dto';
 import { UpdateTeamDto } from './dto/update-team.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { ApiTags } from '@nestjs/swagger';
-import { UserEntity } from 'src/users/entities/user.entity';
-import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class TeamsService {
@@ -76,6 +74,18 @@ export class TeamsService {
     return this.prisma.team.delete({
       where: {
         id,
+      },
+    });
+  }
+
+  getTeamByUser(user: string) {
+    return this.prisma.team.findMany({
+      where: {
+        TeamMember: {
+          some: {
+            userId: user,
+          },
+        },
       },
     });
   }

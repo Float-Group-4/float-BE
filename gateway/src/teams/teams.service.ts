@@ -47,4 +47,10 @@ export class TeamsService {
       this.mainServiceClient.send({ cmd: 'remove_team' }, id),
     );
   }
+
+  getTeamByUser(userId: string) {
+    return firstValueFrom(
+      this.mainServiceClient.send({ cmd: 'get_team_by_user' }, userId),
+    );
+  }
 }

@@ -46,4 +46,9 @@ export class TeamsController {
   remove(@Param('id') id: string) {
     return this.teamsService.remove(id);
   }
+
+  @Get('user/:userId')
+  getTeamByUser(@Param('userId') userId: string) {
+    return this.teamsService.getTeamByUser(userId);
+  }
 }

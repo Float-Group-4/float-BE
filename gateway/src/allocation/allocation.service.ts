@@ -15,7 +15,7 @@ export class AllocationService {
   create(createAllocationDto: CreateAllocationDto) {
     return firstValueFrom(
       this.mainServiceClient.send(
-        { cmd: 'create_activity' },
+        { cmd: 'create_allocation' },
         createAllocationDto,
       ),
     );
