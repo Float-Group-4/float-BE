@@ -1,0 +1,33 @@
+name: "Update code to GCP VM"
+
+on:
+    push:
+        branches:
+        - main
+
+jobs:
+    update_code:
+        runs-on: ubuntu-latest
+        steps:
+        - name: Checkout code
+          uses: actions/checkout@v2
+
+        - name: Save key
+          run: echo "${{ secrets.GCP_SA_KEY }}" | base64 -d > /tmp/key.json
+          shell: bash
+            
+        - name: Set up GCloud
+          uses: 'google-github-actions/auth@v2'
+          with:
+            credentials_json: '/tmp/key.json'
+  
+        - name: Set up GCloud SDK
+          uses: google-github-actions/setup-gcloud@v2
+
+        - name: Set up SSH Key
+          run: echo "${{ secrets.SSH_PRIVATE_KEY }}" | base64 -d > ./.ssh/id_rsa
+          shell: bash
+
+        - name: Deploy code
+          run: gcloud compute ssh --zone "us-central1-a" worker@fgroup4 --project "igneous-capsule-419613" --command "cd float-BE/ && make stop && git pull && make"
+          shell: bash

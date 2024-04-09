@@ -36,7 +36,7 @@ import { MailerService } from './mail/mail.service';
         name: 'MAIN_SERVICE',
         transport: Transport.TCP,
         options: {
-          host: 'localhost',
+          host: 'main-service',
           port: 4001,
         },
       },
