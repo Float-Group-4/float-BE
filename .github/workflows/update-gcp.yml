@@ -14,7 +14,7 @@ jobs:
           uses: actions/checkout@v2
 
         - name: Save key
-          run: echo "${{ secrets.GCP_SA_KEY }}" | base64 -d > /tmp/key.json
+          run: echo "${{ secrets.GCP_SA_KEY }}" > /tmp/key.json
           shell: bash
             
         - name: Set up GCloud
@@ -26,7 +26,7 @@ jobs:
           uses: google-github-actions/setup-gcloud@v2
 
         - name: Set up SSH Key
-          run: echo "${{ secrets.SSH_PRIVATE_KEY }}" | base64 -d > ./.ssh/id_rsa
+          run: echo "${{ secrets.SSH_PRIVATE_KEY }}" > ./.ssh/id_rsa
           shell: bash
 
         - name: Deploy code
