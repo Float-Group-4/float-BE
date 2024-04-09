@@ -38,5 +38,10 @@ jobs:
           shell: bash
 
         - name: Deploy code
-          run: gcloud compute ssh --zone "us-central1-a" worker@fgroup4 --project "igneous-capsule-419613" --command "cd float-BE/ && make stop && git pull && make"
+          run: |
+            gcloud compute ssh --zone "us-central1-a" worker@fgroup4 --project "igneous-capsule-419613" --ssh-key-file /home/runner/.ssh/id_rsa \
+            --command "cd float-BE/ \
+            && make stop \
+            && git pull \
+            && make"
           shell: bash
