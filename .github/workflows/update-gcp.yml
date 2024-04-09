@@ -14,9 +14,9 @@ jobs:
         #   run: echo "${{ secrets.GCP_SA_KEY }}" > /tmp/key.json
         #   shell: bash
 
-        - name: Debug print key
-          run: cat /tmp/key.json
-          shell: bash
+        # - name: Debug print key
+        #   run: cat /tmp/key.json
+        #   shell: bash
             
         - name: Set up GCloud
           uses: 'google-github-actions/auth@v2'
