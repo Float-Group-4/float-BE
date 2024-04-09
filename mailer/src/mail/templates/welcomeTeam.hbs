@@ -42,10 +42,24 @@
 
         ul li {
             margin-bottom: 5px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        ul li::before {
+            content: '\2022';
+            color: #007bff;
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            left: 0;
+            top: 0;
         }
 
         .btn {
             display: inline-block;
+            margin-left: auto;
+            margin-right: auto;
             padding: 10px 20px;
             background-color: #007bff;
             color: #fff;
@@ -57,10 +71,25 @@
         .btn:hover {
             background-color: #0056b3;
         }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header img {
+            max-width: 100%;
+            height: auto;
+        }
     </style>
 </head>
 <body>
     <div class="container">
+        <div class="header">
+            <img src="
+            https://ci3.googleusercontent.com/meips/ADKq_NYJr2BF-1QkC-WdE9Hxzd4oqez67iUW2lt94PgF_2Fx_14E0n7YHbVkR5Rmn0LX2UmsnXIRY-YSUsXzURMsBbc_S9gw1itNGD3OjH1YzDv6J8n1W5l7_KpAk0kqDG8gdvpWgQ08nikJsRxv-y5FHHOeGSSGASgA3p09v1DK5NiN-kKTcxphwvQF=s0-d-e1-ft#http://cdn.mcauto-images-production.sendgrid.net/43e300b6c94262da/b6d332ec-942f-4253-a239-7e15e93ea31a/1536x686.png"
+             alt="Header Image">
+        </div>
         <h1>Hi {{ recipientName }}!</h1>
         <p>{{ inviterName }} has invited you to join {{ teamName }} team in Float.</p>
         <br>

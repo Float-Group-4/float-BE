@@ -12,7 +12,7 @@ export class MailService {
   
         await this.mailerService.sendMail({
           to: toEmail,
-          from: '"Float" <float.group4@gmail.com>', // override default from
+          from: sender, // override default from
           subject: subject,
           template: template,
           context: context,
