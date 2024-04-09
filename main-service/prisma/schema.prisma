@@ -81,7 +81,7 @@ model TimeOffType {
   teamId        String
   name          String //@unique
   color         String
-  balance       String
+  balance       String    @default("Unlimited")
   days          Float
   EffectiveDate DateTime
   TimeOff       TimeOff[]
