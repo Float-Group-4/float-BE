@@ -45,9 +45,9 @@ export class ViewController {
   @Get('team/:id')
   getViewsByTeamId(
     @Param('id') teamId: string,
-    @Body('userId') userId: string,
+    @Body('teamMemberId') teamMemberId: string,
   ) {
-    return this.viewService.getViewsByTeamId(teamId, userId);
+    return this.viewService.getViewsByTeamId(teamId, teamMemberId);
   }
 
   @Get('personal/:id')

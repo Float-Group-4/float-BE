@@ -33,10 +33,10 @@ export class ViewService {
     return this.viewServiceClient.send({ cmd: 'get_all_views' }, {});
   }
 
-  getViewsByTeamId(teamId: string, userId: string) {
+  getViewsByTeamId(teamId: string, teamMemberId: string) {
     return this.viewServiceClient.send(
       { cmd: 'get_view_by_team_id' },
-      { userId, teamId },
+      { teamId, teamMemberId },
     );
   }
 

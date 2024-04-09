@@ -62,16 +62,23 @@ export class ViewService {
   }
 
   getViewByTeamId(getViewByTeamDto: GetViewByTeamDto) {
-    const { teamId, userId } = getViewByTeamDto;
+    const { teamId, teamMemberId } = getViewByTeamDto;
     return this.prisma.view.findFirst({
       where: {
-        teamId: teamId,
-        created_by: userId,
-        personal: false,
+        OR: [
+          {
+            teamId: teamId,
+            created_by: teamMemberId,
+          },
+          {
+            teamId: teamId,
+            personal: false,
+          },
+        ],
       },
     });
   }
-
+  // Do not use this
   getPersonalViews(userId: string) {
     return this.prisma.view.findMany({
       where: {
@@ -80,7 +87,7 @@ export class ViewService {
       },
     });
   }
-
+  // Do not use this
   getPublicViewsByUserId(userId: string) {
     return this.prisma.view.findMany({
       where: {

@@ -5,5 +5,5 @@ export class GetViewByTeamDto {
   teamId: string;
 
   @ApiProperty()
-  userId: string;
+  teamMemberId: string;
 }
