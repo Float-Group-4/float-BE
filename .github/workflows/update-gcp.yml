@@ -26,13 +26,15 @@ jobs:
         - name: Set up GCloud SDK
           uses: google-github-actions/setup-gcloud@v2
 
-        - uses: webfactory/ssh-agent@v0.9.0
-          with:
-              ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+        # - uses: webfactory/ssh-agent@v0.9.0
+        #   with:
+        #       ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-        # - name: Set up SSH Key
-        #   run: echo "${{ secrets.SSH_PRIVATE_KEY }}" > ./.ssh/id_rsa
-        #   shell: bash
+        - name: Set up SSH Key
+          run: |
+            echo "${{ secrets.SSH_PRIVATE_KEY }}" > /home/runner/.ssh/id_rsa
+            echo "${{ secrets.SSH_PUBLIC_KEY }}" > /home/runner/.ssh/id_rsa.pub
+          shell: bash
 
         - name: Deploy code
           run: gcloud compute ssh --zone "us-central1-a" worker@fgroup4 --project "igneous-capsule-419613" --command "cd float-BE/ && make stop && git pull && make"
