@@ -8,17 +8,17 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["auth-service/auth-service.csproj", "auth-service/"]
-RUN dotnet restore "./auth-service/auth-service.csproj"
+COPY ["Ocelot/Ocelot.csproj", "Ocelot/"]
+RUN dotnet restore "./Ocelot/Ocelot.csproj"
 COPY . .
-WORKDIR "/src/auth-service"
-RUN dotnet build "./auth-service.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/Ocelot"
+RUN dotnet build "./Ocelot.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./auth-service.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./Ocelot.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "auth-service.dll"]
+ENTRYPOINT ["dotnet", "Ocelot.dll"]

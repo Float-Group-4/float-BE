@@ -3,11 +3,13 @@ version: '3.4'
 services:
   auth-service:
     image: ${DOCKER_REGISTRY-}authservice
+    ports:
+        - 4005:80
+        - 4005:443
     build:
       context: .
       dockerfile: auth-service/Dockerfile
-    ports:
-        - "8000:80"
+    
   keycloak:
     image: quay.io/keycloak/keycloak:latest
     ports:
@@ -20,4 +22,3 @@ services:
         KC_FEATURES: preview
     volumes:
         - ./imports:/opt/keycloak/data/import
-        

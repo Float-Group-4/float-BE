@@ -1,16 +1,15 @@
 ﻿using auth_service.DTO;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
 namespace auth_service.Controllers
 {
-    [Route("")]
+    [Route("api")]
     [ApiController]
     public class AuthController : ControllerBase
     {
@@ -105,5 +104,32 @@ namespace auth_service.Controllers
             return Ok(responseString);
         }
 
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout(string RefreshToken)
+        {
+            var client = new HttpClient();
+
+            var values = new Dictionary<string, string>
+            {
+                { "client_id", _configuration.GetValue<string>("KeyCloak:client_id") },
+                { "refresh_token",  RefreshToken}
+            };
+
+            var content = new FormUrlEncodedContent(values);
+
+            var response = await client.PostAsync(_configuration.GetValue<string>("KeyCloak:Logout"), content);
+
+            var responseString = await response.Content.ReadAsStringAsync();
+
+            return Ok(responseString);
+        }
+
+        [HttpGet("user-info")]
+        public async Task<IActionResult> GetUserInfo(string token)
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var jwtSecurityToken = handler.ReadJwtToken(token);
+            return Ok(jwtSecurityToken);
+        }
     }
 }
