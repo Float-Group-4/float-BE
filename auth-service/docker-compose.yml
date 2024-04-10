@@ -9,16 +9,38 @@ services:
     build:
       context: .
       dockerfile: auth-service/Dockerfile
-    
+  postgres-keycloak:
+    image: postgres:16
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: keycloak
+      POSTGRES_DB: keycloak
+    volumes:
+        - postgres_data:/var/lib/postgresql/data
+    ports:
+        - 5432:5432
   keycloak:
     image: quay.io/keycloak/keycloak:latest
     ports:
         - 8080:8080
-    command: -v start-dev --import-realm --db postgres --db-url-host host.docker.internal --db-username postgres --db-password 123456
+    command: -v start-dev --import-realm
     environment:
         KEYCLOAK_ADMIN: admin
         KEYCLOAK_ADMIN_PASSWORD: 123456
         KEYCLOAK_IMPORT: /imports/realm-export.json
         KC_FEATURES: preview
+
+        DB_VENDOR: POSTGRES
+        DB_ADDR: postgres-keycloak
+        DB_DATABASE: keycloak
+        DB_USER: keycloak
+        DB_SCHEMA: public
+        DB_PASSWORD: password
+    depends_on:
+        - postgres-keycloak
     volumes:
         - ./imports:/opt/keycloak/data/import
+volumes:
+  postgres_data:
+      driver: local
