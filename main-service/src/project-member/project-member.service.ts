@@ -34,9 +34,10 @@ export class ProjectMemberService {
     });
   }
 
-  getMembersByProjectId(id: string) {
-    const member = this.prisma.project.findUnique({ where: { id } });
-    return member;
+  findProjectMembersByProjectId(projectId: string) {
+    return this.prisma.projectMember.findMany({
+      where: { projectId },
+    });
   }
 
   getAllMembers() {

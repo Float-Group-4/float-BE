@@ -22,6 +22,12 @@ export class RolesService {
     );
   }
 
+  findByTeamId(teamId: string) {
+    return firstValueFrom(
+      this.mainServiceClient.send({ cmd: 'find_roles_by_team_id' }, teamId),
+    );
+  }
+
   findOne(id: string) {
     return firstValueFrom(
       this.mainServiceClient.send({ cmd: 'find_role_by_id' }, id),

@@ -17,6 +17,8 @@ CREATE TABLE "Team" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "teamOwnerId" TEXT,
+    "archived" BOOLEAN NOT NULL DEFAULT false,
+    "deleted" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -31,7 +33,7 @@ CREATE TABLE "Setting" (
     "timeZone" TEXT NOT NULL,
     "startWeek" TEXT NOT NULL,
     "timeFormat" TEXT NOT NULL,
-    "isShowWeekend" BOOLEAN NOT NULL,
+    "isShowWeekend" BOOLEAN NOT NULL DEFAULT false,
     "workDay" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -71,14 +73,17 @@ CREATE TABLE "TimeOffType" (
 CREATE TABLE "TeamMember" (
     "id" TEXT NOT NULL,
     "teamId" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
+    "userId" TEXT,
     "name" TEXT NOT NULL,
+    "avatar" TEXT,
     "type" TEXT NOT NULL,
-    "hourlyRate" DOUBLE PRECISION NOT NULL,
-    "access" TEXT NOT NULL,
-    "email" TEXT NOT NULL,
+    "hourlyRate" DOUBLE PRECISION,
+    "access" TEXT,
+    "email" TEXT,
     "roleId" TEXT,
     "departmentId" TEXT,
+    "archived" BOOLEAN NOT NULL DEFAULT false,
+    "deleted" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -137,8 +142,11 @@ CREATE TABLE "Project" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "projectOwnerId" TEXT NOT NULL,
-    "client" TEXT NOT NULL,
-    "bugdet" TEXT NOT NULL,
+    "client" TEXT,
+    "bugdet" TEXT,
+    "archived" BOOLEAN NOT NULL DEFAULT false,
+    "deleted" BOOLEAN NOT NULL DEFAULT false,
+    "teamId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -161,7 +169,7 @@ CREATE TABLE "Allocation" (
     "id" TEXT NOT NULL,
     "teamMemberId" TEXT NOT NULL,
     "taskId" TEXT NOT NULL,
-    "description" TEXT NOT NULL,
+    "description" TEXT,
     "startDate" TIMESTAMP(3) NOT NULL,
     "endDate" TIMESTAMP(3) NOT NULL,
     "workHours" DOUBLE PRECISION NOT NULL,
@@ -201,6 +209,31 @@ CREATE TABLE "ProjectTags" (
     CONSTRAINT "ProjectTags_pkey" PRIMARY KEY ("projectId","tagId")
 );
 
+-- CreateTable
+CREATE TABLE "Status" (
+    "id" TEXT NOT NULL,
+    "teamMemberId" TEXT NOT NULL,
+    "typeId" TEXT NOT NULL,
+    "startDate" TIMESTAMP(3) NOT NULL,
+    "endDate" TIMESTAMP(3) NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Status_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "StatusType" (
+    "id" TEXT NOT NULL,
+    "teamId" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "color" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "StatusType_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
@@ -222,6 +255,9 @@ CREATE UNIQUE INDEX "Department_name_key" ON "Department"("name");
 -- CreateIndex
 CREATE UNIQUE INDEX "Tag_name_key" ON "Tag"("name");
 
+-- CreateIndex
+CREATE UNIQUE INDEX "StatusType_name_key" ON "StatusType"("name");
+
 -- AddForeignKey
 ALTER TABLE "Team" ADD CONSTRAINT "Team_teamOwnerId_fkey" FOREIGN KEY ("teamOwnerId") REFERENCES "TeamMember"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
@@ -241,7 +277,7 @@ ALTER TABLE "TimeOffType" ADD CONSTRAINT "TimeOffType_teamId_fkey" FOREIGN KEY (
 ALTER TABLE "TeamMember" ADD CONSTRAINT "TeamMember_teamId_fkey" FOREIGN KEY ("teamId") REFERENCES "Team"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "TeamMember" ADD CONSTRAINT "TeamMember_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "TeamMember" ADD CONSTRAINT "TeamMember_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "TeamMember" ADD CONSTRAINT "TeamMember_roleId_fkey" FOREIGN KEY ("roleId") REFERENCES "Role"("id") ON DELETE SET NULL ON UPDATE CASCADE;
@@ -271,6 +307,9 @@ ALTER TABLE "ProjectMember" ADD CONSTRAINT "ProjectMember_teamMemberId_fkey" FOR
 ALTER TABLE "Project" ADD CONSTRAINT "Project_projectOwnerId_fkey" FOREIGN KEY ("projectOwnerId") REFERENCES "TeamMember"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "Project" ADD CONSTRAINT "Project_teamId_fkey" FOREIGN KEY ("teamId") REFERENCES "Team"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "Task" ADD CONSTRAINT "Task_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Project"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -296,3 +335,12 @@ ALTER TABLE "ProjectTags" ADD CONSTRAINT "ProjectTags_projectId_fkey" FOREIGN KE
 
 -- AddForeignKey
 ALTER TABLE "ProjectTags" ADD CONSTRAINT "ProjectTags_tagId_fkey" FOREIGN KEY ("tagId") REFERENCES "Tag"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Status" ADD CONSTRAINT "Status_teamMemberId_fkey" FOREIGN KEY ("teamMemberId") REFERENCES "TeamMember"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Status" ADD CONSTRAINT "Status_typeId_fkey" FOREIGN KEY ("typeId") REFERENCES "StatusType"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "StatusType" ADD CONSTRAINT "StatusType_teamId_fkey" FOREIGN KEY ("teamId") REFERENCES "Team"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

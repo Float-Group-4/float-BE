@@ -1,8 +1,8 @@
+import { Controller } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
 import { CreateTeamDto, initTeamDto } from './dto/create-team.dto';
 import { UpdateTeamDto } from './dto/update-team.dto';
 import { TeamsService } from './teams.service';
-import { Controller } from '@nestjs/common';
 @Controller('team')
 export class TeamsController {
   constructor(private readonly teamsService: TeamsService) {}
@@ -29,12 +29,17 @@ export class TeamsController {
   }
 
   @MessagePattern({ cmd: 'update_team' })
-  update(id: string, updateTeamDto: UpdateTeamDto) {
+  update({ id, updateTeamDto }: { id: string; updateTeamDto: UpdateTeamDto }) {
     return this.teamsService.update(id, updateTeamDto);
   }
 
   @MessagePattern({ cmd: 'remove_team' })
   remove(id: string) {
     return this.teamsService.remove(id);
+  }
+
+  @MessagePattern({ cmd: 'get_team_by_user' })
+  getTeamByUser(userId: string) {
+    return this.teamsService.getTeamByUser(userId);
   }
 }

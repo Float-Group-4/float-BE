@@ -18,6 +18,14 @@ export class DepartmentsService {
     return this.prisma.department.findMany();
   }
 
+  findByTeamId(teamId: string) {
+    return this.prisma.department.findMany({
+      where: {
+        teamId,
+      },
+    });
+  }
+
   findOne(id: string) {
     return this.prisma.department.findUnique({
       where: {

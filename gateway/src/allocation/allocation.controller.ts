@@ -25,19 +25,25 @@ export class AllocationController {
   findAll() {
     return this.allocationService.findAll();
   }
+
+  @Get('team/:teamId')
+  findAllByTeamId(@Param('teamId') teamId: string) {
+    return this.allocationService.findAllByTeamId(teamId);
+  }
+
   @Get(':id')
-  findOne(@Param() id: string) {
+  findOne(@Param('id') id: string) {
     return this.allocationService.findOne(id);
   }
   @Patch(':id')
   update(
-    @Param() id: string,
+    @Param('id') id: string,
     @Body() updateAllocationDto: UpdateAllocationDto,
   ) {
     return this.allocationService.update(id, updateAllocationDto);
   }
   @Delete(':id')
-  remove(@Param() id: string) {
+  remove(@Param('id') id: string) {
     return this.allocationService.remove(id);
   }
 }

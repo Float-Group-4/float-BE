@@ -13,6 +13,11 @@ export class AllocationController {
     return this.allocationService.create(createAllocationDto);
   }
 
+  @MessagePattern({ cmd: 'find_allocations_by_team_id' })
+  findAllByTeamId(teamId: string) {
+    return this.allocationService.findAllByTeamId(teamId);
+  }
+
   @MessagePattern({ cmd: 'find_all_allocations' })
   findAll() {
     return this.allocationService.findAll();
@@ -24,7 +29,14 @@ export class AllocationController {
   }
 
   @MessagePattern({ cmd: 'update_allocation' })
-  update(id: string, updateAllocationDto: UpdateAllocationDto) {
+  update({
+    id,
+    updateAllocationDto,
+  }: {
+    id: string;
+    updateAllocationDto: UpdateAllocationDto;
+  }) {
+    console.log('Heheh', id, updateAllocationDto);
     return this.allocationService.update(id, updateAllocationDto);
   }
 
