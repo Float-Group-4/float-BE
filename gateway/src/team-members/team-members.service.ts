@@ -4,6 +4,8 @@ import { UpdateTeamMemberDto } from './dto/update-team-member.dto';
 import { ClientProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 import { ApiTags } from '@nestjs/swagger';
+import { MailerService } from 'src/mail/mail.service';
+import { TeamsService } from 'src/teams/teams.service';
 
 type PeopleFilter = {
   ids: string[];
@@ -43,9 +45,16 @@ export type TeamMemberFilter = {
 export class TeamMembersService {
   constructor(
     @Inject('MAIN_SERVICE') private readonly mainServiceClient: ClientProxy,
+    private readonly mailerService: MailerService,
+    private readonly teamService: TeamsService,
+
   ) {}
 
-  create(createTeamMemberDto: CreateTeamMemberDto) {
+  async create(createTeamMemberDto: CreateTeamMemberDto) {
+    //send welcome email
+    this.sendWelcomeEmailToMember(createTeamMemberDto);
+
+    //create team member
     return firstValueFrom(
       this.mainServiceClient.send(
         { cmd: 'create_team_member' },
@@ -75,7 +84,12 @@ export class TeamMembersService {
     );
   }
 
-  update(id: string, updateTeamMemberDto: UpdateTeamMemberDto) {
+  
+
+  async update(id: string, updateTeamMemberDto: UpdateTeamMemberDto) {
+    this.sendWelcomeEmailToMember(updateTeamMemberDto);
+
+   //update team member
     return firstValueFrom(
       this.mainServiceClient.send(
         { cmd: 'update_team_member' },
@@ -88,5 +102,21 @@ export class TeamMembersService {
     return firstValueFrom(
       this.mainServiceClient.send({ cmd: 'remove_team_member' }, id),
     );
+  }
+
+  private async sendWelcomeEmailToMember(memberDto: CreateTeamMemberDto | UpdateTeamMemberDto) {
+    if (memberDto.email && memberDto.access) {
+      const team = await this.teamService.findOne(memberDto.teamId);
+      const owner = await this.findOne(team.teamOwnerId);
+      await this.mailerService.sendWelcomeEmail({
+        toEmail: memberDto.email,
+        sender: '"Float Notifications" <float.group4@gmail.com>',
+        subject: 'Welcome to the Team!',
+        recipientName: memberDto.name,
+        inviterName: owner.name,
+        teamName: team.name,
+        url: 'https://example.com/login'
+      });
+    }
   }
 }
