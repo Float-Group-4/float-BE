@@ -17,6 +17,11 @@ export class RolesController {
     return this.rolesService.findAll();
   }
 
+  @MessagePattern({ cmd: 'find_roles_by_team_id' })
+  findByTeamId(teamId: string) {
+    return this.rolesService.findByTeamId(teamId);
+  }
+
   @MessagePattern({ cmd: 'find_role_by_id' })
   findOne(id: string) {
     return this.rolesService.findOne(id);

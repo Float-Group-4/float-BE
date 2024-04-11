@@ -18,6 +18,14 @@ export class StatusTypesService {
     return this.prisma.statusType.findMany();
   }
 
+  findByTeamId(teamId: string) {
+    return this.prisma.statusType.findMany({
+      where: {
+        teamId,
+      },
+    });
+  }
+
   findOne(id: string) {
     return this.prisma.statusType.findUnique({
       where: {

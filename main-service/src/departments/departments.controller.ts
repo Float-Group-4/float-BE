@@ -23,6 +23,11 @@ export class DepartmentsController {
     return this.departmentsService.findOne(id);
   }
 
+  @MessagePattern({ cmd: 'find_departments_by_team_id' })
+  findByTeamId(teamId: string) {
+    return this.departmentsService.findByTeamId(teamId);
+  }
+
   @MessagePattern({ cmd: 'update_department' })
   update({
     id,

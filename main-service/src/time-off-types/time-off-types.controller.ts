@@ -23,6 +23,11 @@ export class TimeOffTypesController {
     return this.timeOffTypesService.findOne(id);
   }
 
+  @MessagePattern({ cmd: 'find_time_off_types_by_team_id' })
+  findByTeamId(teamId: string) {
+    return this.timeOffTypesService.findByTeamId(teamId);
+  }
+
   @MessagePattern({ cmd: 'update_time_off_type' })
   update({
     id,

@@ -27,6 +27,11 @@ export class TimeOffTypesController {
     return this.timeOffTypesService.findAll();
   }
 
+  @Get('team/:teamId')
+  findByTeamId(@Param('teamId') teamId: string) {
+    return this.timeOffTypesService.findByTeamId(teamId);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.timeOffTypesService.findOne(id);

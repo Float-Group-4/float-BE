@@ -26,6 +26,15 @@ export class StatusTypesService {
     );
   }
 
+  findByTeamId(teamId: string) {
+    return firstValueFrom(
+      this.mainServiceClient.send(
+        { cmd: 'find_status_types_by_team_id' },
+        teamId,
+      ),
+    );
+  }
+
   findOne(id: string) {
     return firstValueFrom(
       this.mainServiceClient.send({ cmd: 'find_status_type_by_id' }, id),

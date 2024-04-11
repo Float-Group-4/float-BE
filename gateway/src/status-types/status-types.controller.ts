@@ -27,6 +27,11 @@ export class StatusTypesController {
     return this.statusTypesService.findAll();
   }
 
+  @Get('team/:teamId')
+  findByTeamId(@Param('teamId') teamId: string) {
+    return this.statusTypesService.findByTeamId(teamId);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.statusTypesService.findOne(id);

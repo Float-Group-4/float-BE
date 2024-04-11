@@ -23,6 +23,11 @@ export class StatusTypesController {
     return this.statusTypesService.findOne(id);
   }
 
+  @MessagePattern({ cmd: 'find_status_types_by_team_id' })
+  findByTeamId(teamId: string) {
+    return this.statusTypesService.findByTeamId(teamId);
+  }
+
   @MessagePattern({ cmd: 'update_status_type' })
   update({
     id,
