@@ -30,8 +30,19 @@ export class TeamMembersController {
     return this.teamMembersService.findAllWithFilters(teamId, filter);
   }
 
+  @MessagePattern({ cmd: 'find_team_members_by_team_id' })
+  findAllByTeamId(teamId: string) {
+    return this.teamMembersService.findAllByTeamId(teamId);
+  }
+
   @MessagePattern({ cmd: 'update_team_member' })
-  update(id: string, updateTeamMemberDto: UpdateTeamMemberDto) {
+  update({
+    id,
+    updateTeamMemberDto,
+  }: {
+    id: string;
+    updateTeamMemberDto: UpdateTeamMemberDto;
+  }) {
     return this.teamMembersService.update(id, updateTeamMemberDto);
   }
 

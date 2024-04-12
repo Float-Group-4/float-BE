@@ -31,6 +31,11 @@ import { TeamsController } from './teams/teams.controller';
 import { MailerService } from './mail/mail.service';
 import { ViewController } from './view/view.controller';
 import { ViewService } from './view/view.service';
+import { StatusController } from './status/status.controller';
+import { StatusTypesController } from './status-types/status-types.controller';
+import { StatusService } from './status/status.service';
+import { StatusTypesService } from './status-types/status-types.service';
+
 @Module({
   imports: [
     ClientsModule.register([
@@ -79,6 +84,8 @@ import { ViewService } from './view/view.service';
     RolesController,
     TeamsController,
     ViewController,
+    StatusController,
+    StatusTypesController,
   ],
   providers: [
     AppService,
@@ -100,6 +107,8 @@ import { ViewService } from './view/view.service';
     TeamsService,
     MailerService,
     ViewService,
+    StatusService,
+    StatusTypesService,
   ],
 })
 export class AppModule {}

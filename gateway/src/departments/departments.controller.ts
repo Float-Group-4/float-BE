@@ -32,6 +32,11 @@ export class DepartmentsController {
     return this.departmentsService.findOne(id);
   }
 
+  @Get('team/:teamId')
+  findByTeamId(@Param('teamId') teamId: string) {
+    return this.departmentsService.findByTeamId(teamId);
+  }
+
   @Patch(':id')
   update(
     @Param('id') id: string,

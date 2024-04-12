@@ -17,13 +17,18 @@ export class RolesController {
     return this.rolesService.findAll();
   }
 
+  @MessagePattern({ cmd: 'find_roles_by_team_id' })
+  findByTeamId(teamId: string) {
+    return this.rolesService.findByTeamId(teamId);
+  }
+
   @MessagePattern({ cmd: 'find_role_by_id' })
   findOne(id: string) {
     return this.rolesService.findOne(id);
   }
 
   @MessagePattern({ cmd: 'update_role' })
-  update(id: string, updateRoleDto: UpdateRoleDto) {
+  update({ id, updateRoleDto }: { id: string; updateRoleDto: UpdateRoleDto }) {
     return this.rolesService.update(id, updateRoleDto);
   }
 

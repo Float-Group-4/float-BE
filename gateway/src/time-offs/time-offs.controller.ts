@@ -32,6 +32,11 @@ export class TimeOffsController {
     return this.timeOffsService.findOne(id);
   }
 
+  @Get('team/:teamId')
+  findAllTimeOffByTeamId(@Param('teamId') teamId: string) {
+    return this.timeOffsService.findAllTimeOffByTeamId(teamId);
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateTimeOffDto: UpdateTimeOffDto) {
     return this.timeOffsService.update(id, updateTimeOffDto);

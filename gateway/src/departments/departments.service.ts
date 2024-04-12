@@ -27,6 +27,15 @@ export class DepartmentsService {
     );
   }
 
+  findByTeamId(teamId: string) {
+    return firstValueFrom(
+      this.mainServiceClient.send(
+        { cmd: 'find_departments_by_team_id' },
+        teamId,
+      ),
+    );
+  }
+
   findOne(id: string) {
     return firstValueFrom(
       this.mainServiceClient.send({ cmd: 'find_department_by_id' }, id),

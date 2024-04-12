@@ -15,6 +15,8 @@ import { ProjectModule } from './project/project.module';
 import { ProjectMemberModule } from './project-member/project-member.module';
 import { AllocationModule } from './allocation/allocation.module';
 import { TaskModule } from './task/task.module';
+import { StatusModule } from './status/status.module';
+import { StatusTypesModule } from './status-types/status-types.module';
 
 @Module({
   imports: [
@@ -32,6 +34,8 @@ import { TaskModule } from './task/task.module';
     AllocationModule,
     TaskModule,
     ProjectMemberModule,
+    StatusModule,
+    StatusTypesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

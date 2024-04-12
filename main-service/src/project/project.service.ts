@@ -15,6 +15,7 @@ export class ProjectService {
         client: createProjectDto.client,
         bugdet: createProjectDto.budget,
         createdAt: new Date(),
+        teamId: createProjectDto.teamId,
       },
     });
   }
@@ -25,22 +26,33 @@ export class ProjectService {
 
   async findOne(id: string) {
     return this.prisma.project.findUnique({ where: { id: id } });
-  };
+  }
+
+  async findAllByTeamId(teamId: string) {
+    return this.prisma.project.findMany({
+      where: {
+        Team: {
+          id: teamId,
+        },
+      },
+    });
+  }
 
   async update(id: string, updateProjectDto: UpdateProjectDto) {
     return this.prisma.project.update({
-      where: {id :id},
+      where: { id: id },
       data: {
         name: updateProjectDto.name,
         client: updateProjectDto.client,
         bugdet: updateProjectDto.budget,
         updatedAt: new Date(),
       },
-    })
+    });
   }
 
   remove(id: string) {
-    return this.prisma.project.delete({ where: { id: id } });  }
+    return this.prisma.project.delete({ where: { id: id } });
+  }
 
   // remove(id: number,  updateProjectDto: UpdateProjectDto) {
   //     return this.prisma.project.update({

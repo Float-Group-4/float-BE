@@ -24,6 +24,12 @@ export class TimeOffsService {
     );
   }
 
+  findAllTimeOffByTeamId(teamId: string) {
+    return firstValueFrom(
+      this.mainServiceClient.send({ cmd: 'find_time_offs_by_team_id' }, teamId),
+    );
+  }
+
   findOne(id: string) {
     return firstValueFrom(
       this.mainServiceClient.send({ cmd: 'find_time_off_by_id' }, id),

@@ -25,6 +25,18 @@ export class AllocationService {
     return this.prisma.allocation.findMany();
   }
 
+  findAllByTeamId(teamId: string) {
+    return this.prisma.allocation.findMany({
+      where: {
+        TeamMember: {
+          Team: {
+            id: teamId,
+          },
+        },
+      },
+    });
+  }
+
   findOne(id: string) {
     return this.prisma.allocation.findUnique({ where: { id: id } });
   }

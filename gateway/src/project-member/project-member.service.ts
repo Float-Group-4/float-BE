@@ -30,9 +30,12 @@ export class ProjectMemberService {
     );
   }
 
-  getMembersByProjectId(id: string) {
+  getMembersByProjectId(projectId: string) {
     return firstValueFrom(
-      this.mainServiceClient.send({ cmd: 'get_members_by_project_id' }, id),
+      this.mainServiceClient.send(
+        { cmd: 'get_members_by_project_id' },
+        projectId,
+      ),
     );
   }
 

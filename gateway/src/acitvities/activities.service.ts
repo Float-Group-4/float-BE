@@ -28,7 +28,7 @@ export class ActivitiesService {
 
   async findOne(id: string) {
     return await firstValueFrom(
-      this.mainServiceClient.send({ cmd: 'find_activity_by_id' }, { id }),
+      this.mainServiceClient.send({ cmd: 'find_activity_by_id' }, id),
     );
   }
 
@@ -43,7 +43,7 @@ export class ActivitiesService {
 
   async remove(id: string) {
     return await firstValueFrom(
-      this.mainServiceClient.send({ cmd: 'remove_activity' }, { id }),
+      this.mainServiceClient.send({ cmd: 'remove_activity' }, id),
     );
   }
 }

@@ -52,6 +52,14 @@ export class TeamMembersService {
     return this.prisma.teamMember.findMany();
   }
 
+  findAllByTeamId(teamId: string) {
+    return this.prisma.teamMember.findMany({
+      where: {
+        teamId,
+      },
+    });
+  }
+
   findAllWithFilters(teamId: string, filter: TeamMemberFilter) {
     const whereClause: Prisma.TeamMemberWhereInput = {
       teamId,
