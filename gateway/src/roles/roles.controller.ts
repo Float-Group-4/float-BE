@@ -27,6 +27,11 @@ export class RolesController {
     return this.rolesService.findAll();
   }
 
+  @Get('team/:teamId')
+  findByTeamId(@Param('teamId') teamId: string) {
+    return this.rolesService.findByTeamId(teamId);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.rolesService.findOne(id);

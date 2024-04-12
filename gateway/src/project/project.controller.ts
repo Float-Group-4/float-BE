@@ -32,6 +32,11 @@ export class ProjectController {
     return this.projectService.findOne(id);
   }
 
+  @Get('team/:teamId')
+  findAllByTeamId(@Param('teamId') teamId: string) {
+    return this.projectService.findAllByTeamId(teamId);
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateProjectDto: UpdateProjectDto) {
     return this.projectService.update(id, updateProjectDto);

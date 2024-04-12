@@ -10,8 +10,8 @@ import { MailerService } from 'src/mail/mail.service';
 @ApiTags('Project')
 export class ProjectService {
   constructor(
-    @Inject('MAIN_SERVICE') private readonly mainServiceClient: ClientProxy, 
-    private readonly mailerService: MailerService
+    @Inject('MAIN_SERVICE') private readonly mainServiceClient: ClientProxy,
+    private readonly mailerService: MailerService,
   ) {}
   async create(createProjectDto: CreateProjectDto) {
     return firstValueFrom(
@@ -23,6 +23,12 @@ export class ProjectService {
     
     return firstValueFrom(
       this.mainServiceClient.send({ cmd: 'find_all_projects' }, {}),
+    );
+  }
+
+  async findAllByTeamId(teamId: string) {
+    return firstValueFrom(
+      this.mainServiceClient.send({ cmd: 'find_projects_by_team_id' }, teamId),
     );
   }
 

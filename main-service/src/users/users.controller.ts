@@ -23,7 +23,7 @@ export class UsersController {
   }
 
   @MessagePattern({ cmd: 'update_user' })
-  update(id: string, updateUserDto: UpdateUserDto) {
+  update({ id, updateUserDto }: { id: string; updateUserDto: UpdateUserDto }) {
     return this.usersService.update(id, updateUserDto);
   }
 

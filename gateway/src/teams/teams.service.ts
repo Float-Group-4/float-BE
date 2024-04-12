@@ -17,7 +17,7 @@ export class TeamsService {
 
   async initTeam(createTeamDto: initTeamDto) {
     return firstValueFrom(
-      this.mainServiceClient.send({ cmd: 'init_team' }, { createTeamDto }),
+      this.mainServiceClient.send({ cmd: 'init_team' }, createTeamDto),
     );
   }
 
@@ -44,7 +44,13 @@ export class TeamsService {
 
   remove(id: string) {
     return firstValueFrom(
-      this.mainServiceClient.send({ cmd: 'remove_team' }, { id }),
+      this.mainServiceClient.send({ cmd: 'remove_team' }, id),
+    );
+  }
+
+  getTeamByUser(userId: string) {
+    return firstValueFrom(
+      this.mainServiceClient.send({ cmd: 'get_team_by_user' }, userId),
     );
   }
 }

@@ -23,7 +23,13 @@ export class SettingsController {
   }
 
   @MessagePattern({ cmd: 'update_setting' })
-  update(id: string, updateSettingDto: UpdateSettingDto) {
+  update({
+    id,
+    updateSettingDto,
+  }: {
+    id: string;
+    updateSettingDto: UpdateSettingDto;
+  }) {
     return this.settingsService.update(id, updateSettingDto);
   }
 

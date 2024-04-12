@@ -18,6 +18,14 @@ export class RolesService {
     return this.prisma.role.findMany();
   }
 
+  findByTeamId(teamId: string) {
+    return this.prisma.role.findMany({
+      where: {
+        teamId,
+      },
+    });
+  }
+
   findOne(id: string) {
     return this.prisma.role.findUnique({
       where: {

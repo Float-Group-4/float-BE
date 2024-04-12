@@ -1,6 +1,6 @@
 import { MailerService } from '@nestjs-modules/mailer';
 import { Injectable } from '@nestjs/common';
-import { MessagePattern} from '@nestjs/microservices';
+import { MessagePattern } from '@nestjs/microservices';
 import { send } from 'process';
 @Injectable()
 export class MailService {
@@ -48,4 +48,4 @@ export class MailService {
         throw new Error('Failed to send email');
       }
     }
-}
+  }

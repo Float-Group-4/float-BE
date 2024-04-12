@@ -18,6 +18,16 @@ export class TimeOffsService {
     return this.prisma.timeOff.findMany();
   }
 
+  findAllTimeOffByTeamId(teamId: string) {
+    return this.prisma.timeOff.findMany({
+      where: {
+        TeamMember: {
+          teamId: teamId,
+        },
+      },
+    });
+  }
+
   findOne(id: string) {
     return this.prisma.timeOff.findUnique({
       where: {

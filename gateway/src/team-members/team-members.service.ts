@@ -78,6 +78,15 @@ export class TeamMembersService {
     );
   }
 
+  findAllByTeamId(teamId: string) {
+    return firstValueFrom(
+      this.mainServiceClient.send(
+        { cmd: 'find_team_members_by_team_id' },
+        teamId,
+      ),
+    );
+  }
+
   findOne(id: string) {
     return firstValueFrom(
       this.mainServiceClient.send({ cmd: 'find_team_member_by_id' }, id),

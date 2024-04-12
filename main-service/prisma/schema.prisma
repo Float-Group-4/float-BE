@@ -41,8 +41,10 @@ model Team {
   deleted     Boolean       @default(false)
   Activity    Activity[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  Project    Project[]
+  StatusType StatusType[]
 }
 
 model Setting {
@@ -53,7 +55,7 @@ model Setting {
   timeZone      String
   startWeek     String
   timeFormat    String
-  isShowWeekend Boolean
+  isShowWeekend Boolean @default(false)
   workDay       String
 
   createdAt DateTime @default(now())
@@ -79,7 +81,7 @@ model TimeOffType {
   teamId        String
   name          String //@unique
   color         String
-  balance       String
+  balance       String    @default("Unlimited")
   days          Float
   EffectiveDate DateTime
   TimeOff       TimeOff[]
@@ -89,17 +91,18 @@ model TimeOffType {
 }
 
 model TeamMember {
-  id     String @id @default(uuid())
-  Team   Team   @relation(fields: [teamId], references: [id])
+  id     String  @id @default(uuid())
+  Team   Team    @relation(fields: [teamId], references: [id])
   teamId String
-  User   User   @relation(fields: [userId], references: [id])
-  userId String
+  User   User?   @relation(fields: [userId], references: [id])
+  userId String?
   name   String
+  avatar String?
 
   type          String
-  hourlyRate    Float // ask again
-  access        String
-  email         String
+  hourlyRate    Float? // ask again
+  access        String?
+  email         String?
   Activity      Activity[]
   TimeOff       TimeOff[]
   Role          Role?           @relation(fields: [roleId], references: [id])
@@ -118,6 +121,7 @@ model TeamMember {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  Status    Status[]
 
   @@unique([teamId, userId])
 }
@@ -176,13 +180,16 @@ model Project {
   name           String
   projectOwner   TeamMember      @relation(fields: [projectOwnerId], references: [id])
   projectOwnerId String
-  client         String
-  bugdet         String
+  client         String?
+  bugdet         String?
   ProjectMember  ProjectMember[]
   Task           Task[]
   ProjectTags    ProjectTags[]
   archived       Boolean         @default(false)
   deleted        Boolean         @default(false)
+
+  Team   Team   @relation(fields: [teamId], references: [id])
+  teamId String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -205,7 +212,7 @@ model Allocation {
   teamMemberId String
   Task         Task       @relation(fields: [taskId], references: [id])
   taskId       String
-  description  String
+  description  String?
   startDate    DateTime
   endDate      DateTime
   workHours    Float
@@ -247,4 +254,29 @@ model ProjectTags {
   tagId     String
 
   @@id([projectId, tagId])
+}
+
+model Status {
+  id           String     @id @default(uuid())
+  TeamMember   TeamMember @relation(fields: [teamMemberId], references: [id])
+  teamMemberId String
+  Type         StatusType @relation(fields: [typeId], references: [id])
+  typeId       String
+  startDate    DateTime
+  endDate      DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model StatusType {
+  id     String   @id @default(uuid())
+  team   Team     @relation(fields: [teamId], references: [id])
+  teamId String
+  name   String   @unique
+  color  String
+  Status Status[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

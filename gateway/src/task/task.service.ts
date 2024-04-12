@@ -24,19 +24,19 @@ export class TaskService {
       throw new NotFoundException('Task not found');
     }
     return firstValueFrom(
-      this.mainServiceClient.send({ cmd: 'delete_task_by_id' }, { taskId }),
+      this.mainServiceClient.send({ cmd: 'delete_task_by_id' }, taskId),
     );
   }
 
   getTaskById(taskId: string) {
     return firstValueFrom(
-      this.mainServiceClient.send({ cmd: 'get_task_by_id' }, { taskId }),
+      this.mainServiceClient.send({ cmd: 'get_task_by_id' }, taskId),
     );
   }
 
-  getAllTasksByProjectId(id: string) {
+  getAllTasksByProjectId(projectId: string) {
     return firstValueFrom(
-      this.mainServiceClient.send({ cmd: 'get_all_tasks' }, { projectId: id }),
+      this.mainServiceClient.send({ cmd: 'get_all_tasks' }, projectId),
     );
   }
 }
