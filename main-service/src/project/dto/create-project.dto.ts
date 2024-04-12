@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDate, IsString } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateProjectDto {
   @ApiProperty()
@@ -12,6 +12,7 @@ export class CreateProjectDto {
 
   @ApiProperty()
   @IsString()
+  @IsNotEmpty()
   projectOwnerId: string;
 
   @ApiProperty()
@@ -19,6 +20,7 @@ export class CreateProjectDto {
   budget: string;
 
   @ApiProperty()
-  @IsDate()
-  createdAt: Date;
+  @IsString()
+  @IsNotEmpty()
+  teamId: string;
 }

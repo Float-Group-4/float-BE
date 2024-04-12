@@ -27,13 +27,22 @@ export class TeamMembersController {
   @MessagePattern({ cmd: 'find_team_members_by_team_id_and_filter' })
   findAllFiltered(Body: GetTeamMembersDto) {
     const { teamId, filter } = Body;
-    console.log('teamId', teamId);
-    console.log('filter', filter.people.ids);
     return this.teamMembersService.findAllWithFilters(teamId, filter);
   }
 
+  @MessagePattern({ cmd: 'find_team_members_by_team_id' })
+  findAllByTeamId(teamId: string) {
+    return this.teamMembersService.findAllByTeamId(teamId);
+  }
+
   @MessagePattern({ cmd: 'update_team_member' })
-  update(id: string, updateTeamMemberDto: UpdateTeamMemberDto) {
+  update({
+    id,
+    updateTeamMemberDto,
+  }: {
+    id: string;
+    updateTeamMemberDto: UpdateTeamMemberDto;
+  }) {
     return this.teamMembersService.update(id, updateTeamMemberDto);
   }
 

@@ -19,9 +19,9 @@ export class ProjectMemberController {
     return this.projectService.deleteMember(deleteProjectMemberDto);
   }
 
-  @Get(':id/members')
-  getMembersByProjectId(@Param('id') id: string) {
-    return this.projectService.getMembersByProjectId(id);
+  @Get(':projectId/members')
+  getMembersByProjectId(@Param('projectId') projectId: string) {
+    return this.projectService.getMembersByProjectId(projectId);
   }
 
   @Get('')
