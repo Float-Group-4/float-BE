@@ -29,10 +29,13 @@ import { RolesService } from './roles/roles.service';
 import { RolesController } from './roles/roles.controller';
 import { TeamsController } from './teams/teams.controller';
 import { MailerService } from './mail/mail.service';
+import { ViewController } from './view/view.controller';
+import { ViewService } from './view/view.service';
 import { StatusController } from './status/status.controller';
 import { StatusTypesController } from './status-types/status-types.controller';
 import { StatusService } from './status/status.service';
 import { StatusTypesService } from './status-types/status-types.service';
+
 @Module({
   imports: [
     ClientsModule.register([
@@ -80,6 +83,7 @@ import { StatusTypesService } from './status-types/status-types.service';
     ProjectController,
     RolesController,
     TeamsController,
+    ViewController,
     StatusController,
     StatusTypesController,
   ],
@@ -102,6 +106,7 @@ import { StatusTypesService } from './status-types/status-types.service';
     RolesService,
     TeamsService,
     MailerService,
+    ViewService,
     StatusService,
     StatusTypesService,
   ],
