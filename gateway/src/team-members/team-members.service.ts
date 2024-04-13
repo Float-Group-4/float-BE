@@ -51,16 +51,19 @@ export class TeamMembersService {
   ) {}
 
   async create(createTeamMemberDto: CreateTeamMemberDto) {
-    //send welcome email
-    this.sendWelcomeEmailToMember(createTeamMemberDto);
-
-    //create team member
-    return firstValueFrom(
-      this.mainServiceClient.send(
-        { cmd: 'create_team_member' },
-        createTeamMemberDto,
-      ),
-    );
+    try {
+      const result = await firstValueFrom(
+        this.mainServiceClient.send(
+          { cmd: 'create_team_member' },
+          createTeamMemberDto,
+        ),
+      );
+      this.sendWelcomeEmailToMember(createTeamMemberDto);
+      return result;
+    } catch (error) {
+      console.error('Error creating team member:', error);
+      throw new Error('Failed to create team member');
+    }
   }
 
   findAll() {
@@ -96,15 +99,19 @@ export class TeamMembersService {
   
 
   async update(id: string, updateTeamMemberDto: UpdateTeamMemberDto) {
-    this.sendWelcomeEmailToMember(updateTeamMemberDto);
-
-   //update team member
-    return firstValueFrom(
-      this.mainServiceClient.send(
-        { cmd: 'update_team_member' },
-        { id, updateTeamMemberDto },
-      ),
-    );
+    try {
+      const result = await firstValueFrom(
+        this.mainServiceClient.send(
+          { cmd: 'update_team_member' },
+          { id, updateTeamMemberDto },
+        ),
+      );
+      this.sendWelcomeEmailToMember(updateTeamMemberDto);
+      return result;
+    } catch (error) {
+      console.error('Error updating team member:', error);
+      throw new Error('Failed to update team member');
+    }
   }
 
   remove(id: string) {
