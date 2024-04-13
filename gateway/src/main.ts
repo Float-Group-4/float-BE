@@ -4,7 +4,9 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { INestApplication } from '@nestjs/common';
 
 async function bootstrap() {
-  const app = (await NestFactory.create(AppModule)) as INestApplication<any>;
+  const app = (await NestFactory.create(AppModule, {
+    cors: true,
+  })) as INestApplication<any>;
   // set up swagger
   const config = new DocumentBuilder()
     .setTitle('Gateway')
