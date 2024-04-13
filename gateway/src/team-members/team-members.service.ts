@@ -122,7 +122,7 @@ export class TeamMembersService {
         sender: '"Float Notifications" <float.group4@gmail.com>',
         subject: 'Welcome to the Team!',
         recipientName: memberDto.name,
-        inviterName: owner.name,
+        inviterName: owner  ? owner.name : "Someone",
         teamName: team.name,
         url: 'https://example.com/login'
       });
