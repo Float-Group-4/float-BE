@@ -7,15 +7,21 @@ import {
   Patch,
   Delete,
   Get,
+  UseInterceptors,
 } from '@nestjs/common';
 import { DepartmentsService } from './departments.service';
 import { CreateDepartmentDto } from './dto/create-department.dto';
 import { UpdateDepartmentDto } from './dto/update-department.dto';
+import { RedisService } from 'src/redis/redis.service';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @Controller('departments')
 @ApiTags('Departments')
 export class DepartmentsController {
-  constructor(private readonly departmentsService: DepartmentsService) {}
+  constructor(
+    private readonly departmentsService: DepartmentsService,
+    private readonly redisService: RedisService,
+  ) {}
 
   @Post()
   create(@Body() createDepartmentDto: CreateDepartmentDto) {
@@ -23,18 +29,39 @@ export class DepartmentsController {
   }
 
   @Get()
+  @UseInterceptors(CacheInterceptor)
   findAll() {
-    return this.departmentsService.findAll();
+    const cached = this.redisService.get('get_Departments');
+    if (cached) {
+      return cached;
+    }
+    const result = this.departmentsService.findAll();
+    this.redisService.set('get_Departments', result);
+    return result;
   }
 
   @Get(':id')
+  @UseInterceptors(CacheInterceptor)
   findOne(@Param('id') id: string) {
-    return this.departmentsService.findOne(id);
+    const cached = this.redisService.get('get_Department_' + id);
+    if (cached) {
+      return cached;
+    }
+    const result = this.departmentsService.findOne(id);
+    this.redisService.set('get_Department_' + id, result);
+    return result;
   }
 
   @Get('team/:teamId')
+  @UseInterceptors(CacheInterceptor)
   findByTeamId(@Param('teamId') teamId: string) {
-    return this.departmentsService.findByTeamId(teamId);
+    const cached = this.redisService.get('get_DepartmentsByTeamId_' + teamId);
+    if (cached) {
+      return cached;
+    }
+    const result = this.departmentsService.findByTeamId(teamId);
+    this.redisService.set('get_DepartmentsByTeamId_' + teamId, result);
+    return result;
   }
 
   @Patch(':id')

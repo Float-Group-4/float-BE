@@ -8,7 +8,6 @@ import { ProjectMemberController } from './project-member/project-member.control
 import { ProjectMemberService } from './project-member/project-member.service';
 import { TaskController } from './task/task.controller';
 import { TaskService } from './task/task.service';
-import { UsersController } from './users/users.controller';
 import { TimeOffsController } from './time-offs/time-offs.controller';
 import { TeamsService } from './teams/teams.service';
 import { TimeOffsService } from './time-offs/time-offs.service';
@@ -35,6 +34,8 @@ import { StatusController } from './status/status.controller';
 import { StatusTypesController } from './status-types/status-types.controller';
 import { StatusService } from './status/status.service';
 import { StatusTypesService } from './status-types/status-types.service';
+import { RedisModule } from './redis/redis.module';
+import { UsersController } from './users/users.controller';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { StatusTypesService } from './status-types/status-types.service';
         transport: Transport.TCP,
         options: {
           host: 'main-service',
+          // host: 'localhost',
           port: 4001,
         },
       },
@@ -64,6 +66,7 @@ import { StatusTypesService } from './status-types/status-types.service';
         },
       },
     ]),
+    RedisModule,
   ],
   controllers: [
     AppController,

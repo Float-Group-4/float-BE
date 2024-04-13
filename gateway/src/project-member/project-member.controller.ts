@@ -1,13 +1,26 @@
+import { CacheInterceptor } from '@nestjs/cache-manager';
 import { CreateProjectMemberDto } from './dto/create-project-member.dto';
 import { DeleteProjectMemberDto } from './dto/delete-project-member.dto';
 import { ProjectMemberService } from './project-member.service';
-import { Controller, Post, Delete, Get, Body, Param } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Delete,
+  Get,
+  Body,
+  Param,
+  UseInterceptors,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { RedisService } from 'src/redis/redis.service';
 
 @Controller('project-members')
 @ApiTags('Project Members')
 export class ProjectMemberController {
-  constructor(private readonly projectService: ProjectMemberService) {}
+  constructor(
+    private readonly projectService: ProjectMemberService,
+    private readonly redisService: RedisService,
+  ) {}
 
   @Post()
   addMember(@Body() createProjectMemberDto: CreateProjectMemberDto) {
@@ -20,12 +33,26 @@ export class ProjectMemberController {
   }
 
   @Get(':projectId/members')
+  @UseInterceptors(CacheInterceptor)
   getMembersByProjectId(@Param('projectId') projectId: string) {
-    return this.projectService.getMembersByProjectId(projectId);
+    const cached = this.redisService.get('get_ProjectMembers_' + projectId);
+    if (cached) {
+      return cached;
+    }
+    const result = this.projectService.getMembersByProjectId(projectId);
+    this.redisService.set('get_ProjectMembers_' + projectId, result);
+    return result;
   }
 
   @Get('')
-  getAllMembers() {
-    return this.projectService.getAllMembers();
+  @UseInterceptors(CacheInterceptor)
+  async getAllMembers() {
+    const cached = await this.redisService.get('get_ProjectMembers');
+    if (cached) {
+      return cached;
+    }
+    const result = await this.projectService.getAllMembers();
+    await this.redisService.set('get_ProjectMembers', result);
+    return result;
   }
 }
