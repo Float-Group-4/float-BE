@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { User } from '@prisma/client';
 
 export class CreateUserDto {
   @ApiProperty()
@@ -8,8 +7,4 @@ export class CreateUserDto {
   email: string;
   @ApiProperty()
   password: string;
-  @ApiProperty()
-  timeFormat: string;
-  @ApiProperty()
-  avatar: string;
 }

@@ -4,8 +4,6 @@ export class CreateTeamMemberDto {
   @ApiProperty()
   teamId: string;
   @ApiProperty()
-  userId: string;
-  @ApiProperty()
   name: string;
   @ApiProperty()
   type: string;

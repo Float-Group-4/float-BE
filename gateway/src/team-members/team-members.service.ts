@@ -47,7 +47,6 @@ export class TeamMembersService {
     @Inject('MAIN_SERVICE') private readonly mainServiceClient: ClientProxy,
     private readonly mailerService: MailerService,
     private readonly teamService: TeamsService,
-
   ) {}
 
   async create(createTeamMemberDto: CreateTeamMemberDto) {
@@ -96,8 +95,6 @@ export class TeamMembersService {
     );
   }
 
-  
-
   async update(id: string, updateTeamMemberDto: UpdateTeamMemberDto) {
     try {
       const result = await firstValueFrom(
@@ -120,18 +117,21 @@ export class TeamMembersService {
     );
   }
 
-  private async sendWelcomeEmailToMember(memberDto: CreateTeamMemberDto | UpdateTeamMemberDto) {
+  private async sendWelcomeEmailToMember(
+    memberDto: CreateTeamMemberDto | UpdateTeamMemberDto,
+  ) {
     if (memberDto.email && memberDto.access) {
       const team = await this.teamService.findOne(memberDto.teamId);
       const owner = await this.findOne(team.teamOwnerId);
+
       await this.mailerService.sendWelcomeEmail({
         toEmail: memberDto.email,
         sender: '"Float Notifications" <float.group4@gmail.com>',
         subject: 'Welcome to the Team!',
         recipientName: memberDto.name,
-        inviterName: owner  ? owner.name : "Someone",
+        inviterName: owner ? owner.name : 'Someone',
         teamName: team.name,
-        url: 'https://example.com/login'
+        url: 'https://example.com/login',
       });
     }
   }

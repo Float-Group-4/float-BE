@@ -10,8 +10,8 @@ export class TeamMembersController {
   constructor(private readonly teamMembersService: TeamMembersService) {}
 
   @MessagePattern({ cmd: 'create_team_member' })
-  create(createTeamMemberDto: CreateTeamMemberDto) {
-    return this.teamMembersService.create(createTeamMemberDto);
+  async create(createTeamMemberDto: CreateTeamMemberDto) {
+    return await this.teamMembersService.create(createTeamMemberDto);
   }
 
   @MessagePattern({ cmd: 'find_all_team_members' })
@@ -36,14 +36,14 @@ export class TeamMembersController {
   }
 
   @MessagePattern({ cmd: 'update_team_member' })
-  update({
+  async update({
     id,
     updateTeamMemberDto,
   }: {
     id: string;
     updateTeamMemberDto: UpdateTeamMemberDto;
   }) {
-    return this.teamMembersService.update(id, updateTeamMemberDto);
+    return await this.teamMembersService.update(id, updateTeamMemberDto);
   }
 
   @MessagePattern({ cmd: 'remove_team_member' })

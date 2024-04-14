@@ -1,10 +1,10 @@
-version: '3.4'
+version: "3.4"
 
 services:
   auth-service:
     # image: ${DOCKER_REGISTRY-}authservice
     ports:
-        - 4005:80
+      - 4005:80
     build:
       context: .
       dockerfile: auth-service/Dockerfile
@@ -16,30 +16,30 @@ services:
       POSTGRES_USER: keycloak
       POSTGRES_DB: keycloak
     volumes:
-        - postgres_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
     ports:
-        - 5432:5432
+      - 5433:5432
   keycloak:
     image: quay.io/keycloak/keycloak:latest
     ports:
-        - 8080:8080
+      - 8080:8080
     command: -v start-dev --import-realm
     environment:
-        KEYCLOAK_ADMIN: admin
-        KEYCLOAK_ADMIN_PASSWORD: 123456
-        KEYCLOAK_IMPORT: /imports/realm-export.json
-        KC_FEATURES: preview
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: 123456
+      KEYCLOAK_IMPORT: /imports/realm-export.json
+      KC_FEATURES: preview
 
-        DB_VENDOR: POSTGRES
-        DB_ADDR: postgres-keycloak
-        DB_DATABASE: keycloak
-        DB_USER: keycloak
-        DB_SCHEMA: public
-        DB_PASSWORD: password
+      DB_VENDOR: POSTGRES
+      DB_ADDR: postgres-keycloak
+      DB_DATABASE: keycloak
+      DB_USER: keycloak
+      DB_SCHEMA: public
+      DB_PASSWORD: password
     depends_on:
-        - postgres-keycloak
+      - postgres-keycloak
     volumes:
-        - ./imports:/opt/keycloak/data/import
+      - ./imports:/opt/keycloak/data/import
 volumes:
   postgres_data:
-      driver: local
+    driver: local

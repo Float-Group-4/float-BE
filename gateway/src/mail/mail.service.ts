@@ -11,12 +11,14 @@ export class MailerService {
   ) {}
 
   async sendConfirmEmail(SendEmailDto: SendConfirmEmailDto) {
-    console.log("Comfirmation Email sent!");
-    return await firstValueFrom(this.mailServiceClient.send({ cmd: 'send_confirm_email' }, SendEmailDto));
+    return await firstValueFrom(
+      this.mailServiceClient.send({ cmd: 'send_confirm_email' }, SendEmailDto),
+    );
   }
 
   async sendWelcomeEmail(SendEmailDto: SendWelcomeEmailDto) {
-    console.log("Welcome Email sent!");
-    return await firstValueFrom(this.mailServiceClient.send({ cmd: 'send_welcome_email' }, SendEmailDto));
+    return await firstValueFrom(
+      this.mailServiceClient.send({ cmd: 'send_welcome_email' }, SendEmailDto),
+    );
   }
 }

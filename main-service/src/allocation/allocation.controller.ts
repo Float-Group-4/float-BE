@@ -36,7 +36,6 @@ export class AllocationController {
     id: string;
     updateAllocationDto: UpdateAllocationDto;
   }) {
-    console.log('Heheh', id, updateAllocationDto);
     return this.allocationService.update(id, updateAllocationDto);
   }
 
