@@ -1,6 +1,6 @@
 import { IsString } from 'class-validator';
 
-export class SendEmailDto
+export class SendWelcomeEmailDto
 {
 
   @IsString()
@@ -13,7 +13,14 @@ export class SendEmailDto
   subject: string;
 
   @IsString()
-  template: string;
+  recipientName: string;
 
-  context: any;
+  @IsString()
+  inviterName: string;
+
+  @IsString()
+  teamName: string;
+
+  @IsString()
+  url: string;
 }

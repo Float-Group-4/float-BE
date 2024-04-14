@@ -20,18 +20,7 @@ export class ProjectService {
   }
 
   async findAll() {
-    //---Example for using SendEmail Service---
-    // this.mailerService.sendEmail
-    // ({
-    //   toEmail: 'nkhang1902@gmail.com',
-    //   sender: '"Support Team"',
-    //   subject:'Welcome to Float! Confirm your Email',
-    //   template: './confirmation',
-    //   context: {
-    //     name: 'Nhat Khang',
-    //     url: 'example.com/auth/confirm?token=123',
-    //   },
-    // })
+    
     return firstValueFrom(
       this.mainServiceClient.send({ cmd: 'find_all_projects' }, {}),
     );

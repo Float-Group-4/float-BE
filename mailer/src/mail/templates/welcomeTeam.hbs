@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invite to Team</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #333;
+            margin-top: 0;
+        }
+
+        p {
+            font-size: 16px;
+            line-height: 1.6;
+            margin: 10px 0;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0;
+        }
+
+        ul li {
+            margin-bottom: 5px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        ul li::before {
+            content: '\2022';
+            color: #007bff;
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            left: 0;
+            top: 0;
+        }
+
+        .btn {
+            display: inline-block;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="
+            https://ci3.googleusercontent.com/meips/ADKq_NYJr2BF-1QkC-WdE9Hxzd4oqez67iUW2lt94PgF_2Fx_14E0n7YHbVkR5Rmn0LX2UmsnXIRY-YSUsXzURMsBbc_S9gw1itNGD3OjH1YzDv6J8n1W5l7_KpAk0kqDG8gdvpWgQ08nikJsRxv-y5FHHOeGSSGASgA3p09v1DK5NiN-kKTcxphwvQF=s0-d-e1-ft#http://cdn.mcauto-images-production.sendgrid.net/43e300b6c94262da/b6d332ec-942f-4253-a239-7e15e93ea31a/1536x686.png"
+             alt="Header Image">
+        </div>
+        <h1>Hi {{ recipientName }}!</h1>
+        <p>{{ inviterName }} has invited you to join {{ teamName }} in Float.</p>
+        <br>
+        <p><strong>What is Float?</strong></p>
+        <p>Float is the #1 tool for managing shared work schedules. It helps keep track of who’s available and working on what, and makes it easy to plan projects that set your team up for success.</p>
+        <br>
+        <p><strong>How can you use Float?</strong></p>
+        <ul>
+            <li>See your team's projects</li>
+            <li>Track your assigned tasks</li>
+            <li>Get notified when work changes</li>
+            <li>Manage your availability and plan time off</li>
+            <li>Log your timesheets (in just a few taps!)</li>
+        </ul>
+        <br>
+        <a href="{{ url }}" class="btn">Let's log in</a>
+    </div>
+</body>
+</html>

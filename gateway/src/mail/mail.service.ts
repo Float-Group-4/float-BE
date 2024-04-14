@@ -1,7 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
-import { SendEmailDto } from './dto/send-email.dto';
+import { SendWelcomeEmailDto } from './dto/send-email-welcome.dto';
+import { SendConfirmEmailDto } from './dto/send-email-confirm.dto';
 
 @Injectable()
 export class MailerService {
@@ -9,8 +10,13 @@ export class MailerService {
     @Inject('MAILER_SERVICE') private readonly mailServiceClient: ClientProxy,
   ) {}
 
-  async sendEmail(SendEmailDto: SendEmailDto) {
-    console.log("Email sent!");
-    return await firstValueFrom(this.mailServiceClient.send({ cmd: 'send_email' }, SendEmailDto));
+  async sendConfirmEmail(SendEmailDto: SendConfirmEmailDto) {
+    console.log("Comfirmation Email sent!");
+    return await firstValueFrom(this.mailServiceClient.send({ cmd: 'send_confirm_email' }, SendEmailDto));
+  }
+
+  async sendWelcomeEmail(SendEmailDto: SendWelcomeEmailDto) {
+    console.log("Welcome Email sent!");
+    return await firstValueFrom(this.mailServiceClient.send({ cmd: 'send_welcome_email' }, SendEmailDto));
   }
 }
