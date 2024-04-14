@@ -37,7 +37,7 @@ export class ActivitiesController {
     }
     const result = await this.activitiesService.findAll();
     // const result = await this.activitiesService.findOne(id);
-    await this.redisService.set('get_Activities', result);
+    if (result) await this.redisService.set('get_Activities', result);
     return result;
   }
 
@@ -49,7 +49,7 @@ export class ActivitiesController {
       return cached;
     }
     const result = await this.activitiesService.findOne(id);
-    await this.redisService.set('get_Activity_' + id, result);
+    if (result) await this.redisService.set('get_Activity_' + id, result);
     return result;
   }
 
@@ -58,7 +58,6 @@ export class ActivitiesController {
     @Param('id') id: string,
     @Body() updateAcitvityDto: UpdateActivityDto,
   ) {
-    console.log('update');
     return this.activitiesService.update(id, updateAcitvityDto);
   }
 
