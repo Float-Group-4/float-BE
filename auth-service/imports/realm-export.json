@@ -737,19 +737,19 @@
       "clientId": "float-client",
       "name": "",
       "description": "",
-      "rootUrl": "https://localhost:4005",
-      "adminUrl": "https://localhost:4005",
-      "baseUrl": "https://localhost:4005",
+      "rootUrl": "https://auth-service:4005",
+      "adminUrl": "https://auth-service:4005",
+      "baseUrl": "https://auth-service:4005",
       "surrogateAuthRequired": false,
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "secret": "0OL11VqWV4j8Ub2IbEjx0Ovbw29xBOH5",
       "redirectUris": [
-        "https://localhost:4005/*"
+        "https://auth-service:4005/*"
       ],
       "webOrigins": [
-        "https://localhost:4005"
+        "https://auth-service:4005"
       ],
       "notBefore": 0,
       "bearerOnly": false,
@@ -766,7 +766,7 @@
         "oidc.ciba.grant.enabled": "false",
         "client.secret.creation.time": "1712539954",
         "backchannel.logout.session.required": "true",
-        "post.logout.redirect.uris": "https://localhost:4005/*",
+        "post.logout.redirect.uris": "https://auth-service:4005/*",
         "oauth2.device.authorization.grant.enabled": "false",
         "backchannel.logout.revoke.offline.tokens": "false"
       },

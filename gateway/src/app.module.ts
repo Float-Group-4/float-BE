@@ -47,8 +47,7 @@ import { AuthService } from './auth/auth.service';
         name: 'MAIN_SERVICE',
         transport: Transport.TCP,
         options: {
-          // host: 'main-service',
-          host: 'localhost',
+          host: 'main-service',
           port: 4001,
         },
       },
@@ -56,7 +55,7 @@ import { AuthService } from './auth/auth.service';
         name: 'VIEW_SERVICE',
         transport: Transport.TCP,
         options: {
-          host: 'localhost',
+          host: 'view-service',
           port: 4002,
         },
       },
@@ -64,7 +63,7 @@ import { AuthService } from './auth/auth.service';
         name: 'MAILER_SERVICE',
         transport: Transport.TCP,
         options: {
-          host: 'localhost',
+          host: 'mailer',
           port: 4003,
         },
       },

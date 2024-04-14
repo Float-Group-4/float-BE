@@ -1,35 +1,52 @@
-version: "3.0"
 services:
-  # gateway:
-  #   build:
-  #     context: gateway
-  #     dockerfile: Dockerfile
-  #   container_name: gateway
-  #   ports:
-  #     - "4000:4000"
+  gateway:
+    build:
+      context: gateway
+      dockerfile: Dockerfile
+    container_name: gateway
+    env_file:
+      - .env
+    ports:
+      - "4000:4000"
 
-  # main-service:
-  #   build:
-  #     context: main-service
-  #     dockerfile: Dockerfile
-  #   container_name: main-service
-  #   # ports:
-  #   #   - "4001:4001"
+  main-service:
+    build:
+      context: main-service
+      dockerfile: Dockerfile
+    container_name: main-service
+    # ports:
+    #   - "4001:4001"
 
-  # haproxy:
-  #   image: haproxytech/haproxy-alpine:2.4
-  #   container_name: haproxy
-  #   ports:
-  #     - "80:80"
-  #     - "8404:8404"
-  #     - "5432:5432"
-  #   volumes:
-  #     - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+  view-service:
+    build:
+      context: view-service
+      dockerfile: Dockerfile
+    container_name: view-service
+    # ports:
+    #   - "4002:4002"
+
+  mailer:
+    build:
+      context: mailer
+      dockerfile: Dockerfile
+    container_name: mailer
+    # ports:
+    #   - "4003:4003"
+
+  haproxy:
+    image: haproxytech/haproxy-alpine:2.4
+    container_name: haproxy
+    ports:
+      - "80:80"
+      - "8404:8404"
+      # - "5430:5432"
+    volumes:
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
 
   redis:
     image: redis
-    # command: /bin/sh -c "redis-server --requirepass $$REDIS_PASS"
-    command: /bin/sh -c "redis-server"
+    command: /bin/sh -c "redis-server --requirepass $$REDIS_PASS"
+    # command: /bin/sh -c "redis-server"
     container_name: redis
     env_file:
       - .env
@@ -37,3 +54,24 @@ services:
       - "6379:6379"
     volumes:
       - ./redis/data:/data
+
+  auth-service:
+    # image: ${DOCKER_REGISTRY-}authservice
+    extends:
+      file: auth-service/docker-compose.yml
+      service: auth-service
+    container_name: auth-service
+  postgres-keycloak:
+    extends:
+      file: auth-service/docker-compose.yml
+      service: postgres-keycloak
+    container_name: postgres-keycloak
+    volumes:
+        - ./data/postgres:/var/lib/postgresql/data
+  keycloak:
+    extends:
+      file: auth-service/docker-compose.yml
+      service: keycloak
+    container_name: keycloak
+    volumes:
+        - ./data/keycloak/imports:/opt/keycloak/data/import
