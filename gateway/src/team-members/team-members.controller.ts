@@ -32,50 +32,56 @@ export class TeamMembersController {
 
   @Get()
   @UseInterceptors(CacheInterceptor)
-  findAll() {
-    const cached = this.redisService.get('get_TeamMembers');
+  async findAll() {
+    const cached = await this.redisService.get('get_TeamMembers');
     if (cached) {
       return cached;
     }
-    const result = this.teamMembersService.findAll();
-    this.redisService.set('get_TeamMembers', result);
+    const result = await this.teamMembersService.findAll();
+    if (result) await this.redisService.set('get_TeamMembers', result);
     return result;
   }
 
   @Get(':id')
   @UseInterceptors(CacheInterceptor)
-  findOne(@Param('id') id: string) {
-    const cached = this.redisService.get('get_TeamMember_' + id);
+  async findOne(@Param('id') id: string) {
+    const cached = await this.redisService.get('get_TeamMember_' + id);
     if (cached) {
       return cached;
     }
-    const result = this.teamMembersService.findOne(id);
-    this.redisService.set('get_TeamMember_' + id, result);
+    const result = await this.teamMembersService.findOne(id);
+    if (result) await this.redisService.set('get_TeamMember_' + id, result);
     return result;
   }
 
   @Get('search')
   @UseInterceptors(CacheInterceptor)
-  findAllFiltered(@Query() query: GetTeamMembersDto) {
-    const cached = this.redisService.get('get_TeamMembersFiltered');
+  async findAllFiltered(@Query() query: GetTeamMembersDto) {
+    const cached = await this.redisService.get('get_TeamMembersFiltered');
     if (cached) {
       return cached;
     }
     const { teamId, filter } = query;
-    const result = this.teamMembersService.findAllWithFilters(teamId, filter);
-    this.redisService.set('get_TeamMembersFiltered', result);
+    const result = await this.teamMembersService.findAllWithFilters(
+      teamId,
+      filter,
+    );
+    if (result) await this.redisService.set('get_TeamMembersFiltered', result);
     return result;
   }
 
   @Get('team/:teamId')
   @UseInterceptors(CacheInterceptor)
-  findAllByTeamId(@Param('teamId') teamId: string) {
-    const cached = this.redisService.get('get_TeamMembersByTeamId_' + teamId);
+  async findAllByTeamId(@Param('teamId') teamId: string) {
+    const cached = await this.redisService.get(
+      'get_TeamMembersByTeamId_' + teamId,
+    );
     if (cached) {
       return cached;
     }
-    const result = this.teamMembersService.findAllByTeamId(teamId);
-    this.redisService.set('get_TeamMembersByTeamId_' + teamId, result);
+    const result = await this.teamMembersService.findAllByTeamId(teamId);
+    if (result)
+      await this.redisService.set('get_TeamMembersByTeamId_' + teamId, result);
     return result;
   }
 

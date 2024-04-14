@@ -28,25 +28,28 @@ export class TaskController {
 
   @Get(':projectId/tasks')
   @UseInterceptors(CacheInterceptor)
-  getAllTasksByProjectId(@Param('id') id: string) {
-    const cached = this.redisService.get('get_TasksByProjectId_' + id);
+  async getAllTasksByProjectId(@Param('projectId') projectId: string) {
+    const cached = await this.redisService.get(
+      'get_TasksByProjectId_' + projectId,
+    );
     if (cached) {
       return cached;
     }
-    const result = this.taskService.getAllTasksByProjectId(id);
-    this.redisService.set('get_TasksByProjectId_' + id, result);
+    const result = await this.taskService.getAllTasksByProjectId(projectId);
+    if (result)
+      await this.redisService.set('get_TasksByProjectId_' + projectId, result);
     return result;
   }
 
   @Get(':id')
   @UseInterceptors(CacheInterceptor)
-  getTaskById(@Param('id') id: string) {
-    const cached = this.redisService.get('get_Task_' + id);
+  async getTaskById(@Param('id') id: string) {
+    const cached = await this.redisService.get('get_Task_' + id);
     if (cached) {
       return cached;
     }
-    const result = this.taskService.getTaskById(id);
-    this.redisService.set('get_Task_' + id, result);
+    const result = await this.taskService.getTaskById(id);
+    if (result) await this.redisService.set('get_Task_' + id, result);
     return result;
   }
 

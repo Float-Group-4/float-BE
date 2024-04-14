@@ -34,13 +34,16 @@ export class ProjectMemberController {
 
   @Get(':projectId/members')
   @UseInterceptors(CacheInterceptor)
-  getMembersByProjectId(@Param('projectId') projectId: string) {
-    const cached = this.redisService.get('get_ProjectMembers_' + projectId);
+  async getMembersByProjectId(@Param('projectId') projectId: string) {
+    const cached = await this.redisService.get(
+      'get_ProjectMembers_' + projectId,
+    );
     if (cached) {
       return cached;
     }
-    const result = this.projectService.getMembersByProjectId(projectId);
-    this.redisService.set('get_ProjectMembers_' + projectId, result);
+    const result = await this.projectService.getMembersByProjectId(projectId);
+    if (result)
+      await this.redisService.set('get_ProjectMembers_' + projectId, result);
     return result;
   }
 
@@ -52,7 +55,7 @@ export class ProjectMemberController {
       return cached;
     }
     const result = await this.projectService.getAllMembers();
-    await this.redisService.set('get_ProjectMembers', result);
+    if (result) await this.redisService.set('get_ProjectMembers', result);
     return result;
   }
 }

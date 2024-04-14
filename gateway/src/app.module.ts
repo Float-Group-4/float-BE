@@ -44,8 +44,8 @@ import { UsersController } from './users/users.controller';
         name: 'MAIN_SERVICE',
         transport: Transport.TCP,
         options: {
-          host: 'main-service',
-          // host: 'localhost',
+          // host: 'main-service',
+          host: 'localhost',
           port: 4001,
         },
       },

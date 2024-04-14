@@ -29,37 +29,40 @@ export class AllocationController {
   }
   @Get()
   @UseInterceptors(CacheInterceptor)
-  findAll() {
-    const cached = this.redisService.get('get_Allocations');
+  async findAll() {
+    const cached = await this.redisService.get('get_Allocations');
     if (cached) {
       return cached;
     }
-    const result = this.allocationService.findAll();
-    this.redisService.set('get_Allocations', result);
+    const result = await this.allocationService.findAll();
+    if (result) await this.redisService.set('get_Allocations', result);
     return result;
   }
 
   @Get('team/:teamId')
   @UseInterceptors(CacheInterceptor)
-  findAllByTeamId(@Param('teamId') teamId: string) {
-    const cached = this.redisService.get('get_AllocationsByTeamId_' + teamId);
+  async findAllByTeamId(@Param('teamId') teamId: string) {
+    const cached = await this.redisService.get(
+      'get_AllocationsByTeamId_' + teamId,
+    );
     if (cached) {
       return cached;
     }
-    const result = this.allocationService.findAllByTeamId(teamId);
-    this.redisService.set('get_AllocationsByTeamId_' + teamId, result);
+    const result = await this.allocationService.findAllByTeamId(teamId);
+    if (result)
+      await this.redisService.set('get_AllocationsByTeamId_' + teamId, result);
     return result;
   }
 
   @Get(':id')
   @UseInterceptors(CacheInterceptor)
-  findOne(@Param('id') id: string) {
-    const cached = this.redisService.get('get_Allocation_' + id);
+  async findOne(@Param('id') id: string) {
+    const cached = await this.redisService.get('get_Allocation_' + id);
     if (cached) {
       return cached;
     }
-    const result = this.allocationService.findOne(id);
-    this.redisService.set('get_Allocation_' + id, result);
+    const result = await this.allocationService.findOne(id);
+    if (result) await this.redisService.set('get_Allocation_' + id, result);
     return result;
   }
   @Patch(':id')

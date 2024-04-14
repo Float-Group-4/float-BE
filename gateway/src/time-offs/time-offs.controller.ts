@@ -30,37 +30,39 @@ export class TimeOffsController {
 
   @Get()
   @UseInterceptors(CacheInterceptor)
-  findAll() {
-    const cached = this.redisService.get('get_TimeOffs');
+  async findAll() {
+    const cached = await this.redisService.get('get_TimeOffs');
     if (cached) {
       return cached;
     }
-    const result = this.timeOffsService.findAll();
-    this.redisService.set('get_TimeOffs', result);
+    const result = await this.timeOffsService.findAll();
+    if (result) await this.redisService.set('get_TimeOffs', result);
     return result;
   }
 
   @Get(':id')
   @UseInterceptors(CacheInterceptor)
-  findOne(@Param('id') id: string) {
-    const cached = this.redisService.get('get_TimeOff_' + id);
+  async findOne(@Param('id') id: string) {
+    const cached = await this.redisService.get('get_TimeOff_' + id);
     if (cached) {
       return cached;
     }
-    const result = this.timeOffsService.findOne(id);
-    this.redisService.set('get_TimeOff_' + id, result);
+    const result = await this.timeOffsService.findOne(id);
+    if (result) await this.redisService.set('get_TimeOff_' + id, result);
     return result;
   }
 
   @Get('team/:teamId')
   @UseInterceptors(CacheInterceptor)
-  findAllTimeOffByTeamId(@Param('teamId') teamId: string) {
-    const cached = this.redisService.get('get_TimeOffsByTeamId_' + teamId);
+  async findAllTimeOffByTeamId(@Param('teamId') teamId: string) {
+    const cached = await this.redisService.get(
+      'get_TimeOffsByTeamId_' + teamId,
+    );
     if (cached) {
       return cached;
     }
-    const result = this.timeOffsService.findAllTimeOffByTeamId(teamId);
-    this.redisService.set('get_TimeOffsByTeamId_' + teamId, result);
+    const result = await this.timeOffsService.findAllTimeOffByTeamId(teamId);
+    await this.redisService.set('get_TimeOffsByTeamId_' + teamId, result);
     return result;
   }
 

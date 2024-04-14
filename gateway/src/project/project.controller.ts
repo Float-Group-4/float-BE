@@ -30,37 +30,40 @@ export class ProjectController {
 
   @Get()
   @UseInterceptors(CacheInterceptor)
-  findAll() {
-    const cached = this.redisService.get('get_Projects');
+  async findAll() {
+    const cached = await this.redisService.get('get_Projects');
     if (cached) {
       return cached;
     }
-    const result = this.projectService.findAll();
-    this.redisService.set('get_Projects', result);
+    const result = await this.projectService.findAll();
+    if (result) await this.redisService.set('get_Projects', result);
     return result;
   }
 
   @Get(':id')
   @UseInterceptors(CacheInterceptor)
-  findOne(@Param('id') id: string) {
-    const cached = this.redisService.get('get_Project_' + id);
+  async findOne(@Param('id') id: string) {
+    const cached = await this.redisService.get('get_Project_' + id);
     if (cached) {
       return cached;
     }
-    const result = this.projectService.findOne(id);
-    this.redisService.set('get_Project_' + id, result);
+    const result = await this.projectService.findOne(id);
+    if (result) await this.redisService.set('get_Project_' + id, result);
     return result;
   }
 
   @Get('team/:teamId')
   @UseInterceptors(CacheInterceptor)
-  findAllByTeamId(@Param('teamId') teamId: string) {
-    const cached = this.redisService.get('get_ProjectsByTeamId_' + teamId);
+  async findAllByTeamId(@Param('teamId') teamId: string) {
+    const cached = await this.redisService.get(
+      'get_ProjectsByTeamId_' + teamId,
+    );
     if (cached) {
       return cached;
     }
-    const result = this.projectService.findAllByTeamId(teamId);
-    this.redisService.set('get_ProjectsByTeamId_' + teamId, result);
+    const result = await this.projectService.findAllByTeamId(teamId);
+    if (result)
+      await this.redisService.set('get_ProjectsByTeamId_' + teamId, result);
     return result;
   }
 

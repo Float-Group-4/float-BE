@@ -81,11 +81,7 @@ export class TeamsService {
   getTeamByUser(user: string) {
     return this.prisma.team.findMany({
       where: {
-        TeamMember: {
-          some: {
-            userId: user,
-          },
-        },
+        TeamMember: { some: { userId: user } },
       },
     });
   }

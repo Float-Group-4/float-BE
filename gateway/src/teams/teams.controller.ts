@@ -35,25 +35,27 @@ export class TeamsController {
 
   @Get('')
   @UseInterceptors(CacheInterceptor)
-  findAll() {
-    const cached = this.redisService.get('get_Teams');
+  async findAll() {
+    const cached = await this.redisService.get('get_Teams');
     if (cached) {
       return cached;
     }
-    const result = this.teamsService.findAll();
-    this.redisService.set('get_Teams', result);
+    const result = await this.teamsService.findAll();
+    if (result) await this.redisService.set('get_Teams', result);
     return result;
   }
 
   @Get(':id')
   @UseInterceptors(CacheInterceptor)
-  findOne(@Param('id') id: string) {
-    const cached = this.redisService.get('get_Team_' + id);
+  async findOne(@Param('id') id: string) {
+    const cached = await this.redisService.get('get_Team_' + id);
     if (cached) {
       return cached;
     }
-    const result = this.teamsService.findOne(id);
-    this.redisService.set('get_Team_' + id, result);
+    const result = await this.teamsService.findOne(id);
+    if (result) {
+      await this.redisService.set('get_Team_' + id, result);
+    }
     return result;
   }
 
@@ -69,13 +71,13 @@ export class TeamsController {
 
   @Get('user/:userId')
   @UseInterceptors(CacheInterceptor)
-  getTeamByUser(@Param('userId') userId: string) {
-    const cached = this.redisService.get('get_TeamByUser_' + userId);
+  async getTeamByUser(@Param('userId') userId: string) {
+    const cached = await this.redisService.get('get_TeamByUser_' + userId);
     if (cached) {
       return cached;
     }
-    const result = this.teamsService.getTeamByUser(userId);
-    this.redisService.set('get_TeamByUser_' + userId, result);
+    const result = await this.teamsService.getTeamByUser(userId);
+    if (result) await this.redisService.set('get_TeamByUser_' + userId, result);
     return result;
   }
 }

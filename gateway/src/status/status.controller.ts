@@ -30,37 +30,40 @@ export class StatusController {
 
   @Get()
   @UseInterceptors(CacheInterceptor)
-  findAll() {
-    const cached = this.redisService.get('get_Statuses');
+  async findAll() {
+    const cached = await this.redisService.get('get_Statuses');
     if (cached) {
       return cached;
     }
-    const result = this.statusService.findAll();
-    this.redisService.set('get_Statuses', result);
+    const result = await this.statusService.findAll();
+    if (result) await this.redisService.set('get_Statuses', result);
     return result;
   }
 
   @Get(':id')
   @UseInterceptors(CacheInterceptor)
-  findOne(@Param('id') id: string) {
-    const cached = this.redisService.get('get_Status_' + id);
+  async findOne(@Param('id') id: string) {
+    const cached = await this.redisService.get('get_Status_' + id);
     if (cached) {
       return cached;
     }
-    const result = this.statusService.findOne(id);
-    this.redisService.set('get_Status_' + id, result);
+    const result = await this.statusService.findOne(id);
+    if (result) await this.redisService.set('get_Status_' + id, result);
     return result;
   }
 
   @Get('team/:teamId')
   @UseInterceptors(CacheInterceptor)
-  findAllStatusByTeamId(@Param('teamId') teamId: string) {
-    const cached = this.redisService.get('get_StatusesByTeamId_' + teamId);
+  async findAllStatusByTeamId(@Param('teamId') teamId: string) {
+    const cached = await this.redisService.get(
+      'get_StatusesByTeamId_' + teamId,
+    );
     if (cached) {
       return cached;
     }
-    const result = this.statusService.findAllStatusByTeamId(teamId);
-    this.redisService.set('get_StatusesByTeamId_' + teamId, result);
+    const result = await this.statusService.findAllStatusByTeamId(teamId);
+    if (result)
+      await this.redisService.set('get_StatusesByTeamId_' + teamId, result);
     return result;
   }
 

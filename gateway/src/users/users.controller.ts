@@ -30,25 +30,25 @@ export class UsersController {
 
   @Get()
   @UseInterceptors(CacheInterceptor)
-  findAll() {
-    const cached = this.redisService.get('get_Users');
+  async findAll() {
+    const cached = await this.redisService.get('get_Users');
     if (cached) {
       return cached;
     }
-    const result = this.usersService.findAll();
-    this.redisService.set('get_Users', result);
+    const result = await this.usersService.findAll();
+    await this.redisService.set('get_Users', result);
     return result;
   }
 
   @Get(':id')
   @UseInterceptors(CacheInterceptor)
-  findOne(@Param('id') id: string) {
-    const cached = this.redisService.get('get_User_' + id);
+  async findOne(@Param('id') id: string) {
+    const cached = await this.redisService.get('get_User_' + id);
     if (cached) {
       return cached;
     }
-    const result = this.usersService.findOne(id);
-    this.redisService.set('get_User_' + id, result);
+    const result = await this.usersService.findOne(id);
+    await this.redisService.set('get_User_' + id, result);
     return result;
   }
 

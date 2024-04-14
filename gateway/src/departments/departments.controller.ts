@@ -30,37 +30,40 @@ export class DepartmentsController {
 
   @Get()
   @UseInterceptors(CacheInterceptor)
-  findAll() {
-    const cached = this.redisService.get('get_Departments');
+  async findAll() {
+    const cached = await this.redisService.get('get_Departments');
     if (cached) {
       return cached;
     }
-    const result = this.departmentsService.findAll();
-    this.redisService.set('get_Departments', result);
+    const result = await this.departmentsService.findAll();
+    if (result) await this.redisService.set('get_Departments', result);
     return result;
   }
 
   @Get(':id')
   @UseInterceptors(CacheInterceptor)
-  findOne(@Param('id') id: string) {
-    const cached = this.redisService.get('get_Department_' + id);
+  async findOne(@Param('id') id: string) {
+    const cached = await this.redisService.get('get_Department_' + id);
     if (cached) {
       return cached;
     }
-    const result = this.departmentsService.findOne(id);
-    this.redisService.set('get_Department_' + id, result);
+    const result = await this.departmentsService.findOne(id);
+    if (result) await this.redisService.set('get_Department_' + id, result);
     return result;
   }
 
   @Get('team/:teamId')
   @UseInterceptors(CacheInterceptor)
-  findByTeamId(@Param('teamId') teamId: string) {
-    const cached = this.redisService.get('get_DepartmentsByTeamId_' + teamId);
+  async findByTeamId(@Param('teamId') teamId: string) {
+    const cached = await this.redisService.get(
+      'get_DepartmentsByTeamId_' + teamId,
+    );
     if (cached) {
       return cached;
     }
-    const result = this.departmentsService.findByTeamId(teamId);
-    this.redisService.set('get_DepartmentsByTeamId_' + teamId, result);
+    const result = await this.departmentsService.findByTeamId(teamId);
+    if (result)
+      await this.redisService.set('get_DepartmentsByTeamId_' + teamId, result);
     return result;
   }
 

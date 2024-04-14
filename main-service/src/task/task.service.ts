@@ -54,7 +54,7 @@ export class TaskService {
 
   getAllTasksByProjectId(id: string) {
     return this.prisma.task.findMany({
-      where: { id: id },
+      where: { projectId: id },
     });
   }
 }
