@@ -504,6 +504,33 @@
       },
       "notBefore": 0,
       "groups": []
+    },
+    {
+      "id" : "c8397f43-ace4-43a8-ab54-869302668015",
+      "username" : "admin@gmail.com",
+      "firstName" : "admin",
+      "lastName" : "admin",
+      "email" : "admin@gmail.com",
+      "emailVerified" : true,
+      "createdTimestamp" : 1713066595814,
+      "enabled" : true,
+      "totp" : false,
+      "credentials" : [ {
+        "id" : "cb5a89a9-7de1-4dda-b2ed-dc53564241c4",
+        "type" : "password",
+        "userLabel" : "My password",
+        "createdDate" : 1713066607141,
+        "secretData" : "{\"value\":\"AEvaU8TbBiZDVNtlW0v0lpJyQj/YMqubbMCeCmkVPQQ1EPtKqmnBHCEqotsaX9WSslj0ZoiVY4wHzOi64srdYw==\",\"salt\":\"kJ2cxfMzaSAJR9Ye+MAjFA==\",\"additionalParameters\":{}}",
+        "credentialData" : "{\"hashIterations\":210000,\"algorithm\":\"pbkdf2-sha512\",\"additionalParameters\":{}}"
+      } ],
+      "disableableCredentialTypes" : [ ],
+      "requiredActions" : [ ],
+      "realmRoles" : [ "default-roles-float-realm" ],
+      "clientRoles" : {
+        "realm-management" : [ "manage-realm", "query-users", "query-realms", "manage-clients", "realm-admin", "manage-users", "view-users" ]
+      },
+      "notBefore" : 0,
+      "groups" : [ "/admin" ]
     }
   ],
   "scopeMappings": [
