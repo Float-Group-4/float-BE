@@ -10,4 +10,9 @@ export class AppController {
   getHello(): string {
     return this.appService.getHello();
   }
+
+  @MessagePattern({ cmd: 'health' })
+  getMainServiceHealth(): string {
+    return this.appService.getMainServiceHealth();
+  }
 }
