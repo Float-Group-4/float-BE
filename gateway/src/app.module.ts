@@ -44,8 +44,7 @@ import { UsersController } from './users/users.controller';
         name: 'MAIN_SERVICE',
         transport: Transport.TCP,
         options: {
-          // host: 'main-service',
-          host: 'localhost',
+          host: 'main-service',
           port: 4001,
         },
       },
@@ -53,7 +52,7 @@ import { UsersController } from './users/users.controller';
         name: 'VIEW_SERVICE',
         transport: Transport.TCP,
         options: {
-          host: 'localhost',
+          host: 'view-service',
           port: 4002,
         },
       },
@@ -61,7 +60,7 @@ import { UsersController } from './users/users.controller';
         name: 'MAILER_SERVICE',
         transport: Transport.TCP,
         options: {
-          host: 'localhost',
+          host: 'mailer',
           port: 4003,
         },
       },
