@@ -40,8 +40,26 @@ export type TeamMemberFilter = {
 @Injectable()
 export class TeamMembersService {
   constructor(private prisma: PrismaService) {}
-  create(createTeamMemberDto: CreateTeamMemberDto) {
-    return this.prisma.teamMember.create({
+  async create(createTeamMemberDto: CreateTeamMemberDto) {
+    if (createTeamMemberDto.email) {
+      const existedMember = await this.prisma.teamMember.findFirst({
+        where: { email: createTeamMemberDto.email },
+      });
+      if (existedMember) {
+        throw new Error('Email already existed in this team');
+      } else {
+        const user = await this.prisma.user.findFirst({
+          where: { email: createTeamMemberDto.email },
+        });
+        return await this.prisma.teamMember.create({
+          data: {
+            ...createTeamMemberDto,
+            userId: user ? user.id : null,
+          },
+        });
+      }
+    }
+    return await this.prisma.teamMember.create({
       data: {
         ...createTeamMemberDto,
       },
@@ -111,15 +129,29 @@ export class TeamMembersService {
     });
   }
 
-  update(id: string, updateTeamMemberDto: UpdateTeamMemberDto) {
-    return this.prisma.teamMember.update({
-      where: {
-        id,
-      },
-      data: {
-        ...updateTeamMemberDto,
-      },
-    });
+  async update(id: string, updateTeamMemberDto: UpdateTeamMemberDto) {
+    if (updateTeamMemberDto.email) {
+      const existedMember = await this.prisma.teamMember.findFirst({
+        where: { email: updateTeamMemberDto.email },
+      });
+      if (existedMember && existedMember.id !== id) {
+        throw new Error('Email already existed in this team');
+      } else {
+        const user = await this.prisma.user.findFirst({
+          where: { email: updateTeamMemberDto.email },
+        });
+
+        return await this.prisma.teamMember.update({
+          where: {
+            id,
+          },
+          data: {
+            ...updateTeamMemberDto,
+            userId: user ? user.id : null,
+          },
+        });
+      }
+    }
   }
 
   remove(id: string) {

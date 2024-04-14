@@ -50,8 +50,8 @@ namespace auth_service.Service
                 enabled = true,
                 email = registerForm.email,
                 emailVerified = true,
-                firstName = registerForm.firstName,
-                lastName = registerForm.lastName,
+                firstName = registerForm.name,
+                lastName = "last name",
                 credentials = new[]
                 {
                     new

@@ -36,6 +36,9 @@ import { StatusService } from './status/status.service';
 import { StatusTypesService } from './status-types/status-types.service';
 import { RedisModule } from './redis/redis.module';
 import { UsersController } from './users/users.controller';
+import { HttpModule } from '@nestjs/axios';
+import { AuthController } from './auth/auth.controller';
+import { AuthService } from './auth/auth.service';
 
 @Module({
   imports: [
@@ -67,9 +70,11 @@ import { UsersController } from './users/users.controller';
       },
     ]),
     RedisModule,
+    HttpModule,
   ],
   controllers: [
     AppController,
+    AuthController,
     ActivitiesController,
     ProjectMemberController,
     TaskController,
@@ -92,6 +97,7 @@ import { UsersController } from './users/users.controller';
   ],
   providers: [
     AppService,
+    AuthService,
     ActivitiesService,
     ProjectMemberService,
     TaskService,
