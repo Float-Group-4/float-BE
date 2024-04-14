@@ -32,6 +32,11 @@ namespace auth_service.Service
 
             var response = await client.PostAsync(_configuration.GetValue<string>("KeyCloak:Get_token"), content);
 
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"Login failed with status code: {response.StatusCode}");
+            }
+
             var responseString = await response.Content.ReadAsStringAsync();
 
             return responseString;
@@ -67,6 +72,11 @@ namespace auth_service.Service
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
             var response = await client.PostAsync(_configuration.GetValue<string>("KeyCloak:Register"), content);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"Registration failed with status code: {response.StatusCode}");
+            }
 
             var responseString = await response.Content.ReadAsStringAsync();
 

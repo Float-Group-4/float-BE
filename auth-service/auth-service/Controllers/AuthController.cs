@@ -55,6 +55,11 @@ namespace auth_service.Controllers
 
             var response = await client.PostAsync(_configuration.GetValue<string>("KeyCloak:Get_token"), content);
 
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"Google login failed with status code: {response.StatusCode}");
+            }
+
             var responseString = await response.Content.ReadAsStringAsync();
 
             return Ok(responseString);
@@ -90,6 +95,11 @@ namespace auth_service.Controllers
             var content = new FormUrlEncodedContent(values);
 
             var response = await client.PostAsync(_configuration.GetValue<string>("KeyCloak:Logout"), content);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"Logout failed with status code: {response.StatusCode}");
+            }
 
             var responseString = await response.Content.ReadAsStringAsync();
 
