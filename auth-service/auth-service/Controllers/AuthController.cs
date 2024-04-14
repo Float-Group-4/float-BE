@@ -1,6 +1,7 @@
 ﻿using auth_service.DTO;
 using auth_service.Service;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -26,6 +27,7 @@ namespace auth_service.Controllers
             _authService = authService;
         }
 
+        [EnableCors]
         [HttpPost("user-login")]
         public async Task<IActionResult> UserLogin(LoginDto UserLogin)
         {
@@ -33,6 +35,7 @@ namespace auth_service.Controllers
             return Ok(responseString);
         }
 
+        [EnableCors]
         [HttpPost("google-login")]
         public async Task<IActionResult> GoogleLogin(string token)
         {
@@ -57,6 +60,7 @@ namespace auth_service.Controllers
             return Ok(responseString);
         }
 
+        [EnableCors]
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterDto registerForm)
         {
@@ -71,6 +75,7 @@ namespace auth_service.Controllers
             return Ok(ResponseString);
         }
 
+        [EnableCors]
         [HttpPost("logout")]
         public async Task<IActionResult> Logout(string RefreshToken)
         {
@@ -91,6 +96,7 @@ namespace auth_service.Controllers
             return Ok(responseString);
         }
 
+        [EnableCors]
         [HttpGet("user-info")]
         public async Task<IActionResult> GetUserInfo(string token)
         {
