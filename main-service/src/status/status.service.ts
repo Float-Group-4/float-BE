@@ -25,6 +25,9 @@ export class StatusService {
           teamId: teamId,
         },
       },
+      include: {
+        Type: true,
+      },
     });
   }
 
@@ -32,6 +35,9 @@ export class StatusService {
     return this.prisma.status.findUnique({
       where: {
         id,
+      },
+      include: {
+        Type: true,
       },
     });
   }
