@@ -26,12 +26,12 @@ export class ActivitiesController {
   @MessagePattern({ cmd: 'update_activity' })
   update({
     id,
-    updateAcitvityDto,
+    updateActivityDto,
   }: {
     id: string;
-    updateAcitvityDto: UpdateActivityDto;
+    updateActivityDto: UpdateActivityDto;
   }) {
-    return this.activitiesService.update(id, updateAcitvityDto);
+    return this.activitiesService.update(id, updateActivityDto);
   }
 
   @MessagePattern({ cmd: 'remove_activity' })

@@ -25,6 +25,9 @@ export class TimeOffsService {
           teamId: teamId,
         },
       },
+      include: {
+        Type: true,
+      },
     });
   }
 
@@ -32,6 +35,9 @@ export class TimeOffsService {
     return this.prisma.timeOff.findUnique({
       where: {
         id,
+      },
+      include: {
+        Type: true,
       },
     });
   }

@@ -34,11 +34,17 @@ export class AllocationService {
           },
         },
       },
+      include: {
+        Task: true,
+      },
     });
   }
 
   findOne(id: string) {
-    return this.prisma.allocation.findUnique({ where: { id: id } });
+    return this.prisma.allocation.findUnique({
+      where: { id: id },
+      include: { Task: true },
+    });
   }
 
   update(id: string, updateAllocationDto: UpdateAllocationDto) {

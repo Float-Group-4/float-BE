@@ -7,15 +7,21 @@ import {
   Patch,
   Delete,
   Get,
+  UseInterceptors,
 } from '@nestjs/common';
 import { TimeOffsService } from './time-offs.service';
 import { CreateTimeOffDto } from './dto/create-time-off.dto';
 import { UpdateTimeOffDto } from './dto/update-time-off.dto';
+import { RedisService } from 'src/redis/redis.service';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @Controller('time-offs')
 @ApiTags('Time Offs')
 export class TimeOffsController {
-  constructor(private readonly timeOffsService: TimeOffsService) {}
+  constructor(
+    private readonly timeOffsService: TimeOffsService,
+    private readonly redisService: RedisService,
+  ) {}
 
   @Post()
   create(@Body() createTimeOffDto: CreateTimeOffDto) {
@@ -23,18 +29,41 @@ export class TimeOffsController {
   }
 
   @Get()
-  findAll() {
-    return this.timeOffsService.findAll();
+  @UseInterceptors(CacheInterceptor)
+  async findAll() {
+    const cached = await this.redisService.get('get_TimeOffs');
+    if (cached) {
+      return cached;
+    }
+    const result = await this.timeOffsService.findAll();
+    if (result) await this.redisService.set('get_TimeOffs', result);
+    return result;
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.timeOffsService.findOne(id);
+  @UseInterceptors(CacheInterceptor)
+  async findOne(@Param('id') id: string) {
+    const cached = await this.redisService.get('get_TimeOff_' + id);
+    if (cached) {
+      return cached;
+    }
+    const result = await this.timeOffsService.findOne(id);
+    if (result) await this.redisService.set('get_TimeOff_' + id, result);
+    return result;
   }
 
   @Get('team/:teamId')
-  findAllTimeOffByTeamId(@Param('teamId') teamId: string) {
-    return this.timeOffsService.findAllTimeOffByTeamId(teamId);
+  @UseInterceptors(CacheInterceptor)
+  async findAllTimeOffByTeamId(@Param('teamId') teamId: string) {
+    const cached = await this.redisService.get(
+      'get_TimeOffsByTeamId_' + teamId,
+    );
+    if (cached) {
+      return cached;
+    }
+    const result = await this.timeOffsService.findAllTimeOffByTeamId(teamId);
+    await this.redisService.set('get_TimeOffsByTeamId_' + teamId, result);
+    return result;
   }
 
   @Patch(':id')

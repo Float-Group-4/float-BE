@@ -1,27 +1,39 @@
 version: "3.0"
 services:
-  gateway:
-    build:
-      context: gateway
-      dockerfile: Dockerfile
-    container_name: gateway
-    ports:
-      - "4000:4000"
-  
-  main-service:
-    build:
-      context: main-service
-      dockerfile: Dockerfile
-    container_name: main-service
-    # ports:
-    #   - "4001:4001"
+  # gateway:
+  #   build:
+  #     context: gateway
+  #     dockerfile: Dockerfile
+  #   container_name: gateway
+  #   ports:
+  #     - "4000:4000"
 
-  haproxy:
-    image: haproxytech/haproxy-alpine:2.4
-    container_name: haproxy
+  # main-service:
+  #   build:
+  #     context: main-service
+  #     dockerfile: Dockerfile
+  #   container_name: main-service
+  #   # ports:
+  #   #   - "4001:4001"
+
+  # haproxy:
+  #   image: haproxytech/haproxy-alpine:2.4
+  #   container_name: haproxy
+  #   ports:
+  #     - "80:80"
+  #     - "8404:8404"
+  #     - "5432:5432"
+  #   volumes:
+  #     - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+
+  redis:
+    image: redis
+    # command: /bin/sh -c "redis-server --requirepass $$REDIS_PASS"
+    command: /bin/sh -c "redis-server"
+    container_name: redis
+    env_file:
+      - .env
     ports:
-      - "80:80"
-      - "8404:8404"
-      - "5432:5432"
+      - "6379:6379"
     volumes:
-      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+      - ./redis/data:/data

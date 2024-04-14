@@ -1,8 +1,11 @@
 ﻿using auth_service.DTO;
+using auth_service.Service;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -15,39 +18,28 @@ namespace auth_service.Controllers
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IConfiguration _configuration;
+        private readonly AuthService _authService;
 
-        public AuthController(IHttpClientFactory httpClientFactory, IConfiguration configuration)
+        public AuthController(IHttpClientFactory httpClientFactory, IConfiguration configuration, AuthService authService)
         {
             _httpClientFactory = httpClientFactory;
             _configuration = configuration;
+            _authService = authService;
         }
 
+        [EnableCors]
         [HttpPost("user-login")]
         public async Task<IActionResult> UserLogin(LoginDto UserLogin)
         {
-            var client = new HttpClient();
-
-            var values = new Dictionary<string, string>
-            {
-                { "grant_type", _configuration.GetValue<string>("KeyCloak:grant_type") },
-                { "client_id", _configuration.GetValue<string>("KeyCloak:client_id") },
-                { "client_secret", _configuration.GetValue<string>("KeyCloak:client_secret") },
-                { "username", UserLogin.Email },
-                { "password", UserLogin.Password }
-            };
-
-            var content = new FormUrlEncodedContent(values);
-
-            var response = await client.PostAsync(_configuration.GetValue<string>("KeyCloak:Get_token"), content);
-
-            var responseString = await response.Content.ReadAsStringAsync();
-
+            var responseString = await _authService.UserLogin(UserLogin);
             return Ok(responseString);
         }
 
+        [EnableCors]
         [HttpPost("google-login")]
         public async Task<IActionResult> GoogleLogin(string token)
         {
+
             var client = new HttpClient();
 
             var values = new Dictionary<string, string>
@@ -68,42 +60,22 @@ namespace auth_service.Controllers
             return Ok(responseString);
         }
 
+        [EnableCors]
         [HttpPost("register")]
-        public async Task<IActionResult> Register(RegisterDto registerForm, string token)
+        public async Task<IActionResult> Register(RegisterDto registerForm)
         {
-            var client = new HttpClient();
+            var loginDto = new LoginDto { Email = _configuration.GetValue<string>("KeyCloak:adminEmail"), Password = _configuration.GetValue<string>("KeyCloak:adminPass") };
+            var adminResponse = await _authService.UserLogin(loginDto);
 
-            // Use the provided token
-            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            var responseObject = JsonConvert.DeserializeObject<dynamic>(adminResponse.ToString());
+            String token = responseObject.access_token;
 
-            var user = new
-            {
-                enabled = true,
-                email = registerForm.email,
-                emailVerified = true,
-                firstName = registerForm.firstName,
-                lastName = registerForm.lastName,
-                credentials = new[]
-                {
-                    new
-                    {
-                        type = _configuration.GetValue<string>("KeyCloak:grant_type"),
-                        value = registerForm.password,
-                        temporary = false
-                    }
-                }
-            };
+            var ResponseString = await _authService.Register(registerForm, token);
 
-            var json = JsonConvert.SerializeObject(user);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            var response = await client.PostAsync(_configuration.GetValue<string>("KeyCloak:Register"), content);
-
-            var responseString = await response.Content.ReadAsStringAsync();
-
-            return Ok(responseString);
+            return Ok(ResponseString);
         }
 
+        [EnableCors]
         [HttpPost("logout")]
         public async Task<IActionResult> Logout(string RefreshToken)
         {
@@ -124,6 +96,7 @@ namespace auth_service.Controllers
             return Ok(responseString);
         }
 
+        [EnableCors]
         [HttpGet("user-info")]
         public async Task<IActionResult> GetUserInfo(string token)
         {
