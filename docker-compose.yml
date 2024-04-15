@@ -67,11 +67,11 @@ services:
       service: postgres-keycloak
     container_name: postgres-keycloak
     volumes:
-        - ./data/postgres:/var/lib/postgresql/data
+      - ./data/postgres:/var/lib/postgresql/data
   keycloak:
     extends:
       file: auth-service/docker-compose.yml
       service: keycloak
     container_name: keycloak
     volumes:
-        - ./data/keycloak/imports:/opt/keycloak/data/import
+      - ./data/keycloak/imports:/opt/keycloak/data/import

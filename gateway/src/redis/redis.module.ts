@@ -11,7 +11,7 @@ import { RedisService } from './redis.service';
       imports: [ConfigModule], // Import ConfigModule here
       useFactory: async (configService: ConfigService) => ({
         store: await redisStore({
-          url: configService.get('REDIS_URL'),
+          url: 'redis://default:password@localhost:6379',
           ttl: 5000, // 5 seconds 60000 = 1 minute
         }),
       }),

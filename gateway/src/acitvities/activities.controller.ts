@@ -36,7 +36,6 @@ export class ActivitiesController {
       return cached;
     }
     const result = await this.activitiesService.findAll();
-    // const result = await this.activitiesService.findOne(id);
     if (result) await this.redisService.set('get_Activities', result);
     return result;
   }

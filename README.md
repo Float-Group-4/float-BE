@@ -1,3 +1,37 @@
+To start running the development environment, please use the "development" branch, as the "main" branch is used for deployment:
+
+- prepare the gateway
+  create .env and paste the content of .env.sample into it
+  cd. gateway
+  docker compose up -d
+  npm install
+  npm run start:dev
+
+- prepare main service
+  create .env and paste the content of .env.sample into it
+  cd. main-service
+  docker compose up -d
+  npm install
+  npx prisma migrate dev
+  if unseeded -> npx prisma db seed, drop db if conflict seeding
+  npm run start:dev
+
+- prepare mailer service
+  cd. mailer
+  npm install
+  npm run start:dev
+
+- prepare view service
+  cd. mailer
+  npm install
+  npm run start:dev
+
+- prepare auth service
+  cd. auth-service
+  docker compose up -d
+
+after running all of these you can go to localhost:4000/api to access the swagger API docs
+
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>
