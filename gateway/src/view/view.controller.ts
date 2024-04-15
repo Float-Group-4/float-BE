@@ -30,13 +30,13 @@ export class ViewController {
 
   @Get(':id')
   @UseInterceptors(CacheInterceptor)
-  get(@Param('id') id: number) {
-    const cached = this.redisService.get('get_View_' + id);
+  async get(@Param('id') id: number) {
+    const cached = await this.redisService.get('get_View_' + id);
     if (cached) {
       return cached;
     }
-    const result = this.viewService.getView(id);
-    this.redisService.set('get_View_' + id, result);
+    const result = await this.viewService.getView(id);
+    if (result) await this.redisService.set('get_View_' + id, result);
     return result;
   }
 
@@ -52,52 +52,60 @@ export class ViewController {
 
   @Get()
   @UseInterceptors(CacheInterceptor)
-  getAll() {
-    const cached = this.redisService.get('get_Views');
+  async getAll() {
+    const cached = await this.redisService.get('get_Views');
     if (cached) {
       return cached;
     }
-    const result = this.viewService.getAllViews();
-    this.redisService.set('get_Views', result);
+    const result = await this.viewService.getAllViews();
+    if (result) await this.redisService.set('get_Views', result);
     return result;
   }
 
   @Get('team/:id')
   @UseInterceptors(CacheInterceptor)
-  getViewsByTeamId(
+  async getViewsByTeamId(
     @Param('id') teamId: string,
     @Body('teamMemberId') teamMemberId: string,
   ) {
-    const cached = this.redisService.get('get_ViewsByTeamId_' + teamId);
+    const cached = await this.redisService.get('get_ViewsByTeamId_' + teamId);
     if (cached) {
       return cached;
     }
-    const result = this.viewService.getViewsByTeamId(teamId, teamMemberId);
-    this.redisService.set('get_ViewsByTeamId_' + teamId, result);
+    const result = await this.viewService.getViewsByTeamId(
+      teamId,
+      teamMemberId,
+    );
+    if (result)
+      await this.redisService.set('get_ViewsByTeamId_' + teamId, result);
     return result;
   }
 
   @Get('personal/:id')
   @UseInterceptors(CacheInterceptor)
-  getPersonalViews(@Param('id') userId: string) {
-    const cached = this.redisService.get('get_PersonalViews_' + userId);
+  async getPersonalViews(@Param('id') userId: string) {
+    const cached = await this.redisService.get('get_PersonalViews_' + userId);
     if (cached) {
       return cached;
     }
-    const result = this.viewService.getPersonalViews(userId);
-    this.redisService.set('get_PersonalViews_' + userId, result);
+    const result = await this.viewService.getPersonalViews(userId);
+    if (result)
+      await this.redisService.set('get_PersonalViews_' + userId, result);
     return result;
   }
 
   @Get('public/:userId')
   @UseInterceptors(CacheInterceptor)
-  getPublicViewsByUserId(@Param('userId') userId: string) {
-    const cached = this.redisService.get('get_PublicViewsByUserId_' + userId);
+  async getPublicViewsByUserId(@Param('userId') userId: string) {
+    const cached = await this.redisService.get(
+      'get_PublicViewsByUserId_' + userId,
+    );
     if (cached) {
       return cached;
     }
-    const result = this.viewService.getPublicViewsByUserId(userId);
-    this.redisService.set('get_PublicViewsByUserId_' + userId, result);
+    const result = await this.viewService.getPublicViewsByUserId(userId);
+    if (result)
+      await this.redisService.set('get_PublicViewsByUserId_' + userId, result);
     return result;
   }
 }
