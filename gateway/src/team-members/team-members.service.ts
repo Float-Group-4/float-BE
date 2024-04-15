@@ -131,7 +131,7 @@ export class TeamMembersService {
         recipientName: memberDto.name,
         inviterName: owner ? owner.name : 'Someone',
         teamName: team.name,
-        url: 'https://example.com/login',
+        url: 'https://pro-ma.vercel.app/sign-in',
       });
     }
   }
