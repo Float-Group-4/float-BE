@@ -52,6 +52,18 @@ export class UsersController {
     return result;
   }
 
+  @Get('email/:email')
+  @UseInterceptors(CacheInterceptor)
+  async findByEmail(@Param('email') email: string) {
+    const cached = await this.redisService.get('get_User_by_email_' + email);
+    if (cached) {
+      return cached;
+    }
+    const result = await this.usersService.findByEmail(email);
+    await this.redisService.set('get_User_by_email_' + email, result);
+    return result;
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(id, updateUserDto);
