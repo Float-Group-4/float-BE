@@ -4,7 +4,6 @@ on:
     push:
         branches:
         - main
-        - feat/deployment
 
 jobs:
     update_code:
@@ -38,11 +37,22 @@ jobs:
             chmod 600 /home/runner/.ssh/id_rsa
           shell: bash
 
-        - name: Deploy code
+        - name: Deploy gateway code
           run: |
             gcloud compute ssh --zone "us-central1-a" worker@fgroup4 --project "igneous-capsule-419613" --ssh-key-file /home/runner/.ssh/id_rsa \
             --command "cd float-BE/ \
             && make stop \
             && git pull \
-            && make"
+            && make \
+            && docker system prune -af"
+          shell: bash
+
+        - name: Deploy main-service code
+          run: |
+            gcloud compute ssh --zone "us-central1-a" worker@fgroup4-main-service --project "igneous-capsule-419613" --ssh-key-file /home/runner/.ssh/id_rsa \
+            --command "cd float-BE/ \
+            && make main-stop \
+            && git pull \
+            && make main \
+            && docker system prune -af"
           shell: bash
