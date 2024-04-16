@@ -27,7 +27,7 @@ model User {
 
 model Team {
   id          String        @id @default(uuid())
-  name        String        @unique
+  name        String
   teamOwner   TeamMember?   @relation("ownedBy", fields: [teamOwnerId], references: [id])
   teamOwnerId String? //do this for seeding
   TeamMember  TeamMember[]
