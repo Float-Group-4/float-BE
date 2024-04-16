@@ -8,8 +8,6 @@ export class UserEntity {
   @ApiProperty()
   email: string;
   @ApiProperty()
-  password: string;
-  @ApiProperty()
   timeFormat: string;
   @ApiProperty()
   avatar: string;
