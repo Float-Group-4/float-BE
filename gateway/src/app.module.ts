@@ -47,7 +47,7 @@ import { AuthService } from './auth/auth.service';
         name: 'MAIN_SERVICE',
         transport: Transport.TCP,
         options: {
-          host: 'main-service',
+          host: '10.128.0.3',
           port: 4001,
         },
       },

@@ -9,13 +9,13 @@ services:
     ports:
       - "4000:4000"
 
-  main-service:
-    build:
-      context: main-service
-      dockerfile: Dockerfile
-    container_name: main-service
-    # ports:
-    #   - "4001:4001"
+  # main-service:
+  #   build:
+  #     context: main-service
+  #     dockerfile: Dockerfile
+  #   container_name: main-service
+  #   # ports:
+  #   #   - "4001:4001"
 
   view-service:
     build:
@@ -33,15 +33,15 @@ services:
     # ports:
     #   - "4003:4003"
 
-  haproxy:
-    image: haproxytech/haproxy-alpine:2.4
-    container_name: haproxy
-    ports:
-      - "80:80"
-      - "8404:8404"
-      # - "5430:5432"
-    volumes:
-      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+  # haproxy:
+  #   image: haproxytech/haproxy-alpine:2.4
+  #   container_name: haproxy
+  #   ports:
+  #     # - "80:80"
+  #     - "8404:8404"
+  #     # - "5430:5432"
+  #   volumes:
+  #     - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
 
   redis:
     image: redis

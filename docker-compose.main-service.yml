@@ -1,0 +1,42 @@
+services:
+  main-service-1:
+    build:
+      context: main-service
+      dockerfile: Dockerfile
+    container_name: main-service-1
+    # ports:
+    #   - "4001:4001"
+  main-service-2:
+    build:
+      context: main-service
+      dockerfile: Dockerfile
+    container_name: main-service-2
+    # ports:
+    #   - "4001:4001"
+  main-service-3:
+    build:
+      context: main-service
+      dockerfile: Dockerfile
+    container_name: main-service-3
+    # ports:
+    #   - "4001:4001"
+
+  haproxy-main:
+    image: haproxytech/haproxy-alpine:2.4
+    container_name: haproxy-main
+    ports:
+      # - "80:80"
+      - "8405:8404"
+      - "4001:4001"
+    volumes:
+      - ./haproxy.main.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+
+  haproxy-db:
+    image: haproxytech/haproxy-alpine:2.4
+    container_name: haproxy-db
+    ports:
+      # - "80:80"
+      - "8404:8404"
+      # - "5430:5432"
+    volumes:
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
