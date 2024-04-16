@@ -82,14 +82,18 @@ namespace auth_service.Controllers
 
         [EnableCors]
         [HttpPost("logout")]
-        public async Task<IActionResult> Logout(string RefreshToken)
+        public async Task<IActionResult> Logout([FromBody] string refreshToken, string accessToken)
         {
             var client = new HttpClient();
+
+            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
 
             var values = new Dictionary<string, string>
             {
                 { "client_id", _configuration.GetValue<string>("KeyCloak:client_id") },
-                { "refresh_token",  RefreshToken}
+                { "refresh_token",  refreshToken },
+                { "client_secret", _configuration.GetValue<string>("KeyCloak:client_secret") },
+
             };
 
             var content = new FormUrlEncodedContent(values);
