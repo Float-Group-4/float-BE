@@ -22,6 +22,11 @@ export class UsersController {
     return this.usersService.findOne(id);
   }
 
+  @MessagePattern({ cmd: 'find_user_by_email' })
+  findByEmail(email: string) {
+    return this.usersService.findByEmail(email);
+  }
+
   @MessagePattern({ cmd: 'update_user' })
   update({ id, updateUserDto }: { id: string; updateUserDto: UpdateUserDto }) {
     return this.usersService.update(id, updateUserDto);
