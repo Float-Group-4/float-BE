@@ -20,14 +20,11 @@ async function main() {
   });
 
   // create team
-  const team = await prisma.team.upsert({
-    where: { name: 'Team 1' },
-    update: {},
-    create: {
-      name: 'Team 1',
+  const team = await prisma.team.create({
+    data: {
+      name: 'Team 1', //consider unique
     },
   });
-
   const setting = await prisma.setting.upsert({
     where: { teamId: team.id },
     update: {},
