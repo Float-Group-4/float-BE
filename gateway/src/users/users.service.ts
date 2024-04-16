@@ -30,6 +30,12 @@ export class UsersService {
     );
   }
 
+  findByEmail(email: string) {
+    return firstValueFrom(
+      this.mainServiceClient.send({ cmd: 'find_user_by_email' }, email),
+    );
+  }
+
   update(id: string, updateUserDto: UpdateUserDto) {
     return firstValueFrom(
       this.mainServiceClient.send(
